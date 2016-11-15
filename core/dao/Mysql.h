@@ -2,7 +2,7 @@
 #define MYSQL_H
 #include<iostream>
 #include<stdlib.h>
-#include<memory>
+#include<tr1/memory>
 
 #include <mysql_driver.h>
 #include<cppconn/prepared_statement.h>
@@ -24,8 +24,8 @@ class Mysql{
             }
         }
     public:
-        shared_ptr<sql::mysql::MySQL_Driver> driver;
-        shared_ptr<sql::Connection> conn;
+        std::tr1::shared_ptr<sql::mysql::MySQL_Driver> driver;
+        std::tr1::shared_ptr<sql::Connection> conn;
         
         Mysql(){
             //get the instance of driver int construct function
@@ -49,7 +49,7 @@ class Mysql{
                 this->connect();
             }
             sql::SQLString sqlString(str); 
-            shared_ptr<sql::PreparedStatement> pstm = make_shared<sql::PreparedStatement>(this->conn->prepareStatement(sqlString));
+            std::tr1::shared_ptr<sql::PreparedStatement> pstm = make_shared<sql::PreparedStatement>(this->conn->prepareStatement(sqlString));
             return pstm;
         }
         
@@ -58,7 +58,7 @@ class Mysql{
          * @param sql,query sql string 
          * @return ResultSet* the query ResultSet
          */
-        shared_ptr<sql::ResultSet> query(string sql){
+        std::tr1::shared_ptr<sql::ResultSet> query(string sql){
             return this->query(this->prepare(sql));
         }
         
@@ -67,11 +67,11 @@ class Mysql{
          * @param pstm ,PreparedStatement* 
          * @return ResultSet* the query ResultSet
          */
-        shared_ptr<sql::ResultSet> query(shared_ptr<sql::PreparedStatement> pstm){
+        std::tr1::shared_ptr<sql::ResultSet> query(shared_ptr<sql::PreparedStatement> pstm){
             if(conn == NULL){
                 this->connect();
             }
-            shared_ptr<sql::ResultSet> res = make_shared<sql::ResultSet>(pstm->executeQuery());
+            std::tr1::shared_ptr<sql::ResultSet> res = make_shared<sql::ResultSet>(pstm->executeQuery());
             return res;    
         }
         

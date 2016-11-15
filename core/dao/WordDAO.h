@@ -35,6 +35,6 @@ public:
      * @return affect rows
      */
     int updateWordInvertHash(unsigned int id,InvertedIndexHash indexHash);       
-}
+};
 
 #endif

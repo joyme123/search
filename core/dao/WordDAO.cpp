@@ -8,7 +8,7 @@
  */
 int WordDAO::addWord(Word word, InvertedIndexHash indexHash){
     string sql = "INSERT INTO" + TABLE + "(word,postingList,docsCount,totalCount)VALUES(%1,%2,%3,%4)";
-    shared_ptr<PostingList> postingList = indexHash.postingList;
+    std::tr1::shared_ptr<PostingList> postingList = indexHash.postingList;
     string list;
     bool first = true;      //it's first time to construct list
     while(postingList != NULL){
@@ -38,7 +38,7 @@ int WordDAO::addWord(Word word, InvertedIndexHash indexHash){
     int id;
     try{
         Mysql mysql;
-        shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
+        std::tr1::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
         pstm->setString(1,word.text);
         pstm->setString(2,list);
         pstm->setUInt64(3,indexHash.docsCount);
@@ -61,7 +61,7 @@ int WordDAO::deleteWord(unsigned int id){
     int rows;
     try{
         Mysql mysql;
-        shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
+        std::tr1::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
         pstm->setUInt(1,id);
         rows = mysql.del(pstm);
     }catch(sql::SQLException e){
@@ -80,7 +80,7 @@ int WordDAO::deleteWord(unsigned int id){
      */
 int WordDAO::updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash){
     string sql = "UPDATE " + TABLE + " as w set w.postingList = CONCAT(w.postingList,'%1'),docsCount = w.docsCount + '%2',totalCount = w.totalCount + '%3' where id = %4";
-    shared_ptr<PostingList> postingList = indexHash.postingList;
+    std::tr1::shared_ptr<PostingList> postingList = indexHash.postingList;
     string list;
     bool first = true;      //it's first time to construct list
     while(postingList != NULL){
@@ -110,7 +110,7 @@ int WordDAO::updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash){
     int rows;
     try{
         Mysql mysql;
-        shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
+        std::tr1::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
         pstm->setString(1,list);
         pstm->setUInt64(2,indexHash.docsCount);
         pstm->setUInt64(3,indexHash.totalCount);

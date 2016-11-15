@@ -10,7 +10,7 @@ int DocumentDAO::addDocument(Document document){
     int id;
     try{
         Mysql mysql;
-        shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
+        std::tr1::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
         pstm->setInt(1,document.type);
         pstm->setString(2,document.title);
         pstm->setString(3,document.abstract);

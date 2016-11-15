@@ -7,7 +7,7 @@
         html=1,
         pdf=2,
         word=3
-    }
+    };
 
 #endif
 

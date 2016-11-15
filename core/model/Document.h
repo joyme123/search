@@ -15,7 +15,7 @@ class Document{
         string abstract;                    //文档摘要
         string url;                         //文档地址
         string author;                      //文档作者
-        unsigned int wordNum;                     //文档单词数
+        unsigned int wordNum;               //文档单词数
         string saveTime;                    //文档抓取日期
         string createTime;                  //文档创建日期    
         Document(string title,string abstract,string url,string author,unsigned int wordNum,string saveTime,string createTime);
