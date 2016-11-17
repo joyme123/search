@@ -6,9 +6,9 @@
  */
 #include "friso_API.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 /* ******************************************
  * fstring buffer functions implements.        *
@@ -105,7 +105,7 @@ FRISO_API string_buffer_t new_string_buffer_with_string( fstring str )
 FRISO_API void string_buffer_append( 
     string_buffer_t sb, fstring __str ) 
 {
-    register uint_t __len__ = strlen( __str );
+     uint_t __len__ = strlen( __str );
 
     //check the necessity to resize the buffer.
     if ( sb->length + __len__ > sb->allocs ) {

@@ -22,7 +22,7 @@ using namespace std;
 int main(int argc,const char **argv){
     const string url = "tcp://127.0.0.1:3306";
     const string user = "root";
-    const string password = "12345678";
+    const string password = "jpf19950206";
     const string database = "test";
     
     size_t row;

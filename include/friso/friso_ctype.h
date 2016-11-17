@@ -10,9 +10,9 @@
 #ifndef _friso_charset_h
 #define _friso_charset_h
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include "friso.h"
 #include "friso_API.h"
 

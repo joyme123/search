@@ -4,8 +4,8 @@
  * 
  * @author    chenxin <chenxin619315@gmail.com>
  */
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include "friso_API.h"
 #include "friso.h"
 
@@ -16,7 +16,7 @@
 //create a new lexicon
 FRISO_API friso_dic_t friso_dic_new() 
 {
-    register uint_t t;
+     uint_t t;
     friso_dic_t dic = ( friso_dic_t ) FRISO_CALLOC( 
             sizeof( friso_hash_t ), __FRISO_LEXICON_LENGTH__ );
     if ( dic == NULL ) {
@@ -38,7 +38,7 @@ FRISO_API friso_dic_t friso_dic_new()
  */
 __STATIC_API__ void default_fdic_callback( hash_entry_t e ) 
 {
-    register uint_t i;
+     uint_t i;
     friso_array_t syn;
     lex_entry_t lex = ( lex_entry_t ) e->_val;
     //free the lex->word
@@ -59,7 +59,7 @@ __STATIC_API__ void default_fdic_callback( hash_entry_t e )
 
 FRISO_API void friso_dic_free( friso_dic_t dic ) 
 {
-    register uint_t t;
+     uint_t t;
     for ( t = 0; t < __FRISO_LEXICON_LENGTH__; t++ ) {
         //free the hash table
         free_hash_table( dic[t], default_fdic_callback );
@@ -153,7 +153,7 @@ FRISO_API void friso_dic_add_with_fre(
  */
 FRISO_API fstring file_get_line( fstring __dst, FILE * _stream ) 
 {
-    register int c;
+     int c;
     fstring cs;
 
     cs = __dst;
@@ -176,8 +176,8 @@ __STATIC_API__ fstring string_copy(
         uint_t blocks ) 
 {
 
-    register fstring __src = _src;
-    register uint_t t;
+     fstring __src = _src;
+     uint_t t;
 
     for ( t = 0; t < blocks; t++ ) {
         if ( *__src == '\0' ) break; 
@@ -199,7 +199,7 @@ __STATIC_API__ fstring string_copy(
 __STATIC_API__ fstring string_copy_heap( 
         fstring _src, uint_t blocks ) 
 {
-    register uint_t t;
+     uint_t t;
 
     fstring str = ( fstring ) FRISO_MALLOC( blocks + 1 );
     if ( str == NULL ) {
@@ -278,7 +278,7 @@ FRISO_API void friso_dic_load(
             }
 
             //split the fstring with '/'.
-            string_split_reset( &sse, "/", _line); 
+            string_split_reset( &sse, (fstring)"/", _line); 
             if ( string_split_next( &sse, _buffer ) == NULL ) {
                 continue;
             }
@@ -324,7 +324,7 @@ FRISO_API void friso_dic_load(
              */
             sywords = NULL;
             if ( config->add_syn && _syn != NULL ) {
-                string_split_reset( &sse, ",", _sbuffer );
+                string_split_reset( &sse, (fstring)",", _sbuffer );
                 sywords = new_array_list_with_opacity(5);
                 while ( string_split_next( &sse, _buffer ) != NULL ) {
                     if ( strlen(_buffer) > length ) continue;
@@ -382,7 +382,7 @@ __STATIC_API__ friso_lex_t get_lexicon_type_with_constant( fstring _key )
         return __LEX_EN_WORDS__;
     }
 
-    return -1;
+    return _LEX_ERR;
 }
 
 /*
@@ -411,7 +411,7 @@ FRISO_API void friso_dic_load_from_ifile(
     //get the lexicon configruation file path
     sb = new_string_buffer();
     string_buffer_append( sb, _path );
-    string_buffer_append( sb, __FRISO_LEX_IFILE__ );
+    string_buffer_append( sb, (fstring)__FRISO_LEX_IFILE__ );
     //printf("%s\n", sb->buffer);
 
     if ( ( __stream = fopen( sb->buffer, "rb" ) ) != NULL ) {
@@ -515,7 +515,7 @@ FRISO_API uint_t friso_spec_dic_size(
 FRISO_API uint_t friso_all_dic_size( 
         friso_dic_t dic ) 
 {
-    register uint_t size = 0, t;
+     uint_t size = 0, t;
 
     for ( t = 0; t < __FRISO_LEXICON_LENGTH__; t++ ) {
         size += hash_get_size( dic[t] );

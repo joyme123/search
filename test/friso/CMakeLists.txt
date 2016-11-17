@@ -5,4 +5,4 @@ add_executable(frisoTest ${TESTFRISO_SRC})
 
 #set shared library for connectTest and mysqlTest and ngramTest
 link_directories(${PROJECT_SOURCE_DIR}/lib)
-target_link_libraries(frisoTest friso.so)
+target_link_libraries(frisoTest friso)

@@ -4,9 +4,9 @@
  *
  * @author chenxin <chenxin619315@gmail.com>
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include "friso_API.h"
 #include "friso_ctype.h"
 

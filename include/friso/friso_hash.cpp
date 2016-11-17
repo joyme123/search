@@ -5,8 +5,8 @@
  * @author    chenxin <chenxin619315@gmail.com>
  */
 #include "friso_API.h"
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 //-166411799L
 //31 131 1331 13331 133331 ..
@@ -98,7 +98,7 @@ __STATIC_API__ hash_entry_t new_hash_entry(
 //create blocks copy of entries.
 __STATIC_API__ hash_entry_t * create_hash_entries( uint_t blocks ) 
 {
-    register uint_t t;
+     uint_t t;
     hash_entry_t *e = ( hash_entry_t * ) 
     FRISO_CALLOC( sizeof( hash_entry_t ), blocks );
     if ( e == NULL ) {
@@ -170,7 +170,7 @@ FRISO_API void free_hash_table(
     friso_hash_t _hash, 
     fhash_callback_fn_t fentry_func ) 
 {
-    register uint_t j;
+     uint_t j;
     hash_entry_t e, n;
 
     for ( j = 0; j < _hash->length; j++ ) {

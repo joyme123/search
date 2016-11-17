@@ -5,8 +5,13 @@
 #include<map>
 #include<vector>
 
+#include"util.h"
 #include"../model/InvertedIndexHash.h"
+#include"../../include/friso/friso_API.h"
+#include"../../include/friso/friso.h"
 using namespace std;
+
+#define FRISO_DICT_PATH "../../resource/friso.ini"
 
 /**
  * Document Parser,aid to parser document to invertedHashIndex
@@ -17,14 +22,14 @@ class DocumentParser{
 public:
 	/**
 	 * peel html page to document
-	 * @param wstring html string
+	 * @param html string
 	 * @return main content of html page
 	 */
 	static wstring peel(wstring html);	
 	
 	/**
 	 * parser text and get invertedHashIndex array
-	 * @param document 
+	 * @param text parser text 
 	 * @return invertedHashIndex array
 	 */
 	static vector<InvertedIndexHash> parser(wstring text);
@@ -42,6 +47,6 @@ public:
 	 * @param text content
 	 * @return map
 	 */
-    static map<wstring,vector<int> > splitWord(wstring text);
+    static map<wstring,vector<int> > splitWord(wstring text,friso_mode_t mode);
 };
 #endif

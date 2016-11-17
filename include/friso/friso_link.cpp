@@ -7,7 +7,7 @@
  * @author    chenxin <chenxin619315@gmail.com>
  */
 #include "friso_API.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 //create a new link list node.
 __STATIC_API__ link_node_t new_node_entry( 
@@ -98,7 +98,7 @@ __STATIC_API__ link_node_t get_node(
     friso_link_t link, uint_t idx ) 
 {
     link_node_t p = NULL;
-    register uint_t t;
+     uint_t t;
 
     if ( idx >= 0 && idx < link->size ) 
     {

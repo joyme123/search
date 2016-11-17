@@ -4,9 +4,9 @@
  *
  * @author chenxin <chenxin619315@gmail.com>
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include "friso_API.h"
 #include "friso_ctype.h"
 
@@ -48,7 +48,7 @@ FRISO_API int utf8_next_word(
  */
 FRISO_API void print_char_binary( char value ) 
 {
-    register uint_t t;
+     uint_t t;
 
     for ( t = 0; t < __CHAR_BYTES__; t++ ) {
         if ( ( value & 0x80 ) == 0x80 ) {
@@ -69,7 +69,7 @@ FRISO_API void print_char_binary( char value )
  */
 FRISO_API int get_utf8_bytes( char value ) 
 {    
-    register uint_t t = 0;
+     uint_t t = 0;
 
     //one byte ascii char.
     if ( ( value & 0x80 ) == 0 ) return 1;
@@ -89,8 +89,8 @@ FRISO_API int get_utf8_bytes( char value )
 FRISO_API int get_utf8_unicode( const fstring ch ) 
 {
     int code = 0, bytes = get_utf8_bytes( *ch );
-    register uchar_t *bit = ( uchar_t * ) &code;
-    register char b1,b2,b3;
+     uchar_t *bit = ( uchar_t * ) &code;
+     char b1,b2,b3;
 
     switch ( bytes ) {
     case 1:

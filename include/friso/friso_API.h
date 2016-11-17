@@ -11,8 +11,8 @@
 #ifndef _friso_api_h
 #define _friso_api_h
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 //yat, just take it as this way, 99 percent you will find no problem
 #if ( defined(_WIN32) || defined(_WINDOWS_) || defined(__WINDOWS_) )

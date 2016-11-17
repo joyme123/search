@@ -33,8 +33,8 @@ break;
 //read a line from a command line.
 static fstring getLine( FILE *fp, fstring __dst ) 
 {
-    register int c;
-    register fstring cs;
+     int c;
+     fstring cs;
 
     cs = __dst;
     while ( ( c = getc( fp ) ) != EOF ) {

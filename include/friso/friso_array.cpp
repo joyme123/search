@@ -7,14 +7,14 @@
  */
 
 #include "friso_API.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 /* ********************************************
  * friso array list static functions block    *
  **********************************************/
 __STATIC_API__ void **create_array_entries( uint_t __blocks ) 
 {
-    register uint_t t;
+     uint_t t;
     void **block = ( void ** ) FRISO_CALLOC( sizeof( void * ), __blocks );
     if ( block == NULL ) {
         ___ALLOCATION_ERROR___
@@ -33,7 +33,7 @@ __STATIC_API__ friso_array_t resize_array_list(
         friso_array_t array, 
         uint_t opacity ) 
 {
-    register uint_t t;
+     uint_t t;
     void **block = create_array_entries( opacity );
 
     for ( t = 0; t < array->length ; t++ ) {
@@ -109,7 +109,7 @@ FRISO_API void array_list_insert(
         uint_t idx, 
         void *value ) 
 {
-    register uint_t t;
+     uint_t t;
 
     if ( idx <= array->length ) {
         //check the condition to resize the array.
@@ -159,7 +159,7 @@ FRISO_API void * array_list_set(
 FRISO_API void * array_list_remove( 
         friso_array_t array, uint_t idx ) 
 {
-    register uint_t t;
+     uint_t t;
     void *oval = NULL;
 
     if ( idx < array->length ) {
@@ -192,7 +192,7 @@ FRISO_API friso_array_t array_list_trim( friso_array_t array )
  */
 FRISO_API friso_array_t array_list_clear( friso_array_t array ) 
 {
-    register uint_t t;
+     uint_t t;
     //free all the allocations that the array->length's pointer pointed.
     for ( t = 0; t < array->length; t++ ) {
         /*if ( array->items[t] == NULL ) continue;

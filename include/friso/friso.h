@@ -8,7 +8,7 @@
 #define _friso_h
 
 #include "friso_API.h"
-#include <stdio.h>
+#include <cstdio>
 
 /* {{{ friso main interface define :: start*/
 #define FRISO_VERSION "1.6.1"
@@ -27,6 +27,7 @@
  * This type used to represent the type of the lexicon. 
  */
 typedef enum {
+    _LEX_ERR = -1,
     __LEX_CJK_WORDS__ = 0,
     __LEX_CJK_UNITS__ = 1,
     __LEX_ECM_WORDS__ = 2,    //english and chinese mixed words.

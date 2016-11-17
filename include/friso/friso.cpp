@@ -4,10 +4,10 @@
  * 
  * @author    chenxin <chenxin619315@gmail.com>
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
 
 #include "friso_API.h"
 #include "friso_ctype.h"
@@ -568,7 +568,7 @@ __STATIC_API__ lex_entry_t next_basic_latin(
      *     at the end of the sb cause we need to plus the tcount
      *     to avoid the secondary check for work like 'c+', 'chenxin.'.
      */
-    _ctype = 0;
+    _ctype = FRISO_EN_LETTER;
     for ( ; sb->length > 0 
             && sb->buffer[ sb->length - 1 ] != '%' 
             && is_en_punctuation( 
@@ -588,9 +588,9 @@ __STATIC_API__ lex_entry_t next_basic_latin(
         task->idx--;
 
         /*check and plus the tcount*/
-        if ( _ctype == 0 ) {
+        if ( _ctype == FRISO_EN_LETTER ) {
             tcount--;
-            _ctype = 1;
+            _ctype = FRISO_EN_UNKNOW;
         }
     }
 

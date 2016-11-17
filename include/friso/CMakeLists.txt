@@ -1,4 +1,4 @@
-set(FRISO_SRC friso.c friso_array.c friso_ctype.c friso_GBK.c friso_hash.c friso_lexicon.c friso_lexicon.c friso_link.c friso_string.c friso_UTF8.c)
+set(FRISO_SRC friso.cpp friso_array.cpp friso_ctype.cpp friso_GBK.cpp friso_hash.cpp friso_lexicon.cpp friso_lexicon.cpp friso_link.cpp friso_string.cpp friso_UTF8.cpp)
 #place shared and static library file into lib directory
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 add_library (friso SHARED ${FRISO_SRC})

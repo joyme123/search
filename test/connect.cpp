@@ -79,7 +79,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define EXAMPLE_DB   "test"
 #define EXAMPLE_HOST "tcp://127.0.0.1:3306"
 #define EXAMPLE_USER "root"
-#define EXAMPLE_PASS "12345678"
+#define EXAMPLE_PASS "jpf19950206"
 
 using namespace std;
 
