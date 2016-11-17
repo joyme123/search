@@ -1,24 +1,26 @@
 #include"DocumentParser.h"
 
-string DocumentParser::peel(string html){
+wstring DocumentParser::peel(wstring html){
 
 }
 
-vector<InvertedIndexHash> DocumentParser::parser(string text){
+vector<InvertedIndexHash> DocumentParser::parser(wstring text){
 	
 }
 
-map< string, vector< int > > DocumentParser::ngram(string text,int step){
-	map<string,vector<int> > map;
+map< wstring, vector< int > > DocumentParser::ngram(wstring text,int step){
+	map<wstring,vector<int> > map;
 	int position = 1;
-	for(int i = 0; string[i] != '\0'; i+=step){
-		string word = text.substr(i,i+step-1);
+	wstring word = text.substr(0,1);
+	for(int i = 0; text[i] != '\0'; i++){
+		wstring word = text.substr(i,step);
 		map[word].push_back(position);
 		position++;
 	}
+	return map;
 }
 
-map< string, vector< int > > DocumentParser::splitWord(string text){
+map< wstring, vector< int > > DocumentParser::splitWord(wstring text){
 
 }
 

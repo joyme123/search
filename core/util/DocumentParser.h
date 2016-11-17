@@ -17,17 +17,17 @@ class DocumentParser{
 public:
 	/**
 	 * peel html page to document
-	 * @param string html string
+	 * @param wstring html string
 	 * @return main content of html page
 	 */
-	static string peel(string html);	
+	static wstring peel(wstring html);	
 	
 	/**
 	 * parser text and get invertedHashIndex array
 	 * @param document 
 	 * @return invertedHashIndex array
 	 */
-	static vector<InvertedIndexHash> parser(string text);
+	static vector<InvertedIndexHash> parser(wstring text);
 	
 	/**
 	 * use n-gram to split word with into map<word,positions>
@@ -35,13 +35,13 @@ public:
 	 * @param step n
 	 * @return map
 	 */
-	static map<string,vector<int> > ngram(string text,int step);
+	static map<wstring,vector<int> > ngram(wstring text,int step);
 	
 	/**
 	 * use "word split" to split word with into map<word,positions>
 	 * @param text content
 	 * @return map
 	 */
-    static map<string,vector<int> > splitWord(string text);
+    static map<wstring,vector<int> > splitWord(wstring text);
 };
 #endif

@@ -1,7 +1,14 @@
-cmake_minimum_required(VERSION 2.6)
-project(ngramTest)
-add_subdirectory(util)
-aux_source_directory(. DIR_TEST_SRCS)
+set(TESTNGRAM_SRC ngramTest.cpp)
+set(TESTCONNECT_SRC connect.cpp)
+set(TESTMSYQL_SRC mysqlTest.cpp)
+#place executable file into test directory
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/test/bin)
+add_executable(connectTest ${TESTCONNECT_SRC})
+add_executable(mysqlTest ${TESTMSYQL_SRC})
+add_executable(ngramTest ${TESTNGRAM_SRC})
 
-add_executable(ngramTest $(DIR_TEST_SRCS))
-target_link_libraries(ngramTest DocumentParser)
+#set shared library for connectTest and mysqlTest and ngramTest
+link_directories(${PROJECT_SOURCE_DIR}/lib)
+target_link_libraries(connectTest libmysqlcppconn.so)
+target_link_libraries(mysqlTest libmysqlcppconn.so)
+target_link_libraries(ngramTest documentParser)

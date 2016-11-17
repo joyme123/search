@@ -1,0 +1,11 @@
+set(FRISO_SRC friso.c friso_array.c friso_ctype.c friso_GBK.c friso_hash.c friso_lexicon.c friso_lexicon.c friso_link.c friso_string.c friso_UTF8.c)
+#place shared and static library file into lib directory
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+add_library (friso SHARED ${FRISO_SRC})
+add_library(friso_static STATIC ${FRISO_SRC})
+set_target_properties(friso PROPERTIES CLEAN_DIRECT_OUT 1)
+set_target_properties(friso PROPERTIES VERSION 1.0 SOVERSION 1)
+set_target_properties(friso_static PROPERTIES OUTPUT_NAME "friso")
+set_target_properties(friso_static PROPERTIES CLEAN_DIRECT_OUT 1)
+INSTALL(TARGETS friso friso_static LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
+INSTALL(FILES friso.h friso_API.h friso_ctype.h DESTINATION include/friso)
