@@ -206,7 +206,7 @@ int main(int argc, const char **argv)
 		cout << "#\t Demo of connection URL syntax" << endl;
 		try {
 			/*s This will implicitly assume that the host is 'localhost' */
-			url = "unix://path_to_mysql_socket.sock";
+			url = "unix:///run/mysqld/mysqld.sock";
 			con.reset(driver->connect(url, user, pass));
 		} catch (sql::SQLException &e) {
 			cout << "#\t\t unix://path_to_mysql_socket.sock caused expected exception" << endl;
@@ -215,10 +215,10 @@ int main(int argc, const char **argv)
 		}
 
 		try {
-			url = "tcp://hostname_or_ip[:port]";
+			url = "tcp://115.29.114.202:3306";
 			con.reset(driver->connect(url, user, pass));
 		} catch (sql::SQLException &e) {
-			cout << "#\t\t tcp://hostname_or_ip[:port] caused expected exception" << endl;
+			cout << "#\t\t tcp://115.29.114.202:3306 caused expected exception" << endl;
 			cout << "#\t\t " << e.what() << " (MySQL error code: " << e.getErrorCode();
 			cout << ", SQLState: " << e.getSQLState() << " )" << endl;
 		}
