@@ -2,37 +2,49 @@
 #define MYSQL_H
 #include<iostream>
 #include<stdlib.h>
-#include<tr1/memory>
+#include<memory>
+
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/warning.h>
+#include <cppconn/metadata.h>
+#include<cppconn/prepared_statement.h>
+#include <cppconn/statement.h>   
+#include<cppconn/sqlstring.h>
+#include <cppconn/resultset.h>
+#include<cppconn/resultset_metadata.h>
 
 #include <mysql_driver.h>
-#include<cppconn/prepared_statement.h>
-#include<cppconn/sqlstring.h>
-#include <cppconn/connection.h>
+#include<mysql_connection.h>
 
 using namespace std;
 
 class Mysql{
     private:
-        const string user = "root";
-        const string pass = "jpf19950206";
-        const string database = "test";
-        const string url = "tcp://localhost:3306";
-                
+        string user;
+        string pass;
+        string database;
+        string url;
+        sql::Driver* driver;
+        shared_ptr<sql::Connection> conn;
         void connect(){
             if(conn == NULL){
-                this->conn =  make_shared<sql::Connection>(this->driver->connect(this->url,this->user,this->pass));
+				shared_ptr<sql::Connection> temp(this->driver->connect(this->url,this->user,this->pass));
+                this->conn = temp;
             }
         }
     public:
-        std::tr1::shared_ptr<sql::mysql::MySQL_Driver> driver;
-        std::tr1::shared_ptr<sql::Connection> conn;
         
         Mysql(){
             //get the instance of driver int construct function
-            this->driver = make_shared<sql::mysql::MySQL_Driver>(sql::mysql::get_mysql_driver_instance());
+			user = "5019";
+			pass = "5019";
+			database = "empdb";
+			url = "tcp://115.29.114.202:3306";
+            this->driver = sql::mysql::get_driver_instance();
         }
         
-        shared_ptr<sql::Connection> getConnection(){
+       shared_ptr<sql::Connection> getConnection(){
             if(conn == NULL){
                 this->connect();
             }
@@ -49,7 +61,7 @@ class Mysql{
                 this->connect();
             }
             sql::SQLString sqlString(str); 
-            std::tr1::shared_ptr<sql::PreparedStatement> pstm = make_shared<sql::PreparedStatement>(this->conn->prepareStatement(sqlString));
+            shared_ptr<sql::PreparedStatement> pstm(this->conn->prepareStatement(sqlString));
             return pstm;
         }
         
@@ -58,7 +70,7 @@ class Mysql{
          * @param sql,query sql string 
          * @return ResultSet* the query ResultSet
          */
-        std::tr1::shared_ptr<sql::ResultSet> query(string sql){
+        std::shared_ptr<sql::ResultSet> query(string sql){
             return this->query(this->prepare(sql));
         }
         
@@ -67,11 +79,11 @@ class Mysql{
          * @param pstm ,PreparedStatement* 
          * @return ResultSet* the query ResultSet
          */
-        std::tr1::shared_ptr<sql::ResultSet> query(shared_ptr<sql::PreparedStatement> pstm){
+        shared_ptr<sql::ResultSet> query(std::shared_ptr<sql::PreparedStatement> pstm){
             if(conn == NULL){
                 this->connect();
             }
-            std::tr1::shared_ptr<sql::ResultSet> res = make_shared<sql::ResultSet>(pstm->executeQuery());
+            shared_ptr<sql::ResultSet> res(pstm->executeQuery());
             return res;    
         }
         

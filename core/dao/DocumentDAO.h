@@ -3,15 +3,16 @@
 
 #include<iostream>
 #include<string>
-#include<cppconn/resultset.h>
-#include"../model/Document.h"
+#include<glog/logging.h>
 #include"Mysql.h"
+#include"../model/Document.h"
 #include"../util/util.h"
 
 class DocumentDAO{
     private:
     string TABLE = "";
     public:
+		DocumentDAO();
         
         /**
          * insert a docuemnt into database and return id of this

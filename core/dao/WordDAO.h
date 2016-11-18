@@ -3,15 +3,22 @@
 
 #include<iostream>
 #include<string>
+
+#include<glog/logging.h>
+
+#include"Mysql.h"
 #include"../model/Word.h"
 #include"../model/InvertedIndexHash.h"
-#include"Mysql.h"
 #include"../util/util.h"
+#include"../util/config.h"
+
 
 class WordDAO{
 private:
-    string TABLE = "word";
+    string NGRAMTABLE = "ngramWord";		//通过ngram生成的词汇表
+	string SPLITTABLE = "splitWord";				//通过分词生成的词汇表
 public:
+	WordDAO();
     /**
      * insert the word and it's InvertedIndexHash
      * @param word add word into database with it InvertedIndexHash
@@ -26,7 +33,7 @@ public:
      * @return  affect rows num
      */
     
-    int deleteWord(unsigned int id);
+    int deleteWord(unsigned int id,InvertHashIndexType type);
     
     /**
      * update a word's InvertedIndexHash

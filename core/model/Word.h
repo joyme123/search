@@ -14,12 +14,4 @@ class Word{
 
 };
 
-Word::Word(){
-        
-    }
-
-Word::Word(wstring text){
-    this->text = text;
-}
-
 #endif

@@ -1,28 +1,31 @@
 #include"DocumentDAO.h"
 
+DocumentDAO::DocumentDAO(){
+	google::InitGoogleLogging("1");
+}
 /**
  * insert a docuemnt into database and return id of this
  * @param document  add document into database(maybe use fastfs to storage)
  * @return id of this document
  */
 int DocumentDAO::addDocument(Document document){
-    string sql = "INSERT INTO "+TABLE+" (type,title,abstract,url,author,wordNum,saveTime,createTime)VALUES(%1,%2,%3,%4,%5,%6,%7,%8)";
+    string sql = "INSERT INTO "+TABLE+" (type,title,abstract,url,author,text,wordNum,saveTime,createTime)VALUES(%1,%2,%3,%4,%5,%6,%7,%8,%9)";
     int id;
     try{
         Mysql mysql;
-        std::tr1::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
+        shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
         pstm->setInt(1,document.type);
-        pstm->setString(2,document.title);
-        pstm->setString(3,document.abstract);
-        pstm->setString(4,document.url);
-        pstm->setString(5,document.author);
-        pstm->setUInt(6,document.wordNum);
-        pstm->setDateTime(7,document.saveTime);
-        pstm->setDateTime(8,document.createTime);
+        pstm->setString(2,WstringToString(document.title));
+        pstm->setString(3,WstringToString(document.abstract));
+        pstm->setString(4,WstringToString(document.url));
+        pstm->setString(5,WstringToString(document.author));
+		pstm->setString(6,WstringToString(document.text));
+        pstm->setUInt(7,document.wordNum);
+        pstm->setDateTime(8,sql::SQLString(WstringToString(document.saveTime)));
+        pstm->setDateTime(9,sql::SQLString(WstringToString(document.createTime)));
         id = mysql.insert(pstm);
-    }catch(sql::SQLException e){
-        printSqlError(e);
-        id = -1;
+    }catch(sql::SQLException &e){
+		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):"<< "e.getErrorCode()--"<<e.what();
     }
     return id;
 }
@@ -40,8 +43,8 @@ int DocumentDAO::deleteDocument(int id){
         shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
         pstm->setInt(1,id);
         rows = mysql.del(pstm);
-    }catch(sql::SQLException e){
-        cout << e.getErrorCode() << e.what() << endl;
+    }catch(sql::SQLException &e){
+		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):" << "e.getErrorCode()--"<<e.what();
         rows = -1;
     }
     return rows;

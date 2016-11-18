@@ -5,13 +5,14 @@
 #include<map>
 #include<vector>
 
+#include"config.h"
 #include"util.h"
 #include"../model/InvertedIndexHash.h"
 #include"../../include/friso/friso_API.h"
 #include"../../include/friso/friso.h"
 using namespace std;
 
-#define FRISO_DICT_PATH "../../resource/friso.ini"
+
 
 /**
  * Document Parser,aid to parser document to invertedHashIndex
