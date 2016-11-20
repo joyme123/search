@@ -9,7 +9,7 @@ DocumentDAO::DocumentDAO(){
  * @return id of this document
  */
 int DocumentDAO::addDocument(Document document){
-    string sql = "INSERT INTO "+TABLE+" (type,title,abstract,url,author,text,wordNum,saveTime,createTime)VALUES(%1,%2,%3,%4,%5,%6,%7,%8,%9)";
+    string sql = "INSERT INTO "+TABLE+" (type,title,abstract,url,author,text,wordNum,updateTime,createTime)VALUES(?,?,?,?,?,?,?,?,?)";
     int id;
     try{
         Mysql mysql;
@@ -25,7 +25,7 @@ int DocumentDAO::addDocument(Document document){
         pstm->setDateTime(9,sql::SQLString(WstringToString(document.createTime)));
         id = mysql.insert(pstm);
     }catch(sql::SQLException &e){
-		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):"<< "e.getErrorCode()--"<<e.what();
+		LOG(ERROR) << "DocumentDAO->addDocument(Document document):"<< e.getErrorCode()<<"--"<<e.what();
     }
     return id;
 }
@@ -36,7 +36,7 @@ int DocumentDAO::addDocument(Document document){
  * @return affect rows count
  */
 int DocumentDAO::deleteDocument(int id){
-    string sql = "DELETE FROM"+ TABLE +"WHERE id = %1";
+    string sql = "DELETE FROM"+ TABLE +"WHERE id = ?";
     int rows;
     try{
         Mysql mysql;
@@ -44,7 +44,7 @@ int DocumentDAO::deleteDocument(int id){
         pstm->setInt(1,id);
         rows = mysql.del(pstm);
     }catch(sql::SQLException &e){
-		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):" << "e.getErrorCode()--"<<e.what();
+		LOG(ERROR) << "DocumentDAO->deleteDocument(int id):" << e.getErrorCode()<<"--"<<e.what() << e.getSQLState();
         rows = -1;
     }
     return rows;

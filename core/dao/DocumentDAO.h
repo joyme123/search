@@ -10,7 +10,7 @@
 
 class DocumentDAO{
     private:
-    string TABLE = "";
+    string TABLE = "document";
     public:
 		DocumentDAO();
         

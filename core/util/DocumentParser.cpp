@@ -1,7 +1,9 @@
 #include"DocumentParser.h"
 
+
 wstring DocumentParser::peel(wstring html){
 
+    return L" ";
 }
 
 vector<InvertedIndexHash> DocumentParser::parser(wstring text){
@@ -54,4 +56,53 @@ map< wstring, vector< int > > DocumentParser::splitWord(wstring text,friso_mode_
 
     return map;
 }
+
+/**
+* input formated text and return a document object
+* @param formatText formated text like this:title|type|author|text
+* @return document
+*/
+Document DocumentParser::documentFormat(wstring formatText)
+{
+    Document document;
+    int count = 0;      //times of find |
+    wstring title;
+    DOCUMENT_TYPE type;
+    wstring abstract;
+    wstring author;
+    wstring text;
+    wstring createTime;
+    wstring updateTime;
+    int pos = 0;
+    int len = 0;
+    for(int i = 0; formatText[i] != '\0'; i++){
+        if(formatText[i] == '|'){
+            count++;
+            switch(count){
+                case 1:
+                    title = formatText.substr(pos,len);
+                    break;
+                case 2:
+                    int num = stoi(formatText.substr(pos,len),nullptr,0);
+                    if(num == 1){
+                        type = html;
+                    }else if(num == 2){
+                        type = pdf;
+                    }else if(num == 3){
+                        type = word;
+                    }
+                    break;
+                case 3:
+                    author = formatText.substr(pos,len);
+                    break;
+            }
+            pos = i+1;
+            len=0;
+        }else{
+           len++; 
+        }
+    }
+    text = formatText.substr(pos,len);
+}
+
 

@@ -23,7 +23,7 @@ int WordDAO::addWord(Word word, InvertedIndexHash indexHash){
 		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):" << "param type not exist";
 		return -1;
 	}
-    string sql = "INSERT INTO" + TABLE + "(word,postingList,docsCount,totalCount)VALUES(%1,%2,%3,%4)";
+    string sql = "INSERT INTO" + TABLE + "(word,postingList,docsCount,totalCount)VALUES(?,?,?,?)";
     std::shared_ptr<PostingList> postingList = indexHash.postingList;
     string list;
     bool first = true;      //it's first time to construct list
@@ -61,7 +61,7 @@ int WordDAO::addWord(Word word, InvertedIndexHash indexHash){
         pstm->setUInt64(4,indexHash.totalCount);
         id = mysql.insert(pstm);
     }catch(sql::SQLException e){
-		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):"<< "e.getErrorCode()--"<<e.what();
+		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):"<< e.getErrorCode()<<"--"<<e.what();
         id = -1;
     }
     return id;
@@ -79,10 +79,10 @@ int WordDAO::deleteWord(unsigned int id,InvertHashIndexType type){
 	}else if(type == splitWord){
 		TABLE = SPLITTABLE;
 	}else{
-		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):"<< "param type not exist";
+		LOG(ERROR) << "WordDAO->deleteWord(unsigned int id,InvertHashIndexType type):"<< "param type not exist";
 		return -1;
 	}
-    string sql = "DELETE FROM " + TABLE + " WHERE id = %1";
+    string sql = "DELETE FROM " + TABLE + " WHERE id = ?";
     int rows;
     try{
         Mysql mysql;
@@ -90,7 +90,7 @@ int WordDAO::deleteWord(unsigned int id,InvertHashIndexType type){
         pstm->setUInt(1,id);
         rows = mysql.del(pstm);
     }catch(sql::SQLException &e){
-		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):"<< "e.getErrorCode()--"<<e.what();
+		LOG(ERROR) << "WordDAO->deleteWord(unsigned int id,InvertHashIndexType type):"<< e.getErrorCode()<<"--"<<e.what();
         rows = -1;
     }
     return rows;
@@ -110,11 +110,11 @@ int WordDAO::updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash){
 	}else if(indexHash.type == splitWord){
 		TABLE = SPLITTABLE;
 	}else{
-		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):" << "param type not exist";
+		LOG(ERROR) << "WordDAO->updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash):" << "param type not exist";
 		return -1;
 	}
 	
-    string sql = "UPDATE " + TABLE + " as w set w.postingList = CONCAT(w.postingList,'%1'),docsCount = w.docsCount + '%2',totalCount = w.totalCount + '%3' where id = %4";
+    string sql = "UPDATE " + TABLE + " as w set w.postingList = CONCAT(w.postingList,'?'),docsCount = w.docsCount + '?',totalCount = w.totalCount + '?' where id = ?";
     shared_ptr<PostingList> postingList = indexHash.postingList;
     string list;
     bool first = true;      //it's first time to construct list
@@ -152,7 +152,7 @@ int WordDAO::updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash){
         pstm->setUInt(4,id);
         rows = mysql.update(pstm);
     }catch(sql::SQLException &e){
-		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):"<< "e.getErrorCode()--"<<e.what();
+		LOG(ERROR) << "WordDAO->updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash):"<< e.getErrorCode()<<"--"<<e.what();
         rows = -1;
     }
     return rows;

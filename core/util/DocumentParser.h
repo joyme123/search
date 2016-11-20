@@ -49,5 +49,12 @@ public:
 	 * @return map
 	 */
     static map<wstring,vector<int> > splitWord(wstring text,friso_mode_t mode);
+    
+    /**
+     * input formated text and return a document object
+     * @param formatText formated text like this:title|type|abstract|author|text|
+     * @return document
+     */
+    static Document documentFormat(wstring formatText);
 };
 #endif

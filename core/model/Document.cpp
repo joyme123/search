@@ -1,4 +1,7 @@
 #include"Document.h"
+Document::Document()
+{
+}
 
 Document::Document(wstring title,wstring abstract,wstring url,wstring author,wstring text,unsigned int wordNum,wstring saveTime,wstring createTime){
     this->title = title;

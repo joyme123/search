@@ -21,9 +21,9 @@ using namespace std;
 
 int main(int argc,const char **argv){
     const string url = "tcp://127.0.0.1:3306";
-    const string user = "root";
-    const string password = "jpf19950206";
-    const string database = "test";
+    const string user = "5019";
+    const string password = "5019";
+    const string database = "empdb";
     
     size_t row;
     stringstream sql;

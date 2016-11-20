@@ -31,6 +31,8 @@ class Mysql{
             if(conn == NULL){
 				shared_ptr<sql::Connection> temp(this->driver->connect(this->url,this->user,this->pass));
                 this->conn = temp;
+                shared_ptr<sql::Statement> stm(this->conn->createStatement()); 
+                stm->execute("use "+database);
             }
         }
     public:

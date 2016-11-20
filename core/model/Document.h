@@ -19,6 +19,7 @@ class Document{
         unsigned int wordNum;               //文档单词数
         wstring saveTime;                    //文档抓取日期
         wstring createTime;                  //文档创建日期    
+        Document();
         Document(wstring title,wstring abstract,wstring url,wstring author,wstring text,unsigned int wordNum,wstring saveTime,wstring createTime);
 };
 
