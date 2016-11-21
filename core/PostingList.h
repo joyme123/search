@@ -9,6 +9,9 @@
 #include"Word.h"
 using namespace std;
 
+/**
+ * (documentId;frequency;<pos1;pos2>)
+ */
 class PostingList{
     public:
         Document document;          			//文档

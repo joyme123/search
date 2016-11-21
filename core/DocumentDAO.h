@@ -5,8 +5,8 @@
 #include<string>
 #include<glog/logging.h>
 #include"Mysql.h"
-#include"../model/Document.h"
-#include"../util/util.h"
+#include"Document.h"
+#include"util/util.h"
 
 class DocumentDAO{
     private:

@@ -7,10 +7,10 @@
 #include<glog/logging.h>
 
 #include"Mysql.h"
-#include"../model/Word.h"
-#include"../model/InvertedIndexHash.h"
-#include"../util/util.h"
-#include"../util/config.h"
+#include"Word.h"
+#include"InvertedIndexHash.h"
+#include"util/util.h"
+#include"util/config.h"
 
 
 class WordDAO{

@@ -21,3 +21,12 @@ std::string WstringToString(const std::wstring str)
     delete[] p;
     return str1;
 }
+
+std::wstring getCurrentDateTimeStr()
+{
+	time_t now = time(0);
+    tm *ltm = localtime(&now);
+    wstring datetime;
+    datetime = std::to_wstring(1900+ltm->tm_year) + L"-" + std::to_wstring(1 + ltm->tm_mon) + L"-" + std::to_wstring(ltm->tm_mday) + L" " +std::to_wstring(ltm->tm_hour) + L":" + std::to_wstring(1 + ltm->tm_min) + L":" + std::to_wstring(1 + ltm->tm_sec);
+	return datetime;
+}

@@ -7,7 +7,7 @@
 
 #include"config.h"
 #include"util.h"
-#include"../model/InvertedIndexHash.h"
+#include"../InvertedIndexHash.h"
 #include"../../include/friso/friso_API.h"
 #include"../../include/friso/friso.h"
 using namespace std;

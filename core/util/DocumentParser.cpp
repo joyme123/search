@@ -59,7 +59,7 @@ map< wstring, vector< int > > DocumentParser::splitWord(wstring text,friso_mode_
 
 /**
 * input formated text and return a document object
-* @param formatText formated text like this:title|type|author|text
+* @param formatText formated text like this:title|type|author|url|text
 * @return document
 */
 Document DocumentParser::documentFormat(wstring formatText)
@@ -70,6 +70,7 @@ Document DocumentParser::documentFormat(wstring formatText)
     DOCUMENT_TYPE type;
     wstring abstract;
     wstring author;
+	wstring url;
     wstring text;
     wstring createTime;
     wstring updateTime;
@@ -83,18 +84,21 @@ Document DocumentParser::documentFormat(wstring formatText)
                     title = formatText.substr(pos,len);
                     break;
                 case 2:
-                    int num = stoi(formatText.substr(pos,len),nullptr,0);
-                    if(num == 1){
+                    int cccnum;
+                    cccnum = std::stoi(formatText.substr(pos,len),nullptr,0);
+                    if(cccnum == 1){
                         type = html;
-                    }else if(num == 2){
+                    }else if(cccnum == 2){
                         type = pdf;
-                    }else if(num == 3){
+                    }else if(cccnum == 3){
                         type = word;
                     }
                     break;
                 case 3:
                     author = formatText.substr(pos,len);
                     break;
+				case 4:
+					url = formatText.substr(pos,len);
             }
             pos = i+1;
             len=0;
@@ -103,6 +107,18 @@ Document DocumentParser::documentFormat(wstring formatText)
         }
     }
     text = formatText.substr(pos,len);
+	
+	//get title type author text,url,then generate abstract
+	abstract = text.substr(0,text.length()/4 < 200 ? text.length()/4 : 200);
+	document.title = title;
+	document.abstract = abstract;
+	document.author = author;
+	document.type = type;
+	document.url = url;
+	document.text = text;
+	document.createTime = getCurrentDateTimeStr();
+	document.updateTime = getCurrentDateTimeStr();
+	return document;
 }
 
 

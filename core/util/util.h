@@ -5,11 +5,14 @@
 #include<string>
 #include<clocale>
 #include<cppconn/connection.h>
+#include<ctime>
 
 using namespace std;
 
 std::wstring StringToWstring(const std::string str);
 
 std::string WstringToString(const std::wstring str);
+
+std::wstring getCurrentDateTimeStr();
 
 #endif

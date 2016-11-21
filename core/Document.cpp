@@ -3,13 +3,13 @@ Document::Document()
 {
 }
 
-Document::Document(wstring title,wstring abstract,wstring url,wstring author,wstring text,unsigned int wordNum,wstring saveTime,wstring createTime){
+Document::Document(std::wstring title,std::wstring abstract,std::wstring url,std::wstring author,std::wstring text,unsigned int wordNum,std::wstring createTime,std::wstring updateTime){
     this->title = title;
     this->abstract = abstract;
     this->url = url;
     this->author = author;
 	this->text = text;
     this->wordNum = wordNum;
-    this->saveTime = saveTime;
     this->createTime = createTime;    
+	this->updateTime = updateTime;
 }

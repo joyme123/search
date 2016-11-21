@@ -21,7 +21,7 @@ int DocumentDAO::addDocument(Document document){
         pstm->setString(5,WstringToString(document.author));
 		pstm->setString(6,WstringToString(document.text));
         pstm->setUInt(7,document.wordNum);
-        pstm->setDateTime(8,sql::SQLString(WstringToString(document.saveTime)));
+        pstm->setDateTime(8,sql::SQLString(WstringToString(document.updateTime)));
         pstm->setDateTime(9,sql::SQLString(WstringToString(document.createTime)));
         id = mysql.insert(pstm);
     }catch(sql::SQLException &e){
