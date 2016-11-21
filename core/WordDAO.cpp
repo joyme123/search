@@ -14,7 +14,7 @@ WordDAO::WordDAO(){
  * @return the added record id,-1 indicate failed
  */
 int WordDAO::addWord(Word word, InvertedIndexHash indexHash){
-	string TABLE;
+	std::string TABLE;
 	if(indexHash.type == ngramWord){
 		TABLE = NGRAMTABLE;
 	}else if(indexHash.type == splitWord){
@@ -23,27 +23,27 @@ int WordDAO::addWord(Word word, InvertedIndexHash indexHash){
 		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):" << "param type not exist";
 		return -1;
 	}
-    string sql = "INSERT INTO" + TABLE + "(word,postingList,docsCount,totalCount)VALUES(?,?,?,?)";
+    std::string sql = "INSERT INTO" + TABLE + "(word,postingList,docsCount,totalCount)VALUES(?,?,?,?)";
     std::shared_ptr<PostingList> postingList = indexHash.postingList;
-    string list;
+    std::string list;
     bool first = true;      //it's first time to construct list
     while(postingList != NULL){
-        vector<int> positions = postingList->positions;
+        std::vector<int> positions = postingList->positions;
         
         if(first){
-            list = "("+to_string(postingList->document.id)+","+to_string(positions.size())+")";
+            list = "("+std::to_string(postingList->document.id)+","+std::to_string(positions.size())+")";
             first = false;
         }else{
-            list = list + "|("+to_string(postingList->document.id)+","+to_string(positions.size())+")";
+            list = list + "|("+std::to_string(postingList->document.id)+","+std::to_string(positions.size())+")";
         }
-        string position = "<";
+        std::string position = "<";
         bool firstC = true; //it is first time to construct position info
         for(std::vector<int>::iterator it = positions.begin();it != positions.end();it++){
             if(firstC){
-                position = to_string(*it);
+                position = std::to_string(*it);
                 firstC = false;
             }else{
-                position = position + "," +to_string(*it);
+                position = position + "," +std::to_string(*it);
             }
         }
         position = ">";
@@ -54,7 +54,7 @@ int WordDAO::addWord(Word word, InvertedIndexHash indexHash){
     int id;
     try{
         Mysql mysql;
-        shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
+        std::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
         pstm->setString(1,WstringToString(word.text));
         pstm->setString(2,list);
         pstm->setUInt64(3,indexHash.docsCount);
@@ -73,7 +73,7 @@ int WordDAO::addWord(Word word, InvertedIndexHash indexHash){
      * @return affect rows num
      */
 int WordDAO::deleteWord(unsigned int id,InvertHashIndexType type){
-	string TABLE;
+	std::string TABLE;
 	if(type == ngramWord){
 		TABLE = NGRAMTABLE;
 	}else if(type == splitWord){
@@ -82,11 +82,11 @@ int WordDAO::deleteWord(unsigned int id,InvertHashIndexType type){
 		LOG(ERROR) << "WordDAO->deleteWord(unsigned int id,InvertHashIndexType type):"<< "param type not exist";
 		return -1;
 	}
-    string sql = "DELETE FROM " + TABLE + " WHERE id = ?";
+    std::string sql = "DELETE FROM " + TABLE + " WHERE id = ?";
     int rows;
     try{
         Mysql mysql;
-        shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
+        std::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
         pstm->setUInt(1,id);
         rows = mysql.del(pstm);
     }catch(sql::SQLException &e){
@@ -104,7 +104,7 @@ int WordDAO::deleteWord(unsigned int id,InvertHashIndexType type){
      * @return affect rows
      */
 int WordDAO::updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash){
-	string TABLE;
+	std::string TABLE;
 	if(indexHash.type == ngramWord){
 		TABLE = NGRAMTABLE;
 	}else if(indexHash.type == splitWord){
@@ -114,27 +114,27 @@ int WordDAO::updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash){
 		return -1;
 	}
 	
-    string sql = "UPDATE " + TABLE + " as w set w.postingList = CONCAT(w.postingList,'?'),docsCount = w.docsCount + '?',totalCount = w.totalCount + '?' where id = ?";
-    shared_ptr<PostingList> postingList = indexHash.postingList;
-    string list;
+    std::string sql = "UPDATE " + TABLE + " as w set w.postingList = CONCAT(w.postingList,'?'),docsCount = w.docsCount + '?',totalCount = w.totalCount + '?' where id = ?";
+    std::shared_ptr<PostingList> postingList = indexHash.postingList;
+    std::string list;
     bool first = true;      //it's first time to construct list
     while(postingList != NULL){
-        vector<int> positions = postingList->positions;
+        std::vector<int> positions = postingList->positions;
         
         if(first){
-            list = "("+to_string(postingList->document.id)+","+to_string(positions.size())+")";
+            list = "("+std::to_string(postingList->document.id)+","+std::to_string(positions.size())+")";
             first = false;
         }else{
-            list = list + "|("+to_string(postingList->document.id)+","+to_string(positions.size())+")";
+            list = list + "|("+std::to_string(postingList->document.id)+","+std::to_string(positions.size())+")";
         }
-        string position = "<";
+        std::string position = "<";
         bool firstC = true; //it is first time to construct position info
         for(std::vector<int>::iterator it = positions.begin();it != positions.end();it++){
             if(firstC){
-                position = to_string(*it);
+                position = std::to_string(*it);
                 firstC = false;
             }else{
-                position = position + "," +to_string(*it);
+                position = position + "," +std::to_string(*it);
             }
         }
         position = ">";
@@ -145,7 +145,7 @@ int WordDAO::updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash){
     int rows;
     try{
         Mysql mysql;
-        shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
+        std::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
         pstm->setString(1,list);
         pstm->setUInt64(2,indexHash.docsCount);
         pstm->setUInt64(3,indexHash.totalCount);

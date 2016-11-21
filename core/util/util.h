@@ -5,9 +5,7 @@
 #include<string>
 #include<clocale>
 #include<cppconn/connection.h>
-#include<ctime>
-
-using namespace std;
+// #include<ctime>
 
 std::wstring StringToWstring(const std::string str);
 

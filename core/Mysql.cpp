@@ -2,9 +2,9 @@
 
 void Mysql:: connect(){
 	if(conn == NULL){
-		shared_ptr<sql::Connection> temp(this->driver->connect(this->url,this->user,this->pass));
+		std::shared_ptr<sql::Connection> temp(this->driver->connect(this->url,this->user,this->pass));
 		this->conn = temp;
-		shared_ptr<sql::Statement> stm(this->conn->createStatement()); 
+		std::shared_ptr<sql::Statement> stm(this->conn->createStatement()); 
 		stm->execute("use "+database);
 	}
 }
@@ -17,7 +17,7 @@ Mysql::Mysql(){
 	this->driver = sql::mysql::get_driver_instance();
 }
         
-shared_ptr<sql::Connection> Mysql:: getConnection(){
+std::shared_ptr<sql::Connection> Mysql:: getConnection(){
 	if(conn == NULL){
 		this->connect();
 	}
@@ -25,34 +25,34 @@ shared_ptr<sql::Connection> Mysql:: getConnection(){
 }
         
 
-shared_ptr<sql::PreparedStatement> Mysql:: prepare(string str){
+std::shared_ptr<sql::PreparedStatement> Mysql:: prepare(std::string str){
 	if(conn == NULL){
 		this->connect();
 	}
 	sql::SQLString sqlString(str); 
-	shared_ptr<sql::PreparedStatement> pstm(this->conn->prepareStatement(sqlString));
+	std::shared_ptr<sql::PreparedStatement> pstm(this->conn->prepareStatement(sqlString));
 	return pstm;
 }
 
-std::shared_ptr<sql::ResultSet> Mysql:: query(string sql){
+std::shared_ptr<sql::ResultSet> Mysql:: query(std::string sql){
 	return this->query(this->prepare(sql));
 }
         
 
-shared_ptr<sql::ResultSet> Mysql:: query(std::shared_ptr<sql::PreparedStatement> pstm){
+std::shared_ptr<sql::ResultSet> Mysql:: query(std::shared_ptr<sql::PreparedStatement> pstm){
 	if(conn == NULL){
 		this->connect();
 	}
-	shared_ptr<sql::ResultSet> res(pstm->executeQuery());
+	std::shared_ptr<sql::ResultSet> res(pstm->executeQuery());
 	return res;    
 }
 
-int Mysql:: insert(string sql){
+int Mysql:: insert(std::string sql){
 	return this->insert(this->prepare(sql));
 }
         
 
-int Mysql:: insert(shared_ptr<sql::PreparedStatement> pstm){
+int Mysql:: insert(std::shared_ptr<sql::PreparedStatement> pstm){
 	if(conn == NULL){
 		this->connect();
 	}
@@ -66,22 +66,22 @@ int Mysql:: insert(shared_ptr<sql::PreparedStatement> pstm){
 }
         
 
-int Mysql::update(string sql){
+int Mysql::update(std::string sql){
 	return this->update(this->prepare(sql));
 }
 
-int Mysql::update(shared_ptr<sql::PreparedStatement> pstm){
+int Mysql::update(std::shared_ptr<sql::PreparedStatement> pstm){
 	if(conn == NULL)
 		this->connect();
 	int affectCols = pstm->executeUpdate();
 	return affectCols;
 }
 
-int Mysql::del(string sql){
+int Mysql::del(std::string sql){
 	return this->del(this->prepare(sql));
 }
 
-int Mysql::del(shared_ptr<sql::PreparedStatement> pstm){
+int Mysql::del(std::shared_ptr<sql::PreparedStatement> pstm){
 	if(conn == NULL)
 		this->connect();
 	int affectCols = pstm->executeUpdate();

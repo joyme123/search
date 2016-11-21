@@ -22,9 +22,9 @@ class Mysql{
     private:
         std::string user;
         std::string pass;
-        std::tring database;
+        std::string database;
         std::string url;
-        std::sql::Driver* driver;
+        sql::Driver* driver;
         std::shared_ptr<sql::Connection> conn;
         void connect();
     public:
@@ -38,21 +38,21 @@ class Mysql{
          * @param string the sql string
          * @return PreparedStatement* pstm
          */
-        std::shared_ptr<std::sql::PreparedStatement> prepare(std::string str);
+        std::shared_ptr<sql::PreparedStatement> prepare(std::string str);
         
         /**
          * query a sql prepared_statement,remember to delete the ResultSet when don't need it
          * @param sql,query sql string 
          * @return ResultSet* the query ResultSet
          */
-        std::shared_ptr<std::sql::ResultSet> query(std::string sql);
+        std::shared_ptr<sql::ResultSet> query(std::string sql);
         
 		/**
          * query a sql prepared_statement,remember to delete the ResultSet when don't need it
          * @param pstm ,PreparedStatement* 
          * @return ResultSet* the query ResultSet
          */
-        std::shared_ptr<std::sql::ResultSet> query(std::shared_ptr<sql::PreparedStatement> pstm);
+        std::shared_ptr<sql::ResultSet> query(std::shared_ptr<sql::PreparedStatement> pstm);
         
         /**
          * execute a insert sql

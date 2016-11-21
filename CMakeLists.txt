@@ -8,10 +8,10 @@ add_subdirectory(test/friso)
 
 #client for this program
 set(MAIN_SRC main.cpp)
-#place executable file 
+#placePROJECT_SOURCE_DIR executable file 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 add_executable(client ${MAIN_SRC})
 
 #set shared library for connectTest and mysqlTest and ngramTest
-link_directories(${PROJECT_SOURCE_DIR}/lib)
+link_directories(${}/lib)
 target_link_libraries(client searchEngine)

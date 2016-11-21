@@ -15,8 +15,8 @@
 
 class WordDAO{
 private:
-    string NGRAMTABLE = "ngramWord";		//通过ngram生成的词汇表
-	string SPLITTABLE = "splitWord";				//通过分词生成的词汇表
+    std::string NGRAMTABLE = "ngramWord";		//通过ngram生成的词汇表
+	std::string SPLITTABLE = "splitWord";				//通过分词生成的词汇表
 public:
 	WordDAO();
     /**

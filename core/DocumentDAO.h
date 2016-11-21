@@ -10,7 +10,7 @@
 
 class DocumentDAO{
     private:
-    string TABLE = "document";
+    std::string TABLE = "document";
     public:
 		DocumentDAO();
         

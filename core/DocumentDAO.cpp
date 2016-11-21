@@ -9,11 +9,11 @@ DocumentDAO::DocumentDAO(){
  * @return id of this document
  */
 int DocumentDAO::addDocument(Document document){
-    string sql = "INSERT INTO "+TABLE+" (type,title,abstract,url,author,text,wordNum,updateTime,createTime)VALUES(?,?,?,?,?,?,?,?,?)";
+    std::string sql = "INSERT INTO "+TABLE+" (type,title,abstract,url,author,text,wordNum,updateTime,createTime)VALUES(?,?,?,?,?,?,?,?,?)";
     int id;
     try{
         Mysql mysql;
-        shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
+        std::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
         pstm->setInt(1,document.type);
         pstm->setString(2,WstringToString(document.title));
         pstm->setString(3,WstringToString(document.abstract));
@@ -36,11 +36,11 @@ int DocumentDAO::addDocument(Document document){
  * @return affect rows count
  */
 int DocumentDAO::deleteDocument(int id){
-    string sql = "DELETE FROM"+ TABLE +"WHERE id = ?";
+    std::string sql = "DELETE FROM"+ TABLE +"WHERE id = ?";
     int rows;
     try{
         Mysql mysql;
-        shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
+        std::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
         pstm->setInt(1,id);
         rows = mysql.del(pstm);
     }catch(sql::SQLException &e){

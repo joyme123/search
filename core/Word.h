@@ -3,13 +3,11 @@
 #include<iostream>
 #include<string>
 
-using namespace std;
-
 class Word{
     public:
         int id;                 //单词对应的数据库Id
-        wstring text;            //word的内容
-        Word(wstring text);
+        std::wstring text;            //word的内容
+        Word(std::wstring text);
         Word();
 
 };
