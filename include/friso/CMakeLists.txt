@@ -1,4 +1,7 @@
 set(FRISO_SRC friso.cpp friso_array.cpp friso_ctype.cpp friso_GBK.cpp friso_hash.cpp friso_lexicon.cpp friso_lexicon.cpp friso_link.cpp friso_string.cpp friso_UTF8.cpp)
+SET(CMAKE_BUILD_TYPE "Debug")  
+SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")  
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")  
 #place shared and static library file into lib directory
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 add_library (friso SHARED ${FRISO_SRC})

@@ -1,6 +1,9 @@
 #place searchEngine library into lib folder
 set(LIB_SRC DocumentDAO.cpp WordDAO.cpp Mysql.cpp InvertedIndexHash.cpp PostingList.cpp Word.cpp Document.cpp util/DocumentParser.cpp util/util.cpp)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+SET(CMAKE_BUILD_TYPE "Debug")  
+SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")  
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")  
 
 add_library (searchEngine SHARED ${LIB_SRC})
 add_library(searchEngine_static STATIC ${LIB_SRC})

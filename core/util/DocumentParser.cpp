@@ -7,7 +7,9 @@ std::wstring DocumentParser::peel(std::wstring html){
 }
 
 std::vector<InvertedIndexHash> DocumentParser::parser(std::wstring text){
+	std::vector<InvertedIndexHash> v;
 	
+	return v;
 }
 
 std::map< std::wstring, std::vector< int > > DocumentParser::ngram(std::wstring text,int step){
@@ -34,9 +36,10 @@ std::map< std::wstring, std::vector< int > > DocumentParser::splitWord(std::wstr
     friso_set_mode(config,mode);
     if ( friso_init_from_ifile(friso, config, (fstring)FRISO_DICT_PATH) != 1 ) {
         //if initialize fail,free friso 
-        printf("fail to initialize friso and config.");
+        std::printf("fail to initialize friso and config.");
         friso_free_config(config);
         friso_free(friso);
+		return map;
     }
 
     //set the task.

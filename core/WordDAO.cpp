@@ -4,7 +4,7 @@
  * construct for WordDAO
  */
 WordDAO::WordDAO(){
-	google::InitGoogleLogging("1");
+	
 }
 
 /**
@@ -13,20 +13,21 @@ WordDAO::WordDAO(){
  * @param indexHash InvertedIndexHash of word
  * @return the added record id,-1 indicate failed
  */
-int WordDAO::addWord(Word word, InvertedIndexHash indexHash){
-	std::string TABLE;
-	if(indexHash.type == ngramWord){
-		TABLE = NGRAMTABLE;
-	}else if(indexHash.type == splitWord){
-		TABLE = SPLITTABLE;
-	}else{
-		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):" << "param type not exist";
-		return -1;
-	}
-    std::string sql = "INSERT INTO" + TABLE + "(word,postingList,docsCount,totalCount)VALUES(?,?,?,?)";
-    std::shared_ptr<PostingList> postingList = indexHash.postingList;
+int WordDAO::addWord(Word word, std::shared_ptr<PostingList> postingList){
+	std::string TABLE = "word";
+// 	if(indexHash.type == ngramWord){
+// 		TABLE = NGRAMTABLE;
+// 	}else if(indexHash.type == splitWord){
+// 		TABLE = SPLITTABLE;
+// 	}else{
+// 		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):" << "param type not exist";
+// 		return -1;
+// 	}
+	
+    std::string sql = "INSERT INTO " + TABLE + "(word,postingList,docCount,totalCount)VALUES(?,?,'1',?)";
     std::string list;
     bool first = true;      //it's first time to construct list
+    unsigned long long count = 0;
     while(postingList != NULL){
         std::vector<int> positions = postingList->positions;
         
@@ -40,16 +41,18 @@ int WordDAO::addWord(Word word, InvertedIndexHash indexHash){
         bool firstC = true; //it is first time to construct position info
         for(std::vector<int>::iterator it = positions.begin();it != positions.end();it++){
             if(firstC){
-                position = std::to_string(*it);
+                position = position + std::to_string(*it);
                 firstC = false;
             }else{
                 position = position + "," +std::to_string(*it);
             }
         }
-        position = ">";
+        position = position +  ">";
         list = list + position;     //(documentId,frequency)<pos1,pos2,pos3>
-            
+        
+        count = count + postingList->positions.size();
         postingList = postingList->next;
+		
     }
     int id;
     try{
@@ -57,8 +60,7 @@ int WordDAO::addWord(Word word, InvertedIndexHash indexHash){
         std::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
         pstm->setString(1,WstringToString(word.text));
         pstm->setString(2,list);
-        pstm->setUInt64(3,indexHash.docsCount);
-        pstm->setUInt64(4,indexHash.totalCount);
+        pstm->setInt(3,count);
         id = mysql.insert(pstm);
     }catch(sql::SQLException e){
 		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):"<< e.getErrorCode()<<"--"<<e.what();

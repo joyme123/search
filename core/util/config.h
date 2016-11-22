@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define FRISO_DICT_PATH "../../resource/friso.ini"
+#define FRISO_DICT_PATH "resource/friso.ini"
 
 enum InvertHashIndexType{
 	ngramWord = 0,

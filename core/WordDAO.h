@@ -9,6 +9,7 @@
 #include"Mysql.h"
 #include"Word.h"
 #include"InvertedIndexHash.h"
+#include"PostingList.h"
 #include"util/util.h"
 #include"util/config.h"
 
@@ -20,12 +21,13 @@ private:
 public:
 	WordDAO();
     /**
-     * insert the word and it's InvertedIndexHash
+     * insert the word and it's postingList
      * @param word add word into database with it InvertedIndexHash
-     * @param indexHash InvertedIndexHash of word
+     * @param postingList word postingList
+	 * @param totalCount word count
      * @return the added record id
      */
-    int addWord(Word word,InvertedIndexHash indexHash);
+    int addWord(Word word,std::shared_ptr<PostingList>  postingList);
     
     /**
      * delete a record of the word by id

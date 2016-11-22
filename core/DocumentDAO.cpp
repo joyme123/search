@@ -1,7 +1,7 @@
 #include"DocumentDAO.h"
 
 DocumentDAO::DocumentDAO(){
-	google::InitGoogleLogging("1");
+	
 }
 /**
  * insert a docuemnt into database and return id of this
@@ -57,6 +57,6 @@ int DocumentDAO::deleteDocument(int id){
  * @return affect rows count
  */
 int DocumentDAO::parseDocumentAndUpdate(Document document){
-    
+    return 0;
 }
 
