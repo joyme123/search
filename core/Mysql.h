@@ -31,18 +31,24 @@ class Mysql{
         
         Mysql();
         
+        void beginTransaction();
+        
+        void commit();
+        
+        void rollback();
+        
         std::shared_ptr<sql::Connection> getConnection();
         
         /**
          * prepare a str
-         * @param string the sql string
+         * @param str the sql string
          * @return PreparedStatement* pstm
          */
         std::shared_ptr<sql::PreparedStatement> prepare(std::string str);
         
         /**
          * query a sql prepared_statement,remember to delete the ResultSet when don't need it
-         * @param sql,query sql string 
+         * @param sql query sql string 
          * @return ResultSet* the query ResultSet
          */
         std::shared_ptr<sql::ResultSet> query(std::string sql);

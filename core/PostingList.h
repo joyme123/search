@@ -15,7 +15,9 @@ class PostingList{
     public:
         Document document;          					//文档
         std::vector<int> positions;      				//该单词在文档中出现的位置信息
-        std::shared_ptr<PostingList> next;        //指向下一个PostingList的指针
+        std::shared_ptr<PostingList> next;              //指向下一个PostingList的指针
+        PostingList();                                  //default construct
+        PostingList(std::string PostingListStr);        //construct
 };
 
-#endif
+#endif  

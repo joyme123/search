@@ -10,7 +10,7 @@ WordDAO::WordDAO(){
 /**
  * insert the word and it's InvertedIndexHash
  * @param word add word into database with it InvertedIndexHash
- * @param indexHash InvertedIndexHash of word
+ * @param postingList postingList of word
  * @return the added record id,-1 indicate failed
  */
 int WordDAO::addWord(Word word, std::shared_ptr<PostingList> postingList){
@@ -54,14 +54,14 @@ int WordDAO::addWord(Word word, std::shared_ptr<PostingList> postingList){
         postingList = postingList->next;
 		
     }
-    int id;
+    int id = -1;
     try{
-        Mysql mysql;
-        std::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
+        //Mysql mysql;
+        std::shared_ptr<sql::PreparedStatement> pstm = this->prepare(sql);
         pstm->setString(1,WstringToString(word.text));
         pstm->setString(2,list);
         pstm->setInt(3,count);
-        id = mysql.insert(pstm);
+        id = this->insert(pstm);
     }catch(sql::SQLException e){
 		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):"<< e.getErrorCode()<<"--"<<e.what();
         id = -1;
@@ -87,10 +87,10 @@ int WordDAO::deleteWord(unsigned int id,InvertHashIndexType type){
     std::string sql = "DELETE FROM " + TABLE + " WHERE id = ?";
     int rows;
     try{
-        Mysql mysql;
-        std::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
+        //Mysql mysql;
+        std::shared_ptr<sql::PreparedStatement> pstm = this->prepare(sql);
         pstm->setUInt(1,id);
-        rows = mysql.del(pstm);
+        rows = this->del(pstm);
     }catch(sql::SQLException &e){
 		LOG(ERROR) << "WordDAO->deleteWord(unsigned int id,InvertHashIndexType type):"<< e.getErrorCode()<<"--"<<e.what();
         rows = -1;
@@ -102,24 +102,25 @@ int WordDAO::deleteWord(unsigned int id,InvertHashIndexType type){
     /**
      * update a word's InvertedIndexHash
      * @param id the word id
-     * @param indexHash InvertedIndexHash of the word
+     * @param postingList InvertedIndexHash of the word
      * @return affect rows
      */
-int WordDAO::updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash){
-	std::string TABLE;
-	if(indexHash.type == ngramWord){
-		TABLE = NGRAMTABLE;
-	}else if(indexHash.type == splitWord){
-		TABLE = SPLITTABLE;
-	}else{
-		LOG(ERROR) << "WordDAO->updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash):" << "param type not exist";
-		return -1;
-	}
+int WordDAO::updateWord(unsigned int id, std::shared_ptr<PostingList> postingList){
+// 	std::string TABLE;
+// 	if(indexHash.type == ngramWord){
+// 		TABLE = NGRAMTABLE;
+// 	}else if(indexHash.type == splitWord){
+// 		TABLE = SPLITTABLE;
+// 	}else{
+// 		LOG(ERROR) << "WordDAO->updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash):" << "param type not exist";
+// 		return -1;
+// 	}
 	
-    std::string sql = "UPDATE " + TABLE + " as w set w.postingList = CONCAT(w.postingList,'?'),docsCount = w.docsCount + '?',totalCount = w.totalCount + '?' where id = ?";
-    std::shared_ptr<PostingList> postingList = indexHash.postingList;
+    std::string sql = "UPDATE " + TABLE + " as w set w.postingList = CONCAT(w.postingList,?),w.docCount = w.docCount + ?,w.totalCount = w.totalCount + ? where id = ?";
     std::string list;
     bool first = true;      //it's first time to construct list
+    unsigned long long wordCount = 0;
+    int docCount = 0;       //docuemnt count
     while(postingList != NULL){
         std::vector<int> positions = postingList->positions;
         
@@ -133,30 +134,70 @@ int WordDAO::updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash){
         bool firstC = true; //it is first time to construct position info
         for(std::vector<int>::iterator it = positions.begin();it != positions.end();it++){
             if(firstC){
-                position = std::to_string(*it);
+                position = position + std::to_string(*it);
                 firstC = false;
             }else{
                 position = position + "," +std::to_string(*it);
             }
         }
-        position = ">";
+        wordCount = wordCount + postingList->positions.size();
+        docCount++;
+        position = position + ">";
         list = list + position;     //(documentId,frequency)<pos1,pos2,pos3>
             
         postingList = postingList->next;
     }
-    int rows;
+    int rows = -1;
     try{
-        Mysql mysql;
-        std::shared_ptr<sql::PreparedStatement> pstm = mysql.prepare(sql);
+        //Mysql mysql;
+        std::shared_ptr<sql::PreparedStatement> pstm = this->prepare(sql);
         pstm->setString(1,list);
-        pstm->setUInt64(2,indexHash.docsCount);
-        pstm->setUInt64(3,indexHash.totalCount);
+        pstm->setInt(2,docCount);
+        pstm->setUInt64(3,wordCount);
         pstm->setUInt(4,id);
-        rows = mysql.update(pstm);
+        rows = this->update(pstm);
     }catch(sql::SQLException &e){
-		LOG(ERROR) << "WordDAO->updateWordInvertHash(unsigned int id, InvertedIndexHash indexHash):"<< e.getErrorCode()<<"--"<<e.what();
+		LOG(ERROR) << "WordDAO->updateWord(unsigned int id, std::shared_ptr<PostingList> postingList):"<< e.getErrorCode()<<"--"<<e.what();
         rows = -1;
     }
     return rows;
+}
+
+int WordDAO::isWordExist(std::string word){
+    unsigned long long wordId = -1;
+    try{
+        //Mysql mysql;
+        std::shared_ptr<sql::PreparedStatement> pstm = this->prepare("SELECT id FROM "+TABLE+" WHERE word = ?");
+        pstm->setString(1,word);
+        std::shared_ptr<sql::ResultSet> res = this->query(pstm);
+        if(res->next()){
+            wordId = res->getUInt64("id");
+        }
+    }catch(sql::SQLException &e){
+        wordId = -1;
+        LOG(ERROR) << "WordDAO->isWordExist(std::string word):"<< e.getErrorCode()<<"--"<<e.what();
+    }
+    
+    return wordId;
+}
+
+InvertedIndexHash WordDAO::searchWord(std::string word){
+    InvertedIndexHash indexHash;
+    try{
+        std::shared_ptr<sql::PreparedStatement> pstm = this->prepare("SELECT id,word,postingList,docCount,totalCount FROM "+TABLE+" WHERE word = ?");
+        pstm->setString(1,word);
+        std::shared_ptr<sql::ResultSet> res = this->query(pstm);
+        if(res->next()){
+            indexHash.Id = res->getInt("id");
+            indexHash.type = splitWord;
+            indexHash.postingList = NULL;
+            indexHash.docCount = res->getUInt64("docCount");
+            indexHash.totalCount = res->getUInt64("totalCount");
+        }
+    }catch(sql::SQLException &e){
+        LOG(ERROR) << "WordDAO->searchWord(std::string word):"<< e.getErrorCode()<<"--"<<e.what();
+    }
+    
+    return indexHash;
 }
 

@@ -16,6 +16,30 @@ Mysql::Mysql(){
 	url = "tcp://115.29.114.202:3306";
 	this->driver = sql::mysql::get_driver_instance();
 }
+
+void Mysql::beginTransaction(){
+    if(conn == NULL){
+		this->connect();
+	}
+	this->conn->setAutoCommit(false);      //open transaction
+}
+
+void Mysql::commit(){
+    if(conn == NULL){
+		this->connect();
+	}
+	this->conn->commit();
+    this->conn->setAutoCommit(true);
+}
+
+
+void Mysql::rollback(){
+    if(conn == NULL){
+		this->connect();
+	}
+	this->conn->rollback();
+    this->conn->setAutoCommit(true);      //end transaction
+}
         
 std::shared_ptr<sql::Connection> Mysql:: getConnection(){
 	if(conn == NULL){

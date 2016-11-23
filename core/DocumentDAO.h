@@ -8,7 +8,7 @@
 #include"Document.h"
 #include"util/util.h"
 
-class DocumentDAO{
+class DocumentDAO:public Mysql{
     private:
     std::string TABLE = "document";
     public:
