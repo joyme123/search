@@ -28,7 +28,7 @@ int main(int argc,const char **argv){
     size_t row;
     stringstream sql;
     stringstream msg;
-    int i,affected_rows;
+    int i;
 
     try{
         sql::Driver* driver = sql::mysql::get_driver_instance();

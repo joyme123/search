@@ -32,10 +32,10 @@ int WordDAO::addWord(Word word, std::shared_ptr<PostingList> postingList){
         std::vector<int> positions = postingList->positions;
         
         if(first){
-            list = "("+std::to_string(postingList->document.id)+","+std::to_string(positions.size())+")";
+            list = "("+std::to_string(postingList->documentId)+","+std::to_string(positions.size())+")";
             first = false;
         }else{
-            list = list + "|("+std::to_string(postingList->document.id)+","+std::to_string(positions.size())+")";
+            list = list + "|("+std::to_string(postingList->documentId)+","+std::to_string(positions.size())+")";
         }
         std::string position = "<";
         bool firstC = true; //it is first time to construct position info
@@ -125,10 +125,10 @@ int WordDAO::updateWord(unsigned int id, std::shared_ptr<PostingList> postingLis
         std::vector<int> positions = postingList->positions;
         
         if(first){
-            list = "("+std::to_string(postingList->document.id)+","+std::to_string(positions.size())+")";
+            list = "("+std::to_string(postingList->documentId)+","+std::to_string(positions.size())+")";
             first = false;
         }else{
-            list = list + "|("+std::to_string(postingList->document.id)+","+std::to_string(positions.size())+")";
+            list = list + "|("+std::to_string(postingList->documentId)+","+std::to_string(positions.size())+")";
         }
         std::string position = "<";
         bool firstC = true; //it is first time to construct position info
@@ -190,7 +190,9 @@ InvertedIndexHash WordDAO::searchWord(std::string word){
         if(res->next()){
             indexHash.Id = res->getInt("id");
             indexHash.type = splitWord;
-            indexHash.postingList = NULL;
+            PostingList p(res->getString("postingList"));
+            std::shared_ptr<PostingList> post(&p);
+            indexHash.postingList = post;
             indexHash.docCount = res->getUInt64("docCount");
             indexHash.totalCount = res->getUInt64("totalCount");
         }

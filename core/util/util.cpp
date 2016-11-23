@@ -22,6 +22,16 @@ std::string WstringToString(const std::wstring str)
     return str1;
 }
 
+int VectorToInt(std::vector<char> v){
+    int len = v.size();
+    int res = 0;
+    for(int i = 0; i < len; i++){
+        res = res + (v[i] - '0')*pow(10,len-i-1);
+    }
+    return res;
+}
+
+
 std::wstring getCurrentDateTimeStr()
 {
 	time_t now = time(0);

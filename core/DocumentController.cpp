@@ -25,7 +25,7 @@ int DocumentController::documentEntry(std::wstring documentFormat)
         std::wstring word = it->first;
         
         PostingList posts;
-        posts.document = document;
+        posts.documentId = document.id;
         posts.positions = it->second;
         
         //if the word exist,update it invertedHashIndex,else add the word
