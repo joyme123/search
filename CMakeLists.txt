@@ -13,5 +13,5 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 add_executable(client ${MAIN_SRC})
 
 #set shared library for connectTest and mysqlTest and ngramTest
-link_directories(${}/lib)
+link_directories(${PROJECT_SOURCE_DIR}/lib)
 target_link_libraries(client searchEngine)

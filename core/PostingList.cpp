@@ -5,7 +5,7 @@ PostingList::PostingList(){
 }
 
 
-PostingList::PostingList(std::string postingListStr){
+void PostingList::generate(std::string postingListStr){
     /*
      * (docId,count)<pos1,pos2,pos3>
      * 

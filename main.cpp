@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include"core/DocumentController.h"
+#include"core/WordController.h"
 
 void printMap(std::map<std::wstring,std::vector<int> > map){
 	for(std::map<std::wstring,std::vector<int> >::iterator it = map.begin(); it != map.end(); it++){
@@ -13,6 +14,19 @@ void printMap(std::map<std::wstring,std::vector<int> > map){
 	}
 }
 
+void printPostingList(std::shared_ptr<PostingList> p){
+    std::cout << "********************" << std::endl;
+	while(p!=NULL){
+        std::cout << "文档编号" << p->documentId << std::endl;
+		std::cout << "出现的位置";
+		for(std::vector<int>::iterator it = p->positions.begin(); it != p->positions.end(); it++){
+				std::cout << *it << " ";
+		}
+		std::cout << std::endl;
+        p = p->next;
+    }
+}
+
 int main(int argc, char **argv) {
 	google::InitGoogleLogging("1");
 	//title|type|author|url|text
@@ -20,7 +34,14 @@ int main(int argc, char **argv) {
 	DocumentController docContrl;
     int count = docContrl.documentEntry(documentFormat);
     
-   std::cout << "add or update "<<count<< "word(s)" << std::endl;
+	std::cout << "add or update "<<count<< "word(s)" << std::endl;
     
+	WordController wordCtrl;
+	InvertedIndexHash invertedIndexHash = wordCtrl.searchWord("实现");
+	std::cout << "查询的单词编号" << invertedIndexHash.id << std::endl;
+	std::cout << "单词的总出现次数" << invertedIndexHash.totalCount << std::endl;
+	std::cout << "总共有多少文档" << invertedIndexHash.docCount << std::endl;
+	printPostingList(invertedIndexHash.postingList);
+	
     return 0;
 }

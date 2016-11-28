@@ -188,10 +188,11 @@ InvertedIndexHash WordDAO::searchWord(std::string word){
         pstm->setString(1,word);
         std::shared_ptr<sql::ResultSet> res = this->query(pstm);
         if(res->next()){
-            indexHash.Id = res->getInt("id");
+            indexHash.id = res->getInt("id");
             indexHash.type = splitWord;
-            PostingList p(res->getString("postingList"));
-            std::shared_ptr<PostingList> post(&p);
+            PostingList* p = new PostingList;
+			p->generate(res->getString("postingList"));
+            std::shared_ptr<PostingList> post(p);
             indexHash.postingList = post;
             indexHash.docCount = res->getUInt64("docCount");
             indexHash.totalCount = res->getUInt64("totalCount");
