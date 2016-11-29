@@ -50,3 +50,10 @@ int DocumentController::documentEntry(std::wstring documentFormat)
 	return wordCount;
 }
 
+std::vector< Document > DocumentController::searchDocument(std::vector< unsigned int > documentId)
+{
+	DocumentDAO documentDao;
+	return documentDao.searchDocument(documentId);
+}
+
+

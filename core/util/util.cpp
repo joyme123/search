@@ -34,9 +34,23 @@ int VectorToInt(std::vector<char> v){
 
 std::wstring getCurrentDateTimeStr()
 {
-	time_t now = time(0);
-    tm *ltm = localtime(&now);
+	time_t now = std::time(0);
+    tm *ltm = std::localtime(&now);
     std::wstring datetime;
     datetime = std::to_wstring(1900+ltm->tm_year) + L"-" + std::to_wstring(1 + ltm->tm_mon) + L"-" + std::to_wstring(ltm->tm_mday) + L" " +std::to_wstring(ltm->tm_hour) + L":" + std::to_wstring(1 + ltm->tm_min) + L":" + std::to_wstring(1 + ltm->tm_sec);
 	return datetime;
 }
+
+DOCUMENT_TYPE getDocType(int type)
+{
+	switch(type){
+		case 1:
+			return html;
+		case 2:
+			return pdf;
+		case 3:
+			return word;
+	}
+	return html;
+}
+

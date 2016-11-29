@@ -11,7 +11,7 @@ void PostingList::generate(std::string postingListStr){
      * 
      */
     int id = -1;
-    int count = -1;
+    //int count = -1;
     std::vector<int> tmpPositions;
     std::string idStr;
     std::vector<char> save;
@@ -26,7 +26,7 @@ void PostingList::generate(std::string postingListStr){
             times++;
         }else if(postingListStr[i] == ')'){
             //word count
-            count = VectorToInt(save);
+            //count = VectorToInt(save);
             save.clear();
             
         }else if(postingListStr[i] == '<' || postingListStr[i] == '('){

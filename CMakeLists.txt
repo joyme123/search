@@ -5,7 +5,7 @@ add_subdirectory(include/friso)
 add_subdirectory(core)
 add_subdirectory(test bin)
 add_subdirectory(test/friso)
-
+add_subdirectory(www/cgi-source)
 #client for this program
 set(MAIN_SRC main.cpp)
 #placePROJECT_SOURCE_DIR executable file 

@@ -36,7 +36,7 @@ int DocumentDAO::addDocument(Document document){
  * @param id document id
  * @return affect rows count, -1 means some error occured
  */
-int DocumentDAO::deleteDocument(int id){
+int DocumentDAO::deleteDocument(unsigned int id){
     std::string sql = "DELETE FROM"+ TABLE +"WHERE id = ?";
     int rows = -1;
     try{
@@ -51,6 +51,7 @@ int DocumentDAO::deleteDocument(int id){
     return rows;
 }
 
+
 /**
  * parse the docment the put words of this document into database
  * each word generate a record reference document id
@@ -60,4 +61,37 @@ int DocumentDAO::deleteDocument(int id){
 int DocumentDAO::parseDocumentAndUpdate(Document document){
     return 0;
 }
+
+std::vector< Document > DocumentDAO::searchDocument(std::vector<unsigned int > documentId)
+{
+	std::vector<Document> docments;
+	std::string sql = "SELECT id,title,type,abstract,url,author,text,wordNum,createTime,updateTime FROM " + this->TABLE;
+	std::string where = " WHERE id = " + std::to_string(documentId[0]);
+	for(unsigned int i =1; i < documentId.size(); i++){
+		where = where + " OR id = " + std::to_string(documentId[i]);
+	}
+	sql = sql + where;
+	try{
+		std::shared_ptr<sql::PreparedStatement> pstm = this->prepare(sql);
+		std::shared_ptr<sql::ResultSet> res = this->query(pstm);
+		while(res->next()){
+			Document docment;
+			docment.id = res->getUInt("id");
+			docment.abstract = StringToWstring(res->getString("abstract"));
+			docment.title = StringToWstring(res->getString("title"));
+			docment.type = getDocType(res->getInt("type"));
+			docment.url = StringToWstring(res->getString("url"));
+			docment.author = StringToWstring(res->getString("author"));
+			docment.text = StringToWstring(res->getString("text"));
+			docment.wordNum = res->getUInt("wordNum");
+			docment.createTime = StringToWstring(res->getString("createTime"));
+			docment.updateTime = StringToWstring(res->getString("updateTime"));
+			docments.push_back(docment);
+		}
+	}catch(sql::SQLException &e){
+		LOG(ERROR) << "DocumentDAO->searchDocument(int id):" << e.getErrorCode()<<"--"<<e.what() << e.getSQLState();
+	}
+	return docments;
+}
+
 

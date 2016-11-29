@@ -26,6 +26,8 @@ public:
      * @return the word insert into database
      */
     int documentEntry(std::wstring documentFormat);
+	
+	std::vector< Document > searchDocument(std::vector<unsigned int > documentId);
     
 };
 

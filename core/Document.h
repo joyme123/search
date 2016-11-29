@@ -7,7 +7,7 @@
 
 class Document{
     public:
-        int id;                             //文档对应的数据库Id
+        unsigned int id;                             //文档对应的数据库Id
         enum DOCUMENT_TYPE type;            //文档类型
         std::wstring title;                       //文档的标题
         std::wstring abstract;                    //文档摘要

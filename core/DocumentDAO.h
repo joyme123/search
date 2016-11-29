@@ -26,7 +26,7 @@ class DocumentDAO:public Mysql{
          * @param id document id
          * @return affect rows count
          */
-        int deleteDocument(int id);   
+        int deleteDocument(unsigned int id);   
         
         /**
          * parse the docment the put words of this document into database
@@ -35,6 +35,13 @@ class DocumentDAO:public Mysql{
          * @return affect rows count
          */
         int parseDocumentAndUpdate(Document document); 
+		
+		/**
+		 * search specific document with some document id
+		 * @param documentId document id
+		 * @return vector with Document
+		 */
+		std::vector<Document> searchDocument(std::vector<unsigned int> documentId);
 };
 
 #endif

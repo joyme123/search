@@ -1,0 +1,1 @@
+here place web file.it request cgi file to get response of search result.

@@ -184,7 +184,7 @@ int WordDAO::isWordExist(std::string word){
 InvertedIndexHash WordDAO::searchWord(std::string word){
     InvertedIndexHash indexHash;
     try{
-        std::shared_ptr<sql::PreparedStatement> pstm = this->prepare("SELECT id,word,postingList,docCount,totalCount FROM "+TABLE+" WHERE word = ?");
+        std::shared_ptr<sql::PreparedStatement> pstm = this->prepare("SELECT id,word,postingList,docCount,totalCount FROM "+TABLE+"  WHERE word = ?");
         pstm->setString(1,word);
         std::shared_ptr<sql::ResultSet> res = this->query(pstm);
         if(res->next()){
