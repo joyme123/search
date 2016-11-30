@@ -58,7 +58,7 @@ int WordDAO::addWord(Word word, std::shared_ptr<PostingList> postingList){
     try{
         //Mysql mysql;
         std::shared_ptr<sql::PreparedStatement> pstm = this->prepare(sql);
-        pstm->setString(1,WstringToString(word.text));
+        pstm->setString(1,word.text);
         pstm->setString(2,list);
         pstm->setInt(3,count);
         id = this->insert(pstm);

@@ -3,7 +3,7 @@ Document::Document()
 {
 }
 
-Document::Document(std::wstring title,std::wstring abstract,std::wstring url,std::wstring author,std::wstring text,unsigned int wordNum,std::wstring createTime,std::wstring updateTime){
+Document::Document(std::string title,std::string abstract,std::string url,std::string author,std::string text,unsigned int wordNum,std::string createTime,std::string updateTime){
     this->title = title;
     this->abstract = abstract;
     this->url = url;

@@ -8,20 +8,22 @@
 #include <cgicc/Cgicc.h> 
 #include <cgicc/HTTPHTMLHeader.h> 
 #include <cgicc/HTMLClasses.h>  
+#include "../../include/json.hpp"
 
 #include"../../core/DocumentController.h"
 #include"../../core/WordController.h"
 
 using namespace cgicc;
+using json = nlohmann::json;
 
-void printMap(std::map<std::wstring,std::vector<int> > map){
-	for(std::map<std::wstring,std::vector<int> >::iterator it = map.begin(); it != map.end(); it++){
-		std::wcout << it->first << " ";
+void printMap(std::map<std::string,std::vector<int> > map){
+	for(std::map<std::string,std::vector<int> >::iterator it = map.begin(); it != map.end(); it++){
+		std::cout << it->first << " ";
 		std::vector<int> v = it->second;
 		for(std::vector<int>::iterator vit = v.begin(); vit != v.end(); vit++){
-			std::wcout << *vit << ",";
+			std::cout << *vit << ",";
 		}
-		std::wcout << std::endl;
+		std::cout << std::endl;
 	}
 }
 
@@ -30,29 +32,30 @@ void printMap(std::map<std::wstring,std::vector<int> > map){
  * @param p postList
  * @return vector of document id
  */
-std::vector<unsigned int> printPostingList(std::shared_ptr<PostingList> p){
+std::vector<unsigned int> formatPostingList(std::shared_ptr<PostingList> p){
 	std::vector<unsigned int> ids;
-    std::cout << "********************" << std::endl;
 	while(p!=NULL){
 		ids.push_back(p->documentId);
-        std::cout << "文档编号" << p->documentId << std::endl;
-		std::cout << "出现的位置";
-		for(std::vector<int>::iterator it = p->positions.begin(); it != p->positions.end(); it++){
-				std::cout << *it << " ";
-		}
-		std::cout << std::endl;
+		// for(std::vector<int>::iterator it = p->positions.begin(); it != p->positions.end(); it++){
+		// 		std::cout << *it << " ";
+		// }
         p = p->next;
     }
     return ids;
 }
 
-void printDocument(std::vector<Document> documents){
+json formatDocumentToJson(std::vector<Document> documents){
+	json j;
 	for(unsigned int i = 0; i < documents.size(); i++){
-		Document doc =  documents[i];
-		std::wcout << doc.title;
-		std::wcout << doc.createTime;
-		std::wcout<<doc.text;
+		json tmp;
+		Document doc = documents[i];
+		tmp["title"] = doc.title;
+		tmp["url"] = doc.url;
+		tmp["updateTime"] = doc.updateTime;
+		tmp["text"] = doc.text;
+		j.push_back(tmp);
 	}
+	return j;
 }
 
 void printHtml(){
@@ -67,26 +70,25 @@ int main(int argc, char **argv) {
 	google::InitGoogleLogging("1");
 	
 	std::cout << cgicc::HTTPHTMLHeader()<< std::endl;
-	printHtml();
 	Cgicc formData;
 	
 	form_iterator fi = formData.getElement("keyWord");  
 	if( !fi->isEmpty() && fi != (*formData).end()) {
-		std::cout << "查询的单词：" << **fi << "<br>";  
+		json j;
+		j["keyword"] = **fi; 
 		WordController wordCtrl;
 		InvertedIndexHash invertedIndexHash = wordCtrl.searchWord(**fi);
-		std::cout << "查询的单词编号" << invertedIndexHash.id <<  "<br>";
-		std::cout << "单词的总出现次数" << invertedIndexHash.totalCount <<  "<br>";
-		std::cout << "总共有多少文档" << invertedIndexHash.docCount <<  "<br>";
-		std::vector<unsigned int> ids = printPostingList(invertedIndexHash.postingList);
-		
+		j["wordId"] = invertedIndexHash.id;
+		j["total"] = invertedIndexHash.totalCount;
+		j["docCount"] = invertedIndexHash.docCount;
+		std::vector<unsigned int> ids = formatPostingList(invertedIndexHash.postingList);
 		DocumentController docCtrl;
 		std::vector<Document> docs =  docCtrl.searchDocument(ids);
-		std::cout << ids.size();
-		printDocument(docs);
+		json docJson = formatDocumentToJson(docs);
+		j["docs"] = docJson;
+		std::cout << j.dump(4) << std::endl;
 	}else{
 		std::cout << "search keyword is valid" << std::endl;  
 	}
-	printHtmlEnd();
     return 0;
 }

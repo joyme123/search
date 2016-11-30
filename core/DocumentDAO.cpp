@@ -14,15 +14,15 @@ int DocumentDAO::addDocument(Document document){
     try{
         //Mysql mysql;
         std::shared_ptr<sql::PreparedStatement> pstm = this->prepare(sql);
-        pstm->setInt(1,document.type);
-        pstm->setString(2,WstringToString(document.title));
-        pstm->setString(3,WstringToString(document.abstract));
-        pstm->setString(4,WstringToString(document.url));
-        pstm->setString(5,WstringToString(document.author));
-		pstm->setString(6,WstringToString(document.text));
+        pstm->setUInt(1,document.type);
+        pstm->setString(2,document.title);
+        pstm->setString(3,document.abstract);
+        pstm->setString(4,document.url);
+        pstm->setString(5,document.author);
+		pstm->setString(6,document.text);
         pstm->setUInt(7,document.wordNum);
-        pstm->setDateTime(8,sql::SQLString(WstringToString(document.updateTime)));
-        pstm->setDateTime(9,sql::SQLString(WstringToString(document.createTime)));
+        pstm->setDateTime(8,sql::SQLString(document.updateTime));
+        pstm->setDateTime(9,sql::SQLString(document.createTime));
         id = this->insert(pstm);
     }catch(sql::SQLException &e){
         id = -1;
@@ -64,7 +64,7 @@ int DocumentDAO::parseDocumentAndUpdate(Document document){
 
 std::vector< Document > DocumentDAO::searchDocument(std::vector<unsigned int > documentId)
 {
-	std::vector<Document> docments;
+	std::vector<Document> documents;
 	std::string sql = "SELECT id,title,type,abstract,url,author,text,wordNum,createTime,updateTime FROM " + this->TABLE;
 	std::string where = " WHERE id = " + std::to_string(documentId[0]);
 	for(unsigned int i =1; i < documentId.size(); i++){
@@ -75,23 +75,23 @@ std::vector< Document > DocumentDAO::searchDocument(std::vector<unsigned int > d
 		std::shared_ptr<sql::PreparedStatement> pstm = this->prepare(sql);
 		std::shared_ptr<sql::ResultSet> res = this->query(pstm);
 		while(res->next()){
-			Document docment;
-			docment.id = res->getUInt("id");
-			docment.abstract = StringToWstring(res->getString("abstract"));
-			docment.title = StringToWstring(res->getString("title"));
-			docment.type = getDocType(res->getInt("type"));
-			docment.url = StringToWstring(res->getString("url"));
-			docment.author = StringToWstring(res->getString("author"));
-			docment.text = StringToWstring(res->getString("text"));
-			docment.wordNum = res->getUInt("wordNum");
-			docment.createTime = StringToWstring(res->getString("createTime"));
-			docment.updateTime = StringToWstring(res->getString("updateTime"));
-			docments.push_back(docment);
+			Document document;
+			document.id = res->getUInt("id");
+			document.abstract = res->getString("abstract");
+			document.title = res->getString("title");
+			document.type = getDocType(res->getInt("type"));
+			document.url = res->getString("url");
+			document.author = res->getString("author");
+			document.text = res->getString("text");
+			document.wordNum = res->getUInt("wordNum");
+			document.createTime = res->getString("createTime");
+			document.updateTime = res->getString("updateTime");
+			documents.push_back(document);
 		}
 	}catch(sql::SQLException &e){
 		LOG(ERROR) << "DocumentDAO->searchDocument(int id):" << e.getErrorCode()<<"--"<<e.what() << e.getSQLState();
 	}
-	return docments;
+	return documents;
 }
 
 

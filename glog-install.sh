@@ -13,3 +13,6 @@
 
 ##c++连接mysql组件mysql-connnect-cpp(c++)
 ##这个要安装1.x版本,2.x版本是提供文档存储的接口的
+
+##JSON spirit
+##https://www.codeproject.com/articles/20027/json-spirit-a-c-json-parser-generator-implemented

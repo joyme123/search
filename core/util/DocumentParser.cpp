@@ -1,34 +1,34 @@
 #include"DocumentParser.h"
 
 
-std::wstring DocumentParser::peel(std::wstring html){
+std::string DocumentParser::peel(std::string html){
 
-    return L" ";
+    return " ";
 }
 
-std::vector<InvertedIndexHash> DocumentParser::parser(std::wstring text){
+std::vector<InvertedIndexHash> DocumentParser::parser(std::string text){
 	std::vector<InvertedIndexHash> v;
 	
 	return v;
 }
 
-std::map< std::wstring, std::vector< int > > DocumentParser::ngram(std::wstring text,int step){
-	std::map<std::wstring,std::vector<int> > map;
+std::map< std::string, std::vector< int > > DocumentParser::ngram(std::string text,int step){
+	std::map<std::string,std::vector<int> > map;
 	int position = 1;
-	std::wstring word = text.substr(0,1);
+	std::string word = text.substr(0,1);
 	for(int i = 0; text[i] != '\0'; i++){
-		std::wstring word = text.substr(i,step);
+		std::string word = text.substr(i,step);
 		map[word].push_back(position);
 		position++;
 	}
 	return map;
 }
 
-std::map< std::wstring, std::vector< int > > DocumentParser::splitWord(std::wstring text,friso_mode_t mode){
+std::map< std::string, std::vector< int > > DocumentParser::splitWord(std::string text,friso_mode_t mode){
     friso_t friso;
     friso_config_t config;
     friso_task_t task;
-    std::map<std:: wstring, std::vector< int > > map;
+    std::map<std:: string, std::vector< int > > map;
     int pos = 1;
     //initialize
     friso = friso_new();
@@ -45,13 +45,13 @@ std::map< std::wstring, std::vector< int > > DocumentParser::splitWord(std::wstr
     //set the task.
     task = friso_new_task();
     std::string str ;
-    str = WstringToString(text);
+    str = text;
     
     friso_set_text( task, (char*)str.c_str() );
     
     while ( ( config->next_token( friso, config, task ) ) != NULL ) 
     {
-        std::wstring word = StringToWstring((std::string)task->token->word);
+        std::string word = (std::string)task->token->word;
         map[word].push_back(pos++);
     }
 
@@ -65,18 +65,18 @@ std::map< std::wstring, std::vector< int > > DocumentParser::splitWord(std::wstr
 * @param formatText formated text like this:title|type|author|url|text
 * @return document
 */
-Document DocumentParser::documentFormat(std::wstring formatText){
+Document DocumentParser::documentFormat(std::string formatText){
 
     Document document;
     int count = 0;      //times of find |
-    std::wstring title;
+    std::string title;
     DOCUMENT_TYPE type;
-    std::wstring abstract;
-    std::wstring author;
-	std::wstring url;
-    std::wstring text;
-    std::wstring createTime;
-    std::wstring updateTime;
+    std::string abstract;
+    std::string author;
+	std::string url;
+    std::string text;
+    std::string createTime;
+    std::string updateTime;
     int pos = 0;
     int len = 0;
     for(int i = 0; formatText[i] != '\0'; i++){
@@ -112,7 +112,8 @@ Document DocumentParser::documentFormat(std::wstring formatText){
     text = formatText.substr(pos,len);
 	
 	//get title type author text,url,then generate abstract
-	abstract = text.substr(0,text.length()/4 < 200 ? text.length()/4 : 200);
+    unsigned int textLen = getUtf8StringLength(text);
+	abstract = substrWithChinese(text,0,textLen/4 < 200 ? textLen/4 : 200);
 	document.title = title;
 	document.abstract = abstract;
 	document.author = author;

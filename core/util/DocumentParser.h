@@ -25,14 +25,14 @@ public:
 	 * @param html string
 	 * @return main content of html page
 	 */
-	static std::wstring peel(std::wstring html);	
+	static std::string peel(std::string html);	
 	
 	/**
 	 * parser text and get invertedHashIndex array
 	 * @param text parser text 
 	 * @return invertedHashIndex array
 	 */
-	static std::vector<InvertedIndexHash> parser(std::wstring text);
+	static std::vector<InvertedIndexHash> parser(std::string text);
 	
 	/**
 	 * use n-gram to split word with into map<word,positions>
@@ -40,20 +40,20 @@ public:
 	 * @param step n
 	 * @return map
 	 */
-	static std::map<std::wstring,std::vector<int> > ngram(std::wstring text,int step);
+	static std::map<std::string,std::vector<int> > ngram(std::string text,int step);
 	
 	/**
 	 * use "word split" to split word with into map<word,positions>
 	 * @param text content
 	 * @return map
 	 */
-    static std::map<std::wstring,std::vector<int> > splitWord(std::wstring text,friso_mode_t mode);
+    static std::map<std::string,std::vector<int> > splitWord(std::string text,friso_mode_t mode);
     
     /**
      * input formated text and return a document object
      * @param formatText formated text like this:title|type|abstract|author|text|
      * @return document
      */
-    static Document documentFormat(std::wstring formatText);
+    static Document documentFormat(std::string formatText);
 };
 #endif

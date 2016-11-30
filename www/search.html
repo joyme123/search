@@ -1,0 +1,47 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <title>搜索</title>
+    <meta charset="utf-8">
+    <link href="style.css" rel="stylesheet">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="js/function.js"></script>
+    <script src="ajax/search_ajax.js"></script>
+</head>
+<script>
+    function checkKeyword() {
+        keyword = $("#keyword").val();
+        keyword = trim(keyword);
+        if (keyword != "" && keyword != undefined) {
+            $("#search_form").submit();
+        } else {
+            return false;
+        }
+    }
+</script>
+
+<body>
+    <header>
+        <div class="header_left">
+            <div class="logo"> <img src="logo.png"></div>
+            <div>
+                <form id="search_form" action="search.html" method="get">
+                    <input class="search_keyword_input" type="text" name="keyword" onkeypress="if(event.keyCode==13){return checkKeyword()}">
+                    <input class=" search_keyword_button " type="button" value="搜索" onclick="checkKeyword() ">
+                </form>
+            </div>
+        </div>
+        <div class="clearfix "></div>
+    </header>
+    <div class="left ">
+        <div class="result "></div>
+        <ul class="search_result_list ">
+
+        </ul>
+    </div>
+    <ul class="recommend_list ">
+    </ul>
+</body>
+
+</html>

@@ -25,7 +25,7 @@ public:
      * @param documentFormat a format string
      * @return the word insert into database
      */
-    int documentEntry(std::wstring documentFormat);
+    int documentEntry(std::string documentFormat);
 	
 	std::vector< Document > searchDocument(std::vector<unsigned int > documentId);
     

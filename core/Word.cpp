@@ -3,6 +3,6 @@ Word::Word(){
         
     }
 
-Word::Word(std::wstring text){
+Word::Word(std::string text){
     this->text = text;
 }

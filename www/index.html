@@ -1,37 +1,46 @@
 <html>
-	<head>
-		<title>deep search</title>
-        <meta charset="utf-8">
-        <link href="style.css" rel="stylesheet">
-        <link rel="icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
-        <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
-        <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script src="js/function.js"></script>
-	</head>
-    <script>
-        function checkKeyWord(){
-            keyword = $("#keyWord").val();
-            keyword = trim(keyword);
-            if(keyword != "" && keyword!=undefined){
-                $("#search_form").submit();
-            }else{
-                return false;
-            }
-        }
-        
-        function go(){
-            window.location.href="about.html";
-        }
-    </script>
-	<body>
-        <form class="search_form" id="search_form" action="cgi-bin/get.cgi" method="get">
-            <input type="text" name="keyWord" id="keyWord" class="search_input" onkeypress="if(event.keyCode==13){return checkKeyWord()}">
-            <ul class="search_button_list">
-                <li><input type="button" value="Deep Search"  onclick="checkKeyWord()"></li>
-                <li><input type="button" value="I'm Felling Lucky" onclick="go()"></li>
-            </ul>
-            
-        </form>
 
-	</body>
+<head>
+    <title>deep search</title>
+    <meta charset="utf-8">
+    <link href="style.css" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="js/function.js"></script>
+</head>
+<script>
+    function checkKeyword() {
+        keyword = $("#keyword").val();
+        keyword = trim(keyword);
+        if (keyword != "" && keyword != undefined) {
+            $("#search_form").submit();
+        } else {
+            return false;
+        }
+    }
+
+    function go() {
+        window.location.href = "about.html";
+    }
+</script>
+
+<body>
+    <header>
+        <div class="header_left">
+            <div class="logo"> <img src="logo.png"></div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
+    <form class="search_form" id="search_form" action="search.html" method="get">
+        <input type="text" name="keyword" id="keyword" class="search_input" onkeypress="if(event.keyCode==13){return checkKeyword()}">
+        <ul class="search_button_list">
+            <li><input type="button" value="Deep Search" onclick="checkKeyword()"></li>
+            <li><input type="button" value="I'm Felling Lucky" onclick="go()"></li>
+        </ul>
+
+    </form>
+
+</body>
+
 </html>

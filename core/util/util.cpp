@@ -32,12 +32,12 @@ int VectorToInt(std::vector<char> v){
 }
 
 
-std::wstring getCurrentDateTimeStr()
+std::string getCurrentDateTimeStr()
 {
 	time_t now = std::time(0);
     tm *ltm = std::localtime(&now);
-    std::wstring datetime;
-    datetime = std::to_wstring(1900+ltm->tm_year) + L"-" + std::to_wstring(1 + ltm->tm_mon) + L"-" + std::to_wstring(ltm->tm_mday) + L" " +std::to_wstring(ltm->tm_hour) + L":" + std::to_wstring(1 + ltm->tm_min) + L":" + std::to_wstring(1 + ltm->tm_sec);
+    std::string datetime;
+    datetime = std::to_string(1900+ltm->tm_year) + "-" + std::to_string(1 + ltm->tm_mon) + "-" + std::to_string(ltm->tm_mday) + " " +std::to_string(ltm->tm_hour) + ":" + std::to_string(1 + ltm->tm_min) + ":" + std::to_string(1 + ltm->tm_sec);
 	return datetime;
 }
 
@@ -54,3 +54,48 @@ DOCUMENT_TYPE getDocType(int type)
 	return html;
 }
 
+unsigned int getUtf8StringLength(std::string str){
+    unsigned int i = 0;
+    unsigned int cursor = 0;
+    while(str[i] != '\0'){
+        unsigned int l = getUtf8CharLength(str[i]); //获取字符长度
+        i+=l;
+        cursor++;
+    }
+    return cursor;
+}
+
+unsigned int getUtf8CharLength(char c){
+    int len = 0;
+    if(c > 0){
+        return len + 1;     //第一位为0时为特殊情况，需要加1
+    }
+    while(c < 0){
+        len++;
+        c = c << 1;
+    }
+    return len;
+}
+
+std::string substrWithChinese(std::string str,unsigned int start,unsigned int length){
+    unsigned int i = 0;
+    unsigned int cursor = 0;
+    unsigned int save = 0;
+    unsigned int len = str.length();
+    char* c = new char[len + 1];
+    while(str[i] != '\0'&&length > 0){
+        unsigned int l = getUtf8CharLength(str[i]); //获取字符长度
+        if(cursor >= start){
+            unsigned int m = l;
+            while(m--){
+                c[save++] = str[i++];
+            }
+            length--;
+        }else{
+            i+=l;
+        }
+        cursor++;
+    }
+    c[i] = '\0';
+    return std::string(c);
+}
