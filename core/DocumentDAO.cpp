@@ -79,7 +79,7 @@ std::vector< Document > DocumentDAO::searchDocument(std::vector<unsigned int > d
 			document.id = res->getUInt("id");
 			document.abstract = res->getString("abstract");
 			document.title = res->getString("title");
-			document.type = getDocType(res->getInt("type"));
+			document.type = Document::getDocType(res->getInt("type"));
 			document.url = res->getString("url");
 			document.author = res->getString("author");
 			document.text = res->getString("text");

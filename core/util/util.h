@@ -43,6 +43,4 @@ int VectorToInt(std::vector<char> v);
 
 std::string getCurrentDateTimeStr();
 
-DOCUMENT_TYPE getDocType(int type);
-
 #endif

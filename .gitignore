@@ -4,3 +4,7 @@ bin/
 test/bin
 client
 www/cgi-bin
+*CMakeFiles*
+*.cmake
+CMakeCache
+Makefile

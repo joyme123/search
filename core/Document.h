@@ -19,6 +19,7 @@ class Document{
         std::string createTime;                  //文档创建日期    
         Document();
         Document(std::string title,std::string abstract,std::string url,std::string author,std::string text,unsigned int wordNum,std::string createTime,std::string updateTime);
+        static DOCUMENT_TYPE getDocType(int type);
 };
 
 #endif

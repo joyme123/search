@@ -41,18 +41,7 @@ std::string getCurrentDateTimeStr()
 	return datetime;
 }
 
-DOCUMENT_TYPE getDocType(int type)
-{
-	switch(type){
-		case 1:
-			return html;
-		case 2:
-			return pdf;
-		case 3:
-			return word;
-	}
-	return html;
-}
+
 
 unsigned int getUtf8StringLength(std::string str){
     unsigned int i = 0;

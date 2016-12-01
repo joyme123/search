@@ -13,3 +13,15 @@ Document::Document(std::string title,std::string abstract,std::string url,std::s
     this->createTime = createTime;    
 	this->updateTime = updateTime;
 }
+
+DOCUMENT_TYPE Document::getDocType(int type){
+	switch(type){
+		case 1:
+			return html;
+		case 2:
+			return pdf;
+		case 3:
+			return word;
+	}
+	return html;
+}
