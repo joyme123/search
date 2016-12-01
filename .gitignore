@@ -2,3 +2,5 @@ build/
 lib/
 bin/
 test/bin
+client
+www/cgi-bin
