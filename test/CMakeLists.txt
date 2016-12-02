@@ -7,6 +7,7 @@ set(TESTJSON_SRC jsonTest.cpp)
 set(TESTSUBSTR_SRC substrTest.cpp)
 set(TESTSERVERSOCKET_SRC serverSocketTest.cpp)
 set(TESTCLIENTSOCKET_SRC clientSocketTest.cpp)
+set(TESTSOCKETSTREAMPARSER_SRC SocketStreamParserTest.cpp)
 
 SET(CMAKE_BUILD_TYPE "Debug")  
 SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")  
@@ -23,6 +24,7 @@ add_executable(jsonTest ${TESTJSON_SRC})
 add_executable(substrTest ${TESTSUBSTR_SRC})
 add_executable(serverSocketTest ${TESTSERVERSOCKET_SRC})
 add_executable(clientSocketTest ${TESTCLIENTSOCKET_SRC})
+add_executable(socketStreamParserTest ${TESTSOCKETSTREAMPARSER_SRC})
 
 
 #set shared library for connectTest and mysqlTest and ngramTest
@@ -35,3 +37,4 @@ target_link_libraries(postingListTest searchEngine)
 target_link_libraries(substrTest searchEngine)
 target_link_libraries(serverSocketTest socket)
 target_link_libraries(clientSocketTest socket)
+target_link_libraries(socketStreamParserTest searchEngine socket)

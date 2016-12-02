@@ -88,3 +88,43 @@ std::string substrWithChinese(std::string str,unsigned int start,unsigned int le
     c[i] = '\0';
     return std::string(c);
 }
+
+/**
+ * 将两个char*数组合并为新的数组 
+ */
+ char* mergeCharArray(char* first,unsigned int firstLen,char* second,unsigned int secondLen){
+     char* new_char = new char[firstLen+secondLen];     //为了不知道外界调用时开的数组是new分配还是malloc分配，所以这里不使用relloc而是重新开数组
+     unsigned int i;
+     for( i = 0; i < firstLen;++i){
+         new_char[i] = first[i];
+     }
+
+     for( ;i < firstLen+secondLen; ++i){
+         new_char[i] = second[i - firstLen];
+     }
+     
+     delete []first;
+     delete []second;
+     first = NULL;
+     second = NULL;
+
+     return new_char;
+ }
+
+  std::string subCharArray(char*& cbuf,unsigned int& len,unsigned int start,int subLen){
+      char* cstr = new char[subLen];
+      int limit = start + subLen;
+      int pos = -1;
+      for(int i = start; i <= limit; ++i){
+          cstr[++pos] = cbuf[i];
+      }
+
+      limit = len - subLen - start;
+
+      for(int i = 0; i < limit; ++i){
+          cbuf[i] = cbuf[i + start + subLen];
+      }
+      len = limit;
+
+      return std::string(cstr);
+  }

@@ -39,6 +39,19 @@ const ServerSocket & ServerSocket::operator >> (std::string & s)const {
     return * this; 
 }
 
+void  ServerSocket::sendBinary (char* binaryData,unsigned int length) const {
+    if ( ! Socket::sendBinary (binaryData,length)) {
+        throw SocketException ("Could not write to socket."); 
+    }
+}
+
+
+void ServerSocket::recvBinary ( char*& cbuf,int& length) const {
+    if ( ! Socket::recvBinary (cbuf,length)) {
+        throw SocketException ("Could not read from socket."); 
+    }
+}
+
 void ServerSocket::accept (ServerSocket & sock) {
     if (!Socket::accept (sock)) {
         throw SocketException ("Could not accept socket."); 

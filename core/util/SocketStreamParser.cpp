@@ -3,27 +3,52 @@
  */
 
 #include "SocketStreamParser.h"
+#include "util.h"
 #include<string>
 
-std::vector<Package> SocketStreamParser::parse(std::string &data){
+std::vector<Package> SocketStreamParser::parse(char* data,unsigned int dataLen){
     std::vector<Package> packs;
-    char v = data[0];
-    unsigned int strLen = data.length();
+    lastBuf = mergeCharArray(lastBuf,lastLen,data,dataLen);     //这个函数会delete[] data和lastBuf的内存，并重新开启内存返回合并值
+    lastLen = lastLen + dataLen;
+    unsigned int bodyLen;
 
-    Package pack;
-    string body;
-    unsigned int length;
-    //校验版本号
-    if(v == version){
-        length = data[1];
-        length = length<<8+data[2];
-        length = length<<8+data[3];         //计算出length的大小
+    //校验版本号是否正确并计算body的长度
+    if(lastBuf[0] == version){
+        bodyLen = lastBuf[1];
+        bodyLen = (bodyLen<<8) + lastBuf[2];
+        bodyLen = (bodyLen<<8) + lastBuf[3];         //计算出body的长度
+    }else{
+        return packs;
     }
 
-    //可以截取到一个数据包
-    if(strLen - 4 >= length){
-        body = data.substr()
+    //当剩下的字符串减去头部的长度大于body的长度，说明可以解析出一个数据包
+    while(lastLen - 4 >= bodyLen){
+        Package pack;
+        std::string body;
+        body = subCharArray(lastBuf,lastLen,4,bodyLen);      //截取一个body的长度
+        std::cout << "内容为" << body << std::endl;
+
+
+        pack.setBody(body);
+        packs.push_back(pack);
+
+        if(lastLen > 0){
+            //校验版本号是否正确并计算body的长度
+            if(lastBuf[0] == version){
+                bodyLen = lastBuf[1];
+                bodyLen = (bodyLen<<8) + lastBuf[2];
+                bodyLen = (bodyLen<<8) + lastBuf[3];         //计算出body的长度
+            }else{
+                break;      //版本号不对则break
+            }
+        }else{
+            break;
+        }
     }
 
     return packs;
+}
+
+void SocketStreamParser:: reset(){
+    this->lastLen = 0;      //重置保存的长度
 }

@@ -34,7 +34,9 @@ class Socket{
         // Data Transimission
         bool send ( const std::string ) const;
         int recv ( std::string& ) const;
-
+        // Binary Data Transimission
+        bool sendBinary(char* binaryData,unsigned int length ) const;
+        int recvBinary ( char*& cbuf,int& length) const;
 
         void set_non_blocking ( const bool );
 

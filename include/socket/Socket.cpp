@@ -83,6 +83,20 @@ bool Socket::send (const std::string s) const
     }
 }
 
+/**
+ * socket传输二进制流
+ * @param binaryData 要传输的二进制流的指针
+ * @param length 二进制流的字节数
+ * @return true为接收成功,false为接收失败
+ */
+bool Socket::sendBinary(char* binaryData,unsigned int length ) const{
+    int status = ::send ( m_sock, binaryData, length, MSG_NOSIGNAL );
+    if(status == -1){
+        return false;
+    }else{
+        return true;
+    }
+}
 
 int Socket::recv ( std::string& s ) const{
     char buf [ MAXRECV + 1 ];
@@ -104,6 +118,29 @@ int Socket::recv ( std::string& s ) const{
     }
 }
 
+/**
+ * 接收二进制的数据流
+ * @cbuf char*指针
+ * @length 数据流的长度
+ * @return 0失败 >0成功
+ */
+int Socket::recvBinary ( char*& cbuf,int& length) const{
+    cbuf = new char [ MAXRECV + 1 ];
+
+    memset ( cbuf, 0, MAXRECV + 1 );
+
+    int status = ::recv ( m_sock, cbuf, MAXRECV, 0 );
+
+    if( status == -1 ){
+        std::cout << "status == -1   errno == " << errno << "  in Socket::recv\n";
+        return 0;
+    }else if (status == 0){
+        return 0;
+    }else{
+        length = status;        //接收的数据长度
+        return status;
+    }
+}
 
 
 bool Socket::connect ( const std::string host, const int port )

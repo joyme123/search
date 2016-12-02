@@ -17,6 +17,11 @@ class ServerSocket : private Socket
   const ServerSocket& operator << ( const std::string& ) const;
   const ServerSocket& operator >> ( std::string& ) const;
 
+  void  sendBinary (char* binaryData,unsigned int length) const;
+  void  recvBinary ( char*& cbuf,int& length) const;
+
+
+
   void accept ( ServerSocket& );
 
 };

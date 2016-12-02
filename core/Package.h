@@ -9,8 +9,8 @@ class Package{
         char type;
         std::string url;
         std::string content;
-        Document generateDocument();
-}
+        void setBody(std::string body);
+};
 
 
 #endif
