@@ -7,6 +7,7 @@
 
 #include"config.h"
 #include"util.h"
+#include "../Package.h"
 #include"../InvertedIndexHash.h"
 #include"../../include/friso/friso_API.h"
 #include"../../include/friso/friso.h"
@@ -14,11 +15,17 @@
 
 
 /**
- * Document Parser,aid to parser document to invertedHashIndex
+ * Document Parser,封装了关于Document的解析函数
  * author jiangpengfei12@gmail.com
  * 2016-11-14
  */
 class DocumentParser{
+private:
+	static bool htmlFileAnalysis(Document &document,std::string content);
+
+	static bool pdfFileAnalysis(Document &document,std::string content);
+
+	static bool wordFileAnalysis(Document &document,std::string content);
 public:
 	/**
 	 * peel html page to document
@@ -55,5 +62,14 @@ public:
      * @return document
      */
     static Document documentFormat(std::string formatText);
+
+	/**
+	 * parse Package to Document
+	 * @param package the package need to parse
+	 * @return document 
+	 */ 
+	static Document documentFormat(Package package);
+
+
 };
 #endif

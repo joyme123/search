@@ -1,4 +1,5 @@
 #include"util.h"
+#include<bitset>
 
 std::wstring StringToWstring(const std::string str)
 {// string转wstring
@@ -93,13 +94,13 @@ std::string substrWithChinese(std::string str,unsigned int start,unsigned int le
  * 将两个char*数组合并为新的数组 
  */
  char* mergeCharArray(char* first,unsigned int firstLen,char* second,unsigned int secondLen){
-     char* new_char = new char[firstLen+secondLen];     //为了不知道外界调用时开的数组是new分配还是malloc分配，所以这里不使用relloc而是重新开数组
+     unsigned int new_len = firstLen+secondLen;
+     char* new_char = new char[new_len];     //统一使用new开数组
      unsigned int i;
      for( i = 0; i < firstLen;++i){
          new_char[i] = first[i];
      }
-
-     for( ;i < firstLen+secondLen; ++i){
+     for( ;i < new_len; ++i){
          new_char[i] = second[i - firstLen];
      }
      
@@ -112,12 +113,14 @@ std::string substrWithChinese(std::string str,unsigned int start,unsigned int le
  }
 
   std::string subCharArray(char*& cbuf,unsigned int& len,unsigned int start,int subLen){
-      char* cstr = new char[subLen];
+      char* cstr = new char[subLen+1];
       int limit = start + subLen;
       int pos = -1;
-      for(int i = start; i <= limit; ++i){
+      for(int i = start; i < limit; ++i){
           cstr[++pos] = cbuf[i];
       }
+
+      cstr[++pos] = '\0';
 
       limit = len - subLen - start;
 
@@ -125,6 +128,7 @@ std::string substrWithChinese(std::string str,unsigned int start,unsigned int le
           cbuf[i] = cbuf[i + start + subLen];
       }
       len = limit;
+
 
       return std::string(cstr);
   }

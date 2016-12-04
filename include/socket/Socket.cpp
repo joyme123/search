@@ -34,9 +34,10 @@ bool Socket::bind ( const int port ){
     if(!is_valid()){
         return false;
     }
-    m_addr.sin_family = AF_INET;
-    m_addr.sin_addr.s_addr = INADDR_ANY;
-    m_addr.sin_port = htons ( port );
+    m_addr.sin_family = AF_INET;            //AF_INET代表tcp/ip协议
+    m_addr.sin_addr.s_addr = INADDR_ANY;    //代表接受来自任何ip的消息
+    //m_addr.sin_port = htons ( port );       //绑定端口号
+    m_addr.sin_port = ntohs ( port );       //绑定端口号
     int bind_return = ::bind ( m_sock,(struct sockaddr *) &m_addr,sizeof ( m_addr ));
 
     if(bind_return == -1){
@@ -125,9 +126,9 @@ int Socket::recv ( std::string& s ) const{
  * @return 0失败 >0成功
  */
 int Socket::recvBinary ( char*& cbuf,int& length) const{
-    cbuf = new char [ MAXRECV + 1 ];
+    cbuf = new char [ MAXRECV];
 
-    memset ( cbuf, 0, MAXRECV + 1 );
+    memset ( cbuf, 0, MAXRECV);
 
     int status = ::recv ( m_sock, cbuf, MAXRECV, 0 );
 

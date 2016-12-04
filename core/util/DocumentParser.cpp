@@ -1,5 +1,17 @@
 #include"DocumentParser.h"
 
+bool DocumentParser::htmlFileAnalysis(Document& document,std::string content){
+
+}
+
+bool DocumentParser::pdfFileAnalysis(Document& document,std::string content){
+
+}
+
+bool DocumentParser::wordFileAnalysis(Document& document,std::string content){
+    
+}
+
 
 std::string DocumentParser::peel(std::string html){
 
@@ -123,6 +135,12 @@ Document DocumentParser::documentFormat(std::string formatText){
 	document.createTime = getCurrentDateTimeStr();
 	document.updateTime = getCurrentDateTimeStr();
 	return document;
+}
+
+Document DocumentParser::documentFormat(Package package){
+    Document document;
+    document.url = package.url;
+    document.type =package.type;
 }
 
 

@@ -12,9 +12,13 @@
 
 class SocketStreamParser{
     public:
-        char version = 0x01;
-        char* lastBuf = new char[1];        //不够一个数据包的部分会保存在这里，等待新的数据加进来一起解析
-        unsigned int lastLen = 0;
+        char version;
+        char* lastBuf;          //不够一个数据包的部分会保存在这里，等待新的数据加进来一起解析
+        unsigned int lastLen;
+        unsigned int bodyLen;   //当一次消息过长，socket会分包，这里保存body的长度
+        
+        SocketStreamParser();
+
         /**
          * 传入接收到的数据包进行解析
          * @param data 要传入的数据
