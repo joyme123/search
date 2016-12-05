@@ -3,7 +3,6 @@
  */
 
 #include "SocketStreamParser.h"
-#include "util.h"
 #include<string>
 
 SocketStreamParser::SocketStreamParser(){
@@ -11,6 +10,49 @@ SocketStreamParser::SocketStreamParser(){
     lastBuf = new char[1];        //不够一个数据包的部分会保存在这里，等待新的数据加进来一起解析
     lastLen = 0;
     bodyLen = 0;
+}
+
+/**
+ * 将两个char*数组合并为新的数组 
+ */
+char* SocketStreamParser::mergeCharArray(char* first,unsigned int firstLen,char* second,unsigned int secondLen){
+    unsigned int new_len = firstLen+secondLen;
+    char* new_char = new char[new_len];     //统一使用new开数组
+    unsigned int i;
+    for( i = 0; i < firstLen;++i){
+        new_char[i] = first[i];
+    }
+    for( ;i < new_len; ++i){
+        new_char[i] = second[i - firstLen];
+    }
+    
+    delete []first;
+    delete []second;
+    first = NULL;
+    second = NULL;
+
+    return new_char;
+}
+
+std::string SocketStreamParser::subCharArray(char*& cbuf,unsigned int& len,unsigned int start,int subLen){
+    char* cstr = new char[subLen+1];
+    int limit = start + subLen;
+    int pos = -1;
+    for(int i = start; i < limit; ++i){
+        cstr[++pos] = cbuf[i];
+    }
+
+    cstr[++pos] = '\0';
+
+    limit = len - subLen - start;
+
+    for(int i = 0; i < limit; ++i){
+        cbuf[i] = cbuf[i + start + subLen];
+    }
+    len = limit;
+
+
+    return std::string(cstr);
 }
 
 std::vector<Package> SocketStreamParser::parse(char* data,unsigned int dataLen){

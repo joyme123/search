@@ -1,15 +1,15 @@
 #include"DocumentParser.h"
 
 bool DocumentParser::htmlFileAnalysis(Document& document,std::string content){
-
+    return true;
 }
 
 bool DocumentParser::pdfFileAnalysis(Document& document,std::string content){
-
+    return true;
 }
 
 bool DocumentParser::wordFileAnalysis(Document& document,std::string content){
-    
+    return true;
 }
 
 
@@ -141,6 +141,7 @@ Document DocumentParser::documentFormat(Package package){
     Document document;
     document.url = package.url;
     document.type =package.type;
+    return document;
 }
 
 

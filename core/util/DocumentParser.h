@@ -21,10 +21,28 @@
  */
 class DocumentParser{
 private:
+	/**
+	 * HTML文档分析函数
+	 * @param document对象引用,分析的结果存储在这个对象
+	 * @param content 待分析的文本
+	 * @return true分析成功，false分析失败
+	 */
 	static bool htmlFileAnalysis(Document &document,std::string content);
 
+	/**
+	 * PDF文档分析函数
+	 * @param document对象引用，分析的结果存储在这个对象
+	 * @param content 待分析的文本
+	 * @return true分析成功，false分析失败
+	 */
 	static bool pdfFileAnalysis(Document &document,std::string content);
 
+	/**
+	 * WORD文档分析函数
+	 * @param document对象引用，分析的结果存储在这个对象
+	 * @param content 待分析的文本
+	 * @return true分析成功，false分析失败
+	 */
 	static bool wordFileAnalysis(Document &document,std::string content);
 public:
 	/**

@@ -26,6 +26,25 @@ class SocketStreamParser{
          */
         std::vector<Package> parse(char* data,unsigned int length);
 
+        /**
+        * 将两个char*数组合并为新的数组
+        * @param first 第一个char数组指针
+        * @param firstLen 第一个char数组长度
+        * @param second 第二个char数组指针
+        * @param secondLen 第二个char数组长度
+        * @return 返回合并成的数组指针
+        */
+        char* mergeCharArray(char* first,unsigned int firstLen,char* second,unsigned int secondLen);
+
+        /**
+        * 解析数据包专用,从char*中截取一段作为string,并将截取的最后位置剩下的信息返回
+        *
+        */
+        std::string subCharArray(char*& cbuf,unsigned int& len,unsigned int start,int subLen);
+
+        /**
+         * 重置
+         */
         void reset();
 
  };
