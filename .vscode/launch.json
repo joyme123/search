@@ -5,7 +5,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/test/bin/htmlAnalysisTest",
-            "args": ["../test.html"],
+            "args": ["test.html"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],

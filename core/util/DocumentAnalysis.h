@@ -8,9 +8,9 @@
 
 class DocumentAnalysis{
     private:
-        unsigned int k;                     //行块的大小
+        int k;                     //行块的大小
         std::vector<char> blankChars;       //空白字符集合
-        unsigned int threshold;             //骤起点的阈值
+        int threshold;             //骤起点的阈值
     public:
 
         DocumentAnalysis();
