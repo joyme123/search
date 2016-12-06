@@ -4,8 +4,8 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/test/bin/socketStreamParserTest",
-            "args": [],
+            "program": "${workspaceRoot}/test/bin/htmlAnalysisTest",
+            "args": ["../test.html"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],
@@ -24,7 +24,7 @@
             "name": "C++ Attach",
             "type": "cppdbg",
             "request": "attach",
-            "program": "${workspaceRoot}/test/bin/socketStreamParserTest",
+            "program": "${workspaceRoot}/test/bin/htmlAnalysisTest",
             "processId": "${command.pickProcess}",
             "linux": {
                 "MIMode": "gdb"

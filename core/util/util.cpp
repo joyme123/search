@@ -89,3 +89,26 @@ std::string substrWithChinese(std::string str,unsigned int start,unsigned int le
     c[i] = '\0';
     return std::string(c);
 }
+
+ std::string deleteCharArrayFromStr(std::string src,std::vector<char> charArray){
+     //先用charset生成map
+     std::map<char,int> charMap;
+     for(unsigned int i = 0; i < charArray.size(); i++){
+         charMap[charArray[i]] = 1;
+     }
+
+     unsigned int fastPos = 0,slowPos = 0;    //分别指向string中的两个位置
+
+     while(fastPos < src.size()){
+        if(charMap[src[fastPos]] != 1){
+            //不需要删除
+            src[slowPos] = src[fastPos];
+            slowPos++;
+        }
+
+        fastPos++;
+     }
+     src[slowPos] = '\0';
+     std::string tmp(src.c_str());
+     return tmp;
+ }

@@ -7,6 +7,7 @@
 #include<cppconn/connection.h>
 #include<cmath>
 #include<ctime>
+#include<vector>
 #include"config.h"
 
 std::wstring StringToWstring(const std::string str);
@@ -46,4 +47,12 @@ int VectorToInt(std::vector<char> v);
  */
 std::string getCurrentDateTimeStr();
 
+
+/**
+ * 从字符串中删除指定字符，算法复杂度 O(n)
+ * @param src 需要进行删除的源字符串,
+ * @param charArray 被删除的字符集合
+ * @param string 删除后生成的string
+ */
+ std::string deleteCharArrayFromStr(std::string src,std::vector<char> charArray);
 #endif
