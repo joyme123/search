@@ -62,3 +62,5 @@ type = 1 为html网页文档
 type = 2 为pdf文档
 type = 3 为word文档
 之后的内容为网页的全部内容
+
+**java实现的客户端代码示例**:https://github.com/joyme123/search/blob/master/doc/java_socket_client_implement.md
