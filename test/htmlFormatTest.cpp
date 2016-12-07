@@ -36,7 +36,7 @@ int main(int argc,char** argv){
     string str(buffer);
 
     DocumentAnalysis analysis;
-    std::string content = analysis.htmlAnalysis(str);
+    std::string content = analysis.htmlFormat(str);
 
     std::cout << content << std::endl;
 

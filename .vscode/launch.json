@@ -4,7 +4,7 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/test/bin/htmlAnalysisTest",
+            "program": "${workspaceRoot}/test/bin/htmlFormatTest",
             "args": ["test.html"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
@@ -24,7 +24,7 @@
             "name": "C++ Attach",
             "type": "cppdbg",
             "request": "attach",
-            "program": "${workspaceRoot}/test/bin/htmlAnalysisTest",
+            "program": "${workspaceRoot}/test/bin/htmlFormatTest",
             "processId": "${command.pickProcess}",
             "linux": {
                 "MIMode": "gdb"

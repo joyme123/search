@@ -7,6 +7,14 @@ add_subdirectory(core)
 add_subdirectory(test bin)
 add_subdirectory(test/friso)
 add_subdirectory(www/cgi-source)
+#使用clang++编译
+SET(CMAKE_CXX_COMPILER "/usr/bin/clang++")
+
+SET(CMAKE_BUILD_TYPE "Debug")  
+SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")  
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")  
+
+
 #document entry,generate index for search engine
 set(MAIN_SRC entry.cpp)
 #placePROJECT_SOURCE_DIR executable file 
