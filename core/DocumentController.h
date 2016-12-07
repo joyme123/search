@@ -23,9 +23,16 @@ public:
     /**
      * input a format document string like title|type|author|url|text
      * @param documentFormat a format string
-     * @return the word insert into database
+     * @return the words　count insert into database
      */
-    int documentEntry(std::string documentFormat);
+    int formatedDocumentEntry(std::string documentFormat);
+
+    /**
+     * 原生文档的入口，比如通过爬虫刚下载下来的未处理的网页
+     * @param documentStr document string content
+     * @return 插入到数据库的单词的数量
+     */
+    int documentEntry(std::string documentStr);
 	
 	std::vector< Document > searchDocument(std::vector<unsigned int > documentId);
     

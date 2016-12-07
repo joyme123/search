@@ -1,6 +1,6 @@
 #include"DocumentController.h"
 
-int DocumentController::documentEntry(std::string documentFormat)
+int DocumentController::formatedDocumentEntry(std::string documentFormat)
 {
     Document document = DocumentParser::documentFormat(documentFormat);
 	DocumentDAO doc;
@@ -48,6 +48,10 @@ int DocumentController::documentEntry(std::string documentFormat)
 	
 	doc.commit();          //commit transaction
 	return wordCount;
+}
+
+int DocumentController::documentEntry(std::string documentStr){
+    
 }
 
 std::vector< Document > DocumentController::searchDocument(std::vector< unsigned int > documentId)

@@ -43,15 +43,12 @@ void DocumentAnalysis::setThreshold(const int threshold){
 
 
 
-std::string DocumentAnalysis::fastHtmlAnalysis(std::string html) const{
+std::string DocumentAnalysis::fastHtmlAnalysis(std::string peeledHtml) const{
     int max = 0;           //存储最大的行块的值
     int maxPos;        //存储最大的行块的位置
     std::string content;        //存储最终的结果
-    
-    //去除网页上的所有页面标签和css和script
-    std::string formatedContent = this->htmlPeel(html);
 
-    if(formatedContent.length() < 20){
+    if(peeledHtml.length() < 20){
         return "test";
     }
 
@@ -59,9 +56,9 @@ std::string DocumentAnalysis::fastHtmlAnalysis(std::string html) const{
 
     std::string line;
     int i;
-    for(i = 0; i < (int)formatedContent.length(); ++i){
-        if(formatedContent[i] != '\n'){
-            line.push_back(formatedContent[i]);
+    for(i = 0; i < (int)peeledHtml.length(); ++i){
+        if(peeledHtml[i] != '\n'){
+            line.push_back(peeledHtml[i]);
         }else{
             
             //遇到换行符
@@ -111,6 +108,9 @@ std::string DocumentAnalysis::fastHtmlAnalysis(std::string html) const{
 }
 
 std::string DocumentAnalysis::improvedHtmlAnalysis(std::string html) const{
-    std::string formatedStr = this->htmlFormat(html);   //去除<p><hx><img>单独占行，将空<div></div>块占用权重降为1
-    return this->fastHtmlAnalysis(formatedStr);
+    std::string formatedHtml = this->htmlFormat(html);      //去除<p><hx><img>单独占行，将空<div></div>块占用权重降为1
+
+    std::string peeledHtml = this->htmlPeel(formatedHtml);  //统一去除所有的标签
+
+    return this->fastHtmlAnalysis(peeledHtml);              //提取出网页正文
 }

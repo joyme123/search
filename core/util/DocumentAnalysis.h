@@ -43,10 +43,10 @@ class DocumentAnalysis{
          * 基于行块提取网页正文函数，参考了《基于行块分布函数的通用网页正文抽取-陈 鑫 (Xin Chen)》,
          * 优点:对于文本内容较多，文章内html标签少的网页正文的网页提取效果很好，并且可以做到O(n)的时间复杂度,正则匹配复杂度为O(n),替换为O(n),页面的分析为O(n)
          * 缺点:对于正文部分图片多，使用MarkDown等富文本编辑器时，提取效果较差，很难完全提取,可以通过调整k和threshold的值提高精确度
-         * @param html 网页文本
+         * @param peeledHtml 被去除网页标签的网页文本
          * @return 提取出来的网页正文
          */
-        std::string fastHtmlAnalysis(std::string html) const;
+        std::string fastHtmlAnalysis(std::string peeledHtml) const;
 
 
         /**

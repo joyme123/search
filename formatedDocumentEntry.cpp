@@ -1,3 +1,8 @@
+/**
+ * 接受已经格式化好的文档，文档的格式类似 title|type|abstract|author|text|
+ * author:jiangpengfei
+ * date: 2016-12-07
+ */
 #include <string>
 #include"core/DocumentController.h"
 #include"core/WordController.h"
