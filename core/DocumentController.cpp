@@ -50,7 +50,7 @@ int DocumentController::formatedDocumentEntry(std::string documentFormat)
 	return wordCount;
 }
 
-int DocumentController::documentEntry(std::string documentStr){
+int DocumentController::documentEntry(std::vector<Package> packs){
     
 }
 

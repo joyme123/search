@@ -32,7 +32,7 @@ public:
      * @param documentStr document string content
      * @return 插入到数据库的单词的数量
      */
-    int documentEntry(std::string documentStr);
+    int documentEntry(std::vector<Package> packs);
 	
 	std::vector< Document > searchDocument(std::vector<unsigned int > documentId);
     
