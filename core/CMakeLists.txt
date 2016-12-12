@@ -11,8 +11,8 @@ add_library(searchEngine_static STATIC ${LIB_SRC})
 
 #link library
 link_directories(${PROJECT_SOURCE_DIR}/lib)
-target_link_libraries(searchEngine libmysqlcppconn.so  glog friso)
-target_link_libraries(searchEngine libmysqlcppconn.so glog friso)
+target_link_libraries(searchEngine libmysqlcppconn.so libcryptopp.a  glog friso)
+target_link_libraries(searchEngine libmysqlcppconn.so libcryptopp.a glog friso)
 
 set_target_properties(searchEngine PROPERTIES CLEAN_DIRECT_OUT 1)
 set_target_properties(searchEngine PROPERTIES VERSION 1.0 SOVERSION 1)

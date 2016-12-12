@@ -5,12 +5,12 @@
 
  - c语言下的分词项目: friso,项目地址:https://git.oschina.net/lionsoul/friso
  - json工具:Json for Modern c++,项目地址:https://github.com/nlohmann/json
- 
+ - c++实现的cityHash,项目地址:https://github.com/google/cityhash
 ### **运行环境中需要的依赖库**
  - 日志库:glog,项目地址:https://github.com/google/glog.git
  - cgi库:cgicc,代码地址:ftp://ftp.gnu.org/gnu/cgicc/cgicc-3.2.9.tar.gz
  - mysql连接工具:mysql-connector-c++,项目地址:https://github.com/mysql/mysql-connector-cpp
- - AMQP-CPP:rabbitMQ客户端,项目地址:https://github.com/CopernicaMarketingSoftware/AMQP-CPP
+
 ## **依赖库安装指导**
 
 ### **glog日志组件**
@@ -30,13 +30,13 @@ test-driver的软连接可能指向位置不正确，重新创建软连接即可
  
  > ./configure --prefix=/usr
 
-### **apache配置**
-apache需要开启对cgi的支持,并将网站根目录指向www,将cgi执行目录指向cgi-bin
+ > apache需要开启对cgi的支持,并将网站根目录指向www,将cgi执行目录指向cgi-bin
 
 ### **c++连接mysql组件mysql-connnect-cpp(c++)**
 这个要安装1.x版本,2.x版本是提供文档存储的接口的
 具体安装过程请看我的博客,里面介绍了2.x和1.x版本的安装
 [linux下编译安装mysql-connector-cpp](http://myway5.com/?post=56)
+
 
 ### **文档添加协议**
 这个搜索引擎本身是没有文档的添加功能的，所以需要通过外部程序按照一定的规则将文档加入到索引代码中进行索引。

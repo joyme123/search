@@ -5,13 +5,28 @@
 #include<regex>
 #include<vector>
 #include<exception>
+#include<algorithm>
+#include<map>
 #include"util.h"
 
+/**
+ * 文档分析类，包括正文提取以及特征码提取
+ * author:jiangpengfei12@gmail.com
+ * date:  2016-12-12
+ */
 class DocumentAnalysis{
     private:
         int k;                     //行块的大小
         std::vector<char> blankChars;       //空白字符集合
         int threshold;             //骤起点的阈值
+        /**
+         * 移除网页正文的stop word
+         * @param content 正文的分词结果(map),引用传参
+         * @param stopWordDict stopWord的字典
+         */
+         void removeStopWord(std::map<std::string,int>& content,std::map<std::string,int> stopWordDict);
+
+
     public:
 
         DocumentAnalysis();

@@ -23,6 +23,16 @@ std::string DocumentAnalysis::htmlPeel(std::string html,std::regex regex) const{
     return formatedContent;
 }
 
+void DocumentAnalysis::removeStopWord(std::map<std::string,int>& content,std::map<std::string,int> stopWordDict){
+    for(std::map<std::string,int>::iterator it = content.begin(); it != content.end(); it++){
+        //检查当前词汇是否属于stopword
+        if(stopWordDict[it->first] == 1){
+            content.erase(it);  //属于则从map中清楚当前词汇
+        }
+    }
+}
+
+
 /**
  * 去除<p>、<img>、<hx>、<td> 、<tr>、<th>或者等单独占用的行,将多行<br>或<br/>换成一行,将单个空<div></div>块的权重占行权重降为1,删除处理时间复杂度为O(n)
  */

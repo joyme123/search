@@ -18,14 +18,14 @@ std::string WstringToString(const std::wstring str);
  * 计算一个utf-8编码的字符串的"字"的长度
  * @param str 要计算的字符串
  */
-unsigned int getUtf8StringLength(std::string str);
+int getUtf8StringLength(std::string str);
 
 
 /**
  * 传入一个char,根据utf8编码的特点判断这个char代表的字符长度(utf-8由1~4个char组成，可根据第一位char中开头1的个数判断具体长度)
  * @param c char
  */
-unsigned int getUtf8CharLength(char c);
+int getUtf8CharLength(char c);
 
 /**
  * 对中文和英文混合的字符串进行切割
@@ -33,7 +33,7 @@ unsigned int getUtf8CharLength(char c);
  * @param start 切割的起点
  * @param end   切割的终点
  */
-std::string substrWithChinese(std::string str,unsigned int start,unsigned int end);
+std::string substrWithChinese(std::string str,int start,int end);
 
 /**
  * parse char vector to ingeter
@@ -55,4 +55,11 @@ std::string getCurrentDateTimeStr();
  * @param string 删除后生成的string
  */
  std::string deleteCharArrayFromStr(std::string src,std::vector<char> charArray);
+
+
+/**
+ * pair 的比较器
+ * @return 比较结果
+ */
+ bool cmpByValue(const std::pair<std::string,int>& l, const std::pair<std::string,int>& r);
 #endif
