@@ -1,15 +1,15 @@
 #include"DocumentController.h"
 
-int DocumentController::formatedDocumentEntry(std::string documentFormat)
+int DocumentController::formatedDocumentEntry(std::string formatedDocument)
 {
-    Document document = DocumentParser::documentFormat(documentFormat);
+    Document document = DocumentParser::documentFormat(formatedDocument);
 	DocumentDAO doc;
     doc.beginTransaction();         //begin transaction
     
     int id = doc.addDocument(document);
     if(id == -1){
      //add document failed
-        LOG(ERROR) << "DocumentController->doucmentEntry(std::string documentFormat):add document failed";
+        LOG(ERROR) << "DocumentController->doucmentEntry(std::string formatedDocument):add document failed";
         doc.rollback();
         return -1;
     }
@@ -51,7 +51,7 @@ int DocumentController::formatedDocumentEntry(std::string documentFormat)
 }
 
 int DocumentController::documentEntry(std::vector<Package> packs){
-    
+    return 0;
 }
 
 std::vector< Document > DocumentController::searchDocument(std::vector< unsigned int > documentId)

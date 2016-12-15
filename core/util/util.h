@@ -61,5 +61,5 @@ std::string getCurrentDateTimeStr();
  * pair 的比较器
  * @return 比较结果
  */
- bool cmpByValue(const std::pair<std::string,int>& l, const std::pair<std::string,int>& r);
+ bool cmpByValue(const std::pair<std::string,std::vector<int> >& l, const std::pair<std::string,std::vector<int> >& r);
 #endif

@@ -22,15 +22,30 @@ test-driver的软连接可能指向位置不正确，重新创建软连接即可
  > git clone https://github.com/google/glog.git
  
  > ./configure
-
+ 
+ > make
+ 
+ > sudo make install
 
 ### **cgicc是支持cgi的c++库**
 
  > wget ftp://ftp.gnu.org/gnu/cgicc/cgicc-3.2.9.tar.gz
  
- > ./configure --prefix=/usr
+ > tar -xvf cgicc-3.2.9.tar.gz
 
- > apache需要开启对cgi的支持,并将网站根目录指向www,将cgi执行目录指向cgi-bin
+ > ./configure --prefix=/usr
+ 
+ > make
+
+ 如果出现无法获取'html/index.html' 的文件状态(stat)的错误，则执行
+
+ > touch doc/html/index.html           #make出错执行这一步再make
+
+ > sudo make install 
+
+
+
+ apache需要开启对cgi的支持,并将网站根目录指向www,将cgi执行目录指向cgi-bin
 
 ### **c++连接mysql组件mysql-connnect-cpp(c++)**
 这个要安装1.x版本,2.x版本是提供文档存储的接口的

@@ -1,4 +1,4 @@
-#place searchEngine library into lib folder
+#place socket library into lib folder
 set(LIB_SRC ServerSocket.cpp Socket.cpp ClientSocket.cpp)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 SET(CMAKE_BUILD_TYPE "Debug")  

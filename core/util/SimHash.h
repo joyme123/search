@@ -1,7 +1,7 @@
+#include<iostream>
 #include<map>
 #include<vector>
 #include<algorithm>
-#include<iostream>
 #include<bitset>
 #include"util.h"
 
@@ -9,14 +9,19 @@ class SimHash{
     public:
         static const int BITSET_LENGTH = 64;       
     private:
-        static std::bitset<SimHash::BITSET_LENGTH> calVectorAdd(std::vector<std::vector<int> > res);
+        /**
+         * simHash算法中的词汇bit码*weight后的结果的相加计算
+         * @param res bit码*weight后的结果
+         * @return 二进制特征码
+         */
+         std::bitset<SimHash::BITSET_LENGTH> calVectorAdd(std::vector<std::vector<int> > res);
     public:
          /**
          * 移除网页正文的stop word
          * @param content 正文的分词结果(map),引用传参
-         * @param stopWordDict stopWord的字典
+         * @param stopWordDict stopWord的字
          */
-         static void removeStopWord(std::map<std::string,int>& content,std::map<std::string,int> stopWordDict);
+        void removeStopWord(std::map<std::string,std::vector<int> >& content,std::map<std::string,int> stopWordDict);
 
 
         /**
@@ -25,6 +30,6 @@ class SimHash{
          * @param frequencyDict 频率字典
          * @return char* 特征码
          */
-        static std::bitset<SimHash::BITSET_LENGTH> calculate(std::map<std::string,int> content,std::map<std::string,double> frequencyDict,int wordCount);
+        std::bitset<SimHash::BITSET_LENGTH> calculate(std::map<std::string,std::vector<int> > content,std::map<std::string,double> frequencyDict,int wordCount = 6);
 
 };

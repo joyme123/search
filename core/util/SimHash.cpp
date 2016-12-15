@@ -24,8 +24,13 @@ std::bitset<SimHash::BITSET_LENGTH> SimHash::calVectorAdd(std::vector<std::vecto
     return result;
 }
 
-void SimHash::removeStopWord(std::map<std::string,int>& content,std::map<std::string,int> stopWordDict){
-    for(std::map<std::string,int>::iterator it = content.begin(); it != content.end(); it++){
+/**
+ * 移除网页正文的stop word
+ * @param content 正文的分词结果(map),引用传参
+ * @param stopWordDict stopWord的字典
+ */
+void SimHash::removeStopWord(std::map<std::string,std::vector<int> >& content,std::map<std::string,int> stopWordDict){
+    for(std::map<std::string,std::vector<int> >::iterator it = content.begin(); it != content.end(); it++){
         //检查当前词汇是否属于stopword
         if(stopWordDict[it->first] == 1){
             content.erase(it);  //属于则从map中清除当前词汇
@@ -33,8 +38,15 @@ void SimHash::removeStopWord(std::map<std::string,int>& content,std::map<std::st
     }
 }
 
-std::bitset<SimHash::BITSET_LENGTH> SimHash::calculate(std::map<std::string,int> content,std::map<std::string,double> frequencyDict,int wordCount = 6){
-    std::vector<std::pair<std::string,int> > vec(content.begin(),content.end());
+/**
+ * 使用simHash的算法提取文档的特征码
+ * @param content 已经去除过stopword的Map
+ * @param frequencyDict 频率字典
+ * @param wordCount 要作为特征的单词数
+ * @return char* 特征码
+ */
+std::bitset<SimHash::BITSET_LENGTH> SimHash::calculate(std::map<std::string,std::vector<int> > content,std::map<std::string,double> frequencyDict,int wordCount){
+    std::vector<std::pair<std::string,std::vector<int> > > vec(content.begin(),content.end());
     std::sort(vec.begin(),vec.end(),cmpByValue);                                //对词汇按照频次进行排序
 
     std::vector<std::vector<int> > res;             //保存每个单词计算过权重的值

@@ -16,16 +16,17 @@
 #include"DocumentDAO.h"
 #include"Word.h"
 #include"WordDAO.h"
+#include"PostingList.h"
 
 class DocumentController{
 public:
     
     /**
      * input a format document string like title|type|author|url|text
-     * @param documentFormat a format string
+     * @param formatedDocument a format string
      * @return the words　count insert into database
      */
-    int formatedDocumentEntry(std::string documentFormat);
+    int formatedDocumentEntry(std::string formatedDocument);
 
     /**
      * 原生文档的入口，比如通过爬虫刚下载下来的未处理的网页

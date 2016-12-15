@@ -1,5 +1,5 @@
 #place searchEngine library into lib folder
-set(LIB_SRC DocumentDAO.cpp WordDAO.cpp Mysql.cpp InvertedIndexHash.cpp PostingList.cpp Word.cpp Document.cpp util/DocumentParser.cpp util/util.cpp util/config.cpp DocumentController.cpp WordController.cpp util/SocketStreamParser.cpp Package.cpp util/DocumentAnalysis.cpp)
+set(LIB_SRC DocumentDAO.cpp WordDAO.cpp Mysql.cpp InvertedIndexHash.cpp PostingList.cpp Word.cpp Document.cpp util/DocumentParser.cpp util/util.cpp util/config.cpp DocumentController.cpp WordController.cpp util/SocketStreamParser.cpp Package.cpp util/DocumentAnalysis.cpp util/SimHash.cpp)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 SET(CMAKE_BUILD_TYPE "Debug")  
 SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")  
@@ -11,8 +11,8 @@ add_library(searchEngine_static STATIC ${LIB_SRC})
 
 #link library
 link_directories(${PROJECT_SOURCE_DIR}/lib)
-target_link_libraries(searchEngine libmysqlcppconn.so libcryptopp.a  glog friso)
-target_link_libraries(searchEngine libmysqlcppconn.so libcryptopp.a glog friso)
+target_link_libraries(searchEngine libmysqlcppconn.so libcryptopp.a  glog friso socket cityHash)
+target_link_libraries(searchEngine libmysqlcppconn.so libcryptopp.a glog friso socket cityHash)
 
 set_target_properties(searchEngine PROPERTIES CLEAN_DIRECT_OUT 1)
 set_target_properties(searchEngine PROPERTIES VERSION 1.0 SOVERSION 1)

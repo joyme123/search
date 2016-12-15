@@ -111,6 +111,6 @@ std::string substrWithChinese(std::string str,int start,int length){
      std::string tmp(src.c_str());
      return tmp;
  }
- bool cmpByValue(const std::pair<std::string,int>& l, const std::pair<std::string,int>& r){
-     return l.second > r.second;
+ bool cmpByValue(const std::pair<std::string,std::vector<int> >& l, const std::pair<std::string,std::vector<int> >& r){
+     return l.second.size() > r.second.size();
  }
