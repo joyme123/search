@@ -18,10 +18,11 @@ class SimHash{
     public:
          /**
          * 移除网页正文的stop word
-         * @param content 正文的分词结果(map),引用传参
+         * @param content 正文的分词结果(map)
          * @param stopWordDict stopWord的字
+         * @return 去除stopWord后的map
          */
-        void removeStopWord(std::map<std::string,std::vector<int> >& content,std::map<std::string,int> stopWordDict);
+        std::map<std::string,std::vector<int> > removeStopWord(std::map<std::string,std::vector<int> > content,std::map<std::string,int> stopWordDict);
 
 
         /**

@@ -1,5 +1,5 @@
 /**
- * simHash函数的测试单元测试
+ * simHash函数的单元测试
  */
 
 #include "../core/util/config.h"
@@ -50,15 +50,19 @@ int main(int argc,char** argv){
     DocumentAnalysis analysis;
     std::string content = analysis.improvedHtmlAnalysis(str);       //得到正文内容
 
+    std::cout << "正文是:" << content << std::endl;
+
     delete[] buffer;
 
-    map<string,vector<int> > map =  DocumentParser::splitWord(content,__FRISO_COMPLEX_MODE__);         //得到正文的分词结果
+    map<string,vector<int> > resultMap =  DocumentParser::splitWord(content,__FRISO_COMPLEX_MODE__);         //得到正文的分词结果
 
     std::map<string,double> frequencyDict = initFrequencyDict();    //获取初始化的词频表
     std::map<string,int> stopWordDict = initStopWordDict();         //获取stopWord词汇表
+
     SimHash simHash;
-    simHash.removeStopWord(map,stopWordDict);                       //移除stopWord
-    std::bitset<SimHash::BITSET_LENGTH> bitset = simHash.calculate(map,frequencyDict);                           //计算特征码
+    map<string,vector<int> > removedResultMap = simHash.removeStopWord(resultMap,stopWordDict);    //移除stopWord   
+
+    std::bitset<SimHash::BITSET_LENGTH> bitset = simHash.calculate(removedResultMap,frequencyDict);                           //计算特征码
 
     std::cout << bitset << std::endl;
 

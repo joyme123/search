@@ -25,17 +25,20 @@ std::bitset<SimHash::BITSET_LENGTH> SimHash::calVectorAdd(std::vector<std::vecto
 }
 
 /**
- * 移除网页正文的stop word
- * @param content 正文的分词结果(map),引用传参
- * @param stopWordDict stopWord的字典
- */
-void SimHash::removeStopWord(std::map<std::string,std::vector<int> >& content,std::map<std::string,int> stopWordDict){
+* 移除网页正文的stop word
+* @param content 正文的分词结果(map)
+* @param stopWordDict stopWord的字
+* @return 去除stopWord后的map
+*/
+std::map<std::string,std::vector<int> > SimHash::removeStopWord(std::map<std::string,std::vector<int> > content,std::map<std::string,int> stopWordDict){
+    std::map<std::string,std::vector<int> > res;            //保存结果
     for(std::map<std::string,std::vector<int> >::iterator it = content.begin(); it != content.end(); it++){
-        //检查当前词汇是否属于stopword
-        if(stopWordDict[it->first] == 1){
-            content.erase(it);  //属于则从map中清除当前词汇
+        //如果不属于stopWord
+        if(stopWordDict[it->first] != 1){
+            res.insert(*it);  //属于则从map中清除当前词汇
         }
     }
+    return res;
 }
 
 /**
@@ -56,12 +59,14 @@ std::bitset<SimHash::BITSET_LENGTH> SimHash::calculate(std::map<std::string,std:
 
     int weight = 1;                                 //单词权重
     for(int i = 0; i < wordCount; i++){
-        std::bitset<SimHash::BITSET_LENGTH> current(::CityHash64(vec[i].first.c_str(),(size_t)vec[i].first.length()));      //获取单词的64位bitset
+        std::cout << "SimHash.cpp中60行--关键字:" << vec[i].first << "--" << std::endl;
+        uint64 bit64 = CityHash64(vec[i].first.c_str(),(size_t)vec[i].first.length());
+        std::bitset<SimHash::BITSET_LENGTH> current(bit64);      //获取单词的64位bitset
         
         if(frequencyDict.find(vec[i].first) != frequencyDict.end()){        //如果当前单词在频率表中
-            weight = 100 / frequencyDict[vec[i].first];
+            weight = 1 / frequencyDict[vec[i].first];
         }else{
-            weight = 100 / 0.0005;
+            weight = 1 / 0.0005;
         }
 
         for(int i = 0; i < SimHash::BITSET_LENGTH; i++){

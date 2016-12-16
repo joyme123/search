@@ -40,7 +40,7 @@ std::map<std::string,int>  initStopWordDict(){
     std::map<std::string,int> stopWordDict;
 
     //初始化频率map
-    char* filepath = (char*)STOPWORD_CN_DICT_PATH;
+    char* filepath = (char*)STOPWORD_DICT_PATH;
 
 
 

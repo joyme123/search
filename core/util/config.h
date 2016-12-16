@@ -9,10 +9,9 @@
 #ifndef RESOURCE_PATH
 #define RESOURCE_PATH
 
-#define FRISO_DICT_PATH "../../resource/friso.ini"
-#define FREQUENCY_DICT_PATH "../../resource/frequency/cn.txt"
-#define STOPWORD_CN_DICT_PATH "../../resource/stopword/cn.txt"
-#define STOPWORD_EN_DICT_PATH "../../resource/stopword/en.txt"
+#define FRISO_DICT_PATH "resource/friso.ini"
+#define FREQUENCY_DICT_PATH "resource/frequency/cn.txt"
+#define STOPWORD_DICT_PATH "resource/stopword/word.txt"
 
 #endif
 enum InvertHashIndexType{

@@ -12,7 +12,7 @@ DocumentAnalysis::DocumentAnalysis(){
 }
 
 std::string DocumentAnalysis::htmlPeel(std::string html) const{
-    std::regex reg("<\\s*script(\\s|\\S)*?<\\s*/script\\s*>|<\\s*style(\\s|\\S)*?<\\s*/style\\s*>|<!--(\\s|\\S)*?-->|<\\s*/{0,1}(\\s|\\S)*?>|&.*?;");                     //去除html标签的正则
+    std::regex reg("<\\s*script(\\s|\\S)*?<\\s*/script\\s*>|<\\s*style(\\s|\\S)*?<\\s*/style\\s*>|<!--(\\s|\\S)*?-->|<\\s*/{0,1}(\\s|\\S)*?>|\\s*&.*?;\\s*");                     //去除html标签的正则和&nbsp;
     return this->htmlPeel(html,reg);
 }
 
@@ -20,6 +20,9 @@ std::string DocumentAnalysis::htmlPeel(std::string html,std::regex regex) const{
     std::string formatedContent;
     //去除网页上的所有页面标签和css和script
     formatedContent = std::regex_replace(html,regex," ");
+
+    std::cout << formatedContent << std::endl;
+
     return formatedContent;
 }
 
@@ -31,6 +34,7 @@ std::string DocumentAnalysis::htmlFormat(std::string html) const{
     
     std::regex reg("\\s*</{0,1}(p|h\\d{1}|img).*?>\\s*|\\s*<\\s*br\\s*/\\s*>|\\s*<\\s*/{0,1}\\s*t(d|h|r)\\s*>\\s*|<div.*?>\\s*</div>");
     std::string formatedStr = std::regex_replace(html,reg," ");
+
     return formatedStr;
 }
 
