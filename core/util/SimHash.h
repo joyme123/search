@@ -5,6 +5,11 @@
 #include<bitset>
 #include"util.h"
 
+/**
+ * 使用SimHash算法，对文章进行特征码提取
+ * author:jiangpengfei12@gmail.com 
+ * date；2016-12-16
+ */
 class SimHash{
     public:
         static const int BITSET_LENGTH = 64;       

@@ -1,30 +1,30 @@
 #include"DocumentParser.h"
 
-bool DocumentParser::htmlFileAnalysis(Document& document,std::string content){
+bool DocumentParser::htmlFileAnalysis(Document& document,std::string& content){
     return true;
 }
 
-bool DocumentParser::pdfFileAnalysis(Document& document,std::string content){
+bool DocumentParser::pdfFileAnalysis(Document& document,std::string& content){
     return true;
 }
 
-bool DocumentParser::wordFileAnalysis(Document& document,std::string content){
+bool DocumentParser::wordFileAnalysis(Document& document,std::string& content){
     return true;
 }
 
 
-std::string DocumentParser::peel(std::string html){
+std::string DocumentParser::peel(std::string& html){
 
     return " ";
 }
 
-std::vector<InvertedIndexHash> DocumentParser::parser(std::string text){
+std::vector<InvertedIndexHash> DocumentParser::parser(std::string& text){
 	std::vector<InvertedIndexHash> v;
 	
 	return v;
 }
 
-std::map< std::string, std::vector< int > > DocumentParser::ngram(std::string text,int step){
+std::map< std::string, std::vector< int > > DocumentParser::ngram(std::string& text,int step){
 	std::map<std::string,std::vector<int> > map;
 	int position = 1;
 	std::string word = text.substr(0,1);
@@ -36,7 +36,7 @@ std::map< std::string, std::vector< int > > DocumentParser::ngram(std::string te
 	return map;
 }
 
-std::map< std::string, std::vector< int > > DocumentParser::splitWord(std::string text,friso_mode_t mode){
+std::map< std::string, std::vector< int > > DocumentParser::splitWord(std::string& text,friso_mode_t mode){
     friso_t friso;
     friso_config_t config;
     friso_task_t task;
@@ -77,7 +77,7 @@ std::map< std::string, std::vector< int > > DocumentParser::splitWord(std::strin
 * @param formatText formated text like this:title|type|author|url|text
 * @return document
 */
-Document DocumentParser::documentFormat(std::string formatText){
+Document DocumentParser::documentFormat(std::string& formatText){
 
     Document document;
     int count = 0;      //times of find |
@@ -137,7 +137,7 @@ Document DocumentParser::documentFormat(std::string formatText){
 	return document;
 }
 
-Document DocumentParser::documentFormat(Package package){
+Document DocumentParser::documentFormat(Package& package){
     Document document;
     document.url = package.url;
     document.type =package.type;

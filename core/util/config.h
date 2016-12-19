@@ -24,18 +24,4 @@ enum DOCUMENT_TYPE{
 	pdf=2,
 	word=3
 };
-
-/**
- * 初始化词频表
- * @return 词频结果
- */
-std::map<std::string,double>  initFrequencyDict();
-
-/**
- * 初始化stopword词汇表
- * @return stopWord词汇表
- */
-
-std::map<std::string,int> initStopWordDict();
-
 #endif

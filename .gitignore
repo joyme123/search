@@ -2,8 +2,11 @@ build/
 lib/
 bin/
 test/bin
-client
+entry
+formatedEntry
 www/cgi-bin
+www/*.war
+www/cgi-bin/ant.cgi
 *CMakeFiles*
 *.cmake
 CMakeCache

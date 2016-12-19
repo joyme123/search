@@ -6,6 +6,8 @@
 #include "../core/util/SimHash.h"
 #include "../core/util/DocumentAnalysis.h"
 #include "../core/util/DocumentParser.h"
+#include "../core/util/FrequencyDictSingleton.h"
+#include "../core/util/StopWordDictSingleton.h"
 #include <iostream>
 #include <map>
 #include <string>
@@ -15,7 +17,9 @@
 
 using namespace std;
 
-
+//全局初始化的变量
+//std::map<std::string,double> frequencyDict = initFrequencyDict();          //获取初始化的词频表
+//std::map<std::string,int> stopWordDict = initStopWordDict();               //获取stopWord词汇表
 
 int main(int argc,char** argv){
     char* filepath;
@@ -47,6 +51,13 @@ int main(int argc,char** argv){
 
     string str(buffer);
 
+    
+    FrequencyDictSingleton *frequencyDictInstance = FrequencyDictSingleton::getInstance();      //获取词频表的单例
+    //测试单例模式的构造函数没有被重复执行
+    FrequencyDictSingleton *frequencyDictInstance1 = FrequencyDictSingleton::getInstance();      //获取词频表的单例
+    StopWordDictSingleton *stopWordDictInstance = StopWordDictSingleton::getInstance();         //获取停顿词的单例
+
+
     DocumentAnalysis analysis;
     std::string content = analysis.improvedHtmlAnalysis(str);       //得到正文内容
 
@@ -56,13 +67,10 @@ int main(int argc,char** argv){
 
     map<string,vector<int> > resultMap =  DocumentParser::splitWord(content,__FRISO_COMPLEX_MODE__);         //得到正文的分词结果
 
-    std::map<string,double> frequencyDict = initFrequencyDict();    //获取初始化的词频表
-    std::map<string,int> stopWordDict = initStopWordDict();         //获取stopWord词汇表
-
     SimHash simHash;
-    map<string,vector<int> > removedResultMap = simHash.removeStopWord(resultMap,stopWordDict);    //移除stopWord   
+    map<string,vector<int> > removedResultMap = simHash.removeStopWord(resultMap,stopWordDictInstance->stopWordDict);    //移除stopWord   
 
-    std::bitset<SimHash::BITSET_LENGTH> bitset = simHash.calculate(removedResultMap,frequencyDict);                           //计算特征码
+    std::bitset<SimHash::BITSET_LENGTH> bitset = simHash.calculate(removedResultMap,frequencyDictInstance->frequencyDict);                           //计算特征码
 
     std::cout << bitset << std::endl;
 

@@ -1,4 +1,5 @@
 /**
+ * filename: formatedDocumentEntry.cpp
  * 接受已经格式化好的文档，文档的格式类似 title|type|abstract|author|text|
  * author:jiangpengfei
  * date: 2016-12-07
@@ -11,6 +12,7 @@
 #include"core/Package.h"
 #include "core/util/SocketStreamParser.h"
 #include "core/util/util.h"
+
 
 void printMap(std::map<std::string,std::vector<int> > map){
 	for(std::map<std::string,std::vector<int> >::iterator it = map.begin(); it != map.end(); it++){
@@ -57,7 +59,7 @@ int main(int argc, char **argv) {
                     new_sock.recvBinary(data,dataLen);
                     packs = parser.parse(data,dataLen);
                     std::cout  <<"长度为:"<< dataLen << "-----解析数据包:" << packs.size() << std::endl;
-					int count = docContrl.documentEntry(packs);
+					int count = docContrl.formatedDocumentEntry(packs[0].content);
 					LOG(INFO) << "entry.cpp->main()"<<"add or update "<<count<< "word(s)";
                 }
 	        }catch ( SocketException& e) {

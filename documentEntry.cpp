@@ -1,4 +1,5 @@
 /**
+ * filename: documentEntry.cpp
  * 接受原生文档，比如通过爬虫下载的未处理的网页
  * author:jiangpengfei
  * date: 2016-12-07
@@ -11,6 +12,8 @@
 #include"core/Package.h"
 #include "core/util/SocketStreamParser.h"
 #include "core/util/util.h"
+
+
 
 void printMap(std::map<std::string,std::vector<int> > map){
 	for(std::map<std::string,std::vector<int> >::iterator it = map.begin(); it != map.end(); it++){
@@ -44,9 +47,9 @@ int main(int argc, char **argv) {
         ServerSocket server (9999);
         std::vector<Package> packs;
         SocketStreamParser parser;      
+        std::cout << "文档接收socket已经打开..." << std::endl;
         while (true){
             parser.reset(); //每一次连接都要重置解析器
-
             ServerSocket new_sock;
             server.accept (new_sock);
             try{

@@ -11,7 +11,12 @@
 #include<string>
 #include<glog/logging.h>
 
+
 #include"util/DocumentParser.h"
+#include"util/DocumentAnalysis.h"
+#include"util/SimHash.h"
+#include"util/FrequencyDictSingleton.h"
+#include"util/StopWordDictSingleton.h"
 #include"Document.h"
 #include"DocumentDAO.h"
 #include"Word.h"

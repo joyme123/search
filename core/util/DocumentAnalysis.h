@@ -10,7 +10,7 @@
 #include"util.h"
 
 /**
- * 文档分析类，包括正文提取以及特征码提取
+ * 文档分析类，包括正文提取
  * author:jiangpengfei12@gmail.com
  * date:  2016-12-12
  */
@@ -28,7 +28,7 @@ class DocumentAnalysis{
          * @param html 引用传参,要处理的Html页面
          * @return 引用返回值,处理好的html页面
          */
-         std::string htmlPeel(std::string html) const;
+         std::string htmlPeel(std::string& html) const;
 
          /**
           * 利用正则表达式去除网页标签
@@ -36,14 +36,14 @@ class DocumentAnalysis{
           * @param regex 自定义正则
           * @return 引用返回值,处理好的html页面
           */
-         std::string htmlPeel(std::string html,std::regex regex) const;
+         std::string htmlPeel(std::string& html,std::regex regex) const;
 
         /**
          * 去除<p>、<img>、<hx>等单独占用的行,将单个空<div></div>块的权重占行权重降为1，时间复杂度O(n)
          * @param html 要处理的网页字符串
          * @return 处理好的网页内容
          */
-         std::string htmlFormat(std::string html) const;
+         std::string htmlFormat(std::string& html) const;
 
 
         /**
@@ -53,7 +53,7 @@ class DocumentAnalysis{
          * @param peeledHtml 被去除网页标签的网页文本
          * @return 提取出来的网页正文
          */
-        std::string fastHtmlAnalysis(std::string peeledHtml) const;
+        std::string fastHtmlAnalysis(std::string& peeledHtml) const;
 
 
         /**
@@ -61,7 +61,7 @@ class DocumentAnalysis{
          * @param html 网页文本
          * @return 提起出来的网页文本
          */
-        std::string improvedHtmlAnalysis(std::string html) const;
+        std::string improvedHtmlAnalysis(std::string& html) const;
 
         /**
          * 设置一个行块最多容纳几行
