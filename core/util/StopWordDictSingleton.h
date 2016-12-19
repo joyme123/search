@@ -1,5 +1,6 @@
-#include<iostream>
-#include<string>
+#ifndef STOPWORDDICTSINGLETON_H
+#define STOPWORDDICTSINGLETON_H
+
 #include<map>
 #include<vector>
 #include"config.h"
@@ -15,3 +16,5 @@ class StopWordDictSingleton{
         int test;
         StopWordDictSingleton();
 };
+
+#endif

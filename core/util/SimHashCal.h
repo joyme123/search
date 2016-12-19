@@ -1,3 +1,6 @@
+#ifndef SIMHASHCAL_H
+#define SIMHASHCAL_H
+
 #include<iostream>
 #include<map>
 #include<vector>
@@ -39,3 +42,5 @@ class SimHash{
         std::bitset<SimHash::BITSET_LENGTH> calculate(std::map<std::string,std::vector<int> > content,std::map<std::string,double> frequencyDict,int wordCount = 6);
 
 };
+
+#endif

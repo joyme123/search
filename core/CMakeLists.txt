@@ -1,5 +1,23 @@
 #place searchEngine library into lib folder
-set(LIB_SRC DocumentDAO.cpp WordDAO.cpp Mysql.cpp InvertedIndexHash.cpp PostingList.cpp Word.cpp Document.cpp util/DocumentParser.cpp util/util.cpp util/config.cpp DocumentController.cpp WordController.cpp util/SocketStreamParser.cpp Package.cpp util/DocumentAnalysis.cpp util/SimHash.cpp util/FrequencyDictSingleton.cpp util/StopWordDictSingleton.cpp)
+set(LIB_SRC DocumentDAO.cpp
+            WordDAO.cpp 
+            DocumentController.cpp 
+            WordController.cpp 
+            Mysql.cpp
+            InvertedIndexHash.cpp 
+            PostingList.cpp 
+            Word.cpp 
+            Document.cpp 
+            Package.cpp 
+            SimHash.cpp
+            util/DocumentParser.cpp 
+            util/util.cpp 
+            util/config.cpp 
+            util/SocketStreamParser.cpp 
+            util/DocumentAnalysis.cpp 
+            util/SimHashCal.cpp 
+            util/FrequencyDictSingleton.cpp 
+            util/StopWordDictSingleton.cpp)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 SET(CMAKE_BUILD_TYPE "Debug")  
 SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")  

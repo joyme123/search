@@ -3,7 +3,7 @@
  */
 
 #include "../core/util/config.h"
-#include "../core/util/SimHash.h"
+#include "../core/util/SimHashCal.h"
 #include "../core/util/DocumentAnalysis.h"
 #include "../core/util/DocumentParser.h"
 #include "../core/util/FrequencyDictSingleton.h"

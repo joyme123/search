@@ -14,7 +14,7 @@
 
 #include"util/DocumentParser.h"
 #include"util/DocumentAnalysis.h"
-#include"util/SimHash.h"
+#include"util/SimHashCal.h"
 #include"util/FrequencyDictSingleton.h"
 #include"util/StopWordDictSingleton.h"
 #include"Document.h"

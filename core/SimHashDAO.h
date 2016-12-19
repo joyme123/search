@@ -10,38 +10,29 @@
 
 class SimHashDAO:public Mysql{
     private:
-    std::string TABLE = "document";
+    std::string TABLE = "simhash";
     public:
 		SimHashDAO();
         
         /**
-         * insert a docuemnt into database and return id of this
-         * @param document add document into database(maybe use fastfs to storage)
-         * @return id of this document
+         *
          */
-        int addSimHash(Document document); 
+        int addSimHash(SimHash simHash); 
         
         /**
-         * delete the document with an id
-         * @param id document id
-         * @return affect rows count
+         *
          */
-        int deleteDocument(unsigned int id);   
+        int deleteSimHash(int id);   
         
         /**
-         * parse the docment the put words of this document into database
-         * each word generate a record reference document id
-         * @param document the document to parse
-         * @return affect rows count
+         *
          */
-        int parseDocumentAndUpdate(Document document); 
+        int parseSimHashAndUpdate(SimHash simHash); 
 		
 		/**
-		 * search specific document with some document id
-		 * @param documentId document id
-		 * @return vector with Document
+         *
 		 */
-		std::vector<Document> searchDocument(std::vector<unsigned int> documentId);
+		SimHash searchSimHash(int id);
 };
 
 #endif

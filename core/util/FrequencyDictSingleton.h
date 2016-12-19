@@ -1,3 +1,6 @@
+#ifndef FREQUENCYDICTSINGLETON_H
+#define FREQUENCYDICTSINGLETON_H
+
 #include<iostream>
 #include<string>
 #include<map>
@@ -15,3 +18,5 @@ class FrequencyDictSingleton{
         int test;
         FrequencyDictSingleton();
 };
+
+#endif

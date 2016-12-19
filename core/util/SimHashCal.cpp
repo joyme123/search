@@ -1,4 +1,4 @@
-#include"SimHash.h"
+#include"SimHashCal.h"
 #include "../../include/cityHash/city.h"
 
 std::bitset<SimHash::BITSET_LENGTH> SimHash::calVectorAdd(std::vector<std::vector<int> > res){
