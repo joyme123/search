@@ -8,11 +8,12 @@
 #include"SimHash.h"
 #include"util/util.h"
 
-class SimHashDAO:public Mysql{
+class SimHashDAO{
     private:
     std::string TABLE = "simhash";
+    Mysql* mysql;
     public:
-		SimHashDAO();
+		SimHashDAO(Mysql mysql);
         
         /**
          *
@@ -22,7 +23,7 @@ class SimHashDAO:public Mysql{
         /**
          *
          */
-        int deleteSimHash(int id);   
+        int deleteSimHash(unsigned int id);   
         
         /**
          *

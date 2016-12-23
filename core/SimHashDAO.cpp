@@ -1,24 +1,33 @@
 #include"SimHashDAO.h"
 
 int SimHashDAO::addSimHash(SimHash simHash){
-    std::string sql = "INSERT INTO "+TABLE+" (type,title,abstract,url,author,text,wordNum,updateTime,createTime)VALUES(?,?,?,?,?,?,?,?,?)";
+    std::string sql = "INSERT INTO "+TABLE+" (id,simhash,docIds,createTime,updateTime,)VALUES(?,?,?,?,?)";
     int id = -1;
     try{
-        //Mysql mysql;
-        std::shared_ptr<sql::PreparedStatement> pstm = this->prepare(sql);
-        pstm->setUInt(1,document.type);
-        pstm->setString(2,document.title);
-        pstm->setString(3,document.abstract);
-        pstm->setString(4,document.url);
-        pstm->setString(5,document.author);
-		pstm->setString(6,document.text);
-        pstm->setUInt(7,document.wordNum);
-        pstm->setDateTime(8,sql::SQLString(document.updateTime));
-        pstm->setDateTime(9,sql::SQLString(document.createTime));
-        id = this->insert(pstm);
+        std::shared_ptr<sql::PreparedStatement> pstm = this->mysql->prepare(sql);
+        pstm->setUInt(1,simHash.id);
+        pstm->setString(2,simHash.simHash);
+        pstm->setString(3,simHash.docIds);
+        pstm->setString(4,simHash.createTime);
+        pstm->setString(5,simHash.updateTime);
+        id = this->mysql->insert(pstm);
     }catch(sql::SQLException &e){
         id = -1;
-		LOG(ERROR) << "DocumentDAO->addDocument(Document document):"<< e.getErrorCode()<<"--"<<e.what();
+		LOG(ERROR) << "SimHashDAO->addSimHash(SimHash simHash):"<< e.getErrorCode()<<"--"<<e.what();
     }
     return id;
+}
+
+int SimHashDAO::deleteSimHash(unsigned int id){
+    std::string sql = "DELETE FROM "+TABLE+" WHERE id = ?";
+    int row = -1;
+    try{
+        std::shared_ptr<sql::PreparedStatement> pstm = this->mysql->prepare(sql);
+        pstm->setUInt(1,id);
+        row = this->mysql->insert(pstm);
+    }
+}
+
+int SimHashDAO::parseSimHashAndUpdate(SimHash simHash){
+
 }

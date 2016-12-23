@@ -4,15 +4,17 @@
 #include<iostream>
 #include<string>
 #include<glog/logging.h>
+#include "exception/TimeoutException.h"
 #include"Mysql.h"
 #include"Document.h"
 #include"util/util.h"
 
-class DocumentDAO:public Mysql{
+class DocumentDAO{
     private:
     std::string TABLE = "document";
+    Mysql* mysql;
     public:
-		DocumentDAO();
+		DocumentDAO(Mysql* mysql);
         
         /**
          * insert a docuemnt into database and return id of this

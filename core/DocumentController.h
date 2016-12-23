@@ -11,7 +11,7 @@
 #include<string>
 #include<glog/logging.h>
 
-
+#include "ConnectionPool.h"
 #include"util/DocumentParser.h"
 #include"util/DocumentAnalysis.h"
 #include"util/SimHashCal.h"
@@ -24,6 +24,8 @@
 #include"PostingList.h"
 
 class DocumentController{
+    private:
+        ConnectionPool* pool = ConnectionPool::createConnectionPool(100);
 public:
     
     /**

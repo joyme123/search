@@ -1,5 +1,6 @@
 #place searchEngine library into lib folder
-set(LIB_SRC DocumentDAO.cpp
+set(LIB_SRC ConnectionPool.cpp
+            DocumentDAO.cpp
             WordDAO.cpp 
             DocumentController.cpp 
             WordController.cpp 

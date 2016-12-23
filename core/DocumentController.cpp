@@ -2,17 +2,19 @@
 
 int DocumentController::formatedDocumentEntry(std::string formatedDocument)
 {
+    Mysql mysql = this->pool->getConnection();
     Document document = DocumentParser::documentFormat(formatedDocument);
-	DocumentDAO doc;
+	DocumentDAO doc(&mysql);
     int wordCount = 0;
     try{
-        doc.beginTransaction();                 //事务开启
+        mysql.beginTransaction();                 //事务开启
         
         int id = doc.addDocument(document);     //将文档存入数据库
         if(id == -1){
         //文档存储失败
             LOG(ERROR) << "DocumentController->doucmentEntry(std::string formatedDocument):add document failed";
-            doc.rollback();
+            mysql.rollback();
+            this->pool->retConnection(mysql);
             return -1;
         }
         document.id = id;
@@ -20,7 +22,7 @@ int DocumentController::formatedDocumentEntry(std::string formatedDocument)
         //分词
         std::map<std::string,std::vector<int> > map = DocumentParser::splitWord(document.text,__FRISO_COMPLEX_MODE__);  
         
-        WordDAO wordDao;
+        WordDAO wordDao(&mysql);
         //循环写入单词
         for(std::map<std::string,std::vector<int> >::iterator it = map.begin(); it != map.end(); it++){
             std::string word = it->first;
@@ -34,28 +36,34 @@ int DocumentController::formatedDocumentEntry(std::string formatedDocument)
             std::shared_ptr<PostingList> ppp = std::make_shared<PostingList>(posts);
             if(wordId == -1){
                 if(wordDao.addWord(word,ppp)<0){
-                    doc.rollback();
+                    mysql.rollback();
+                    this->pool->retConnection(mysql);
+                    return -1;
                 }else{
                     wordCount++;
                 }
             }else{
                 if(wordDao.updateWord(wordId,ppp)<0){
-                    doc.rollback();   
+                    mysql.rollback();   
+                    this->pool->retConnection(mysql);
+                    return -1;
                 }else{
                     wordCount++;
                 }
             }
         }
         
-        doc.commit();          //commit transaction
-    }catch(std::exception &e){
-        doc.rollback();
+        mysql.commit();          //commit transaction
+        this->pool->retConnection(mysql);
+    }catch(TimeoutException &e){
+        LOG(ERROR) << "DocumentController->formatedDocumentEntry(std::string formatedDocument):"<< e.getErrorCode()<<"--"<<e.what();
     }
 	return wordCount;
 }
 
 int DocumentController::documentEntry(std::vector<Package> packs){
 
+    Mysql mysql = this->pool->getConnection();
     FrequencyDictSingleton *frequencyDictInstance = FrequencyDictSingleton::getInstance();      //获取词频表的单例
     StopWordDictSingleton *stopWordDictInstance = StopWordDictSingleton::getInstance();         //获取停顿词的单例
     DocumentParser docParser;
@@ -77,15 +85,16 @@ int DocumentController::documentEntry(std::vector<Package> packs){
         std::cout << bitset << std::endl;
 
         Document document = docParser.documentFormat(*it);
-        DocumentDAO doc;
+        DocumentDAO doc(&mysql);
         try{
-            doc.beginTransaction();                 //事务开启
+            mysql.beginTransaction();                 //事务开启
             
             int id = doc.addDocument(document);     //将文档存入数据库
             if(id == -1){
             //文档存储失败
                 LOG(ERROR) << "DocumentController->doucmentEntry(std::string formatedDocument):add document failed";
-                doc.rollback();
+                mysql.rollback();
+                this->pool->retConnection(mysql);
                 return -1;
             }
             document.id = id;
@@ -93,7 +102,7 @@ int DocumentController::documentEntry(std::vector<Package> packs){
             //对去掉标签的网页全文分词
             std::map<std::string,std::vector<int> > map = DocumentParser::splitWord(peeledHtml,__FRISO_COMPLEX_MODE__);  
             
-            WordDAO wordDao;
+            WordDAO wordDao(&mysql);
             //循环写入单词
             for(std::map<std::string,std::vector<int> >::iterator it = map.begin(); it != map.end(); it++){
                 std::string word = it->first;
@@ -107,22 +116,27 @@ int DocumentController::documentEntry(std::vector<Package> packs){
                 std::shared_ptr<PostingList> ppp = std::make_shared<PostingList>(posts);
                 if(wordId == -1){
                     if(wordDao.addWord(word,ppp)<0){
-                        doc.rollback();
+                        mysql.rollback();
+                        this->pool->retConnection(mysql);
+                        return -1;
                     }else{
                         wordCount++;
                     }
                 }else{
                     if(wordDao.updateWord(wordId,ppp)<0){
-                        doc.rollback();   
+                        mysql.rollback();   
+                        this->pool->retConnection(mysql);
+                        return -1;
                     }else{
                         wordCount++;
                     }
                 }
             }
             
-            doc.commit();          //commit transaction
-        }catch(std::exception &e){
-            doc.rollback();
+            mysql.commit();          //commit transaction
+            this->pool->retConnection(mysql);
+        }catch(TimeoutException &e){
+            LOG(ERROR) << "DocumentController->documentEntry(std::vector<Package> packs):"<< e.getErrorCode()<<"--"<<e.what();
         }
     }   //end for 
 	return wordCount;
@@ -130,8 +144,12 @@ int DocumentController::documentEntry(std::vector<Package> packs){
 
 std::vector< Document > DocumentController::searchDocument(std::vector< unsigned int > documentId)
 {
-	DocumentDAO documentDao;
-	return documentDao.searchDocument(documentId);
+    Mysql mysql = this->pool->getConnection();
+	DocumentDAO documentDao(&mysql);
+
+	std::vector<Document> docs = documentDao.searchDocument(documentId);
+    this->pool->retConnection(mysql);
+    return docs;
 }
 
 

@@ -6,6 +6,7 @@
 
 #include<glog/logging.h>
 
+#include"exception/TimeoutException.h"
 #include"Mysql.h"
 #include"Word.h"
 #include"InvertedIndexHash.h"
@@ -14,13 +15,14 @@
 #include"util/config.h"
 
 
-class WordDAO:public Mysql{
+class WordDAO{
 private:
     std::string TABLE = "word";
     std::string NGRAMTABLE = "ngramWord";		//通过ngram生成的词汇表
 	std::string SPLITTABLE = "splitWord";				//通过分词生成的词汇表
+    Mysql* mysql;
 public:
-	WordDAO();
+	WordDAO(Mysql* mysql);
     /**
      * insert the word and it's postingList
      * @param word add word into database with it InvertedIndexHash

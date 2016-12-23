@@ -1,7 +1,7 @@
 #include"DocumentDAO.h"
 
-DocumentDAO::DocumentDAO(){
-	
+DocumentDAO::DocumentDAO(Mysql* mysql){
+	this->mysql = mysql;
 }
 /**
  * insert a docuemnt into database and return id of this
@@ -12,8 +12,7 @@ int DocumentDAO::addDocument(Document document){
     std::string sql = "INSERT INTO "+TABLE+" (type,title,abstract,url,author,text,wordNum,updateTime,createTime)VALUES(?,?,?,?,?,?,?,?,?)";
     int id = -1;
     try{
-        //Mysql mysql;
-        std::shared_ptr<sql::PreparedStatement> pstm = this->prepare(sql);
+        std::shared_ptr<sql::PreparedStatement> pstm = this->mysql->prepare(sql);
         pstm->setUInt(1,document.type);
         pstm->setString(2,document.title);
         pstm->setString(3,document.abstract);
@@ -23,7 +22,7 @@ int DocumentDAO::addDocument(Document document){
         pstm->setUInt(7,document.wordNum);
         pstm->setDateTime(8,sql::SQLString(document.updateTime));
         pstm->setDateTime(9,sql::SQLString(document.createTime));
-        id = this->insert(pstm);
+        id = this->mysql->insert(pstm);
     }catch(sql::SQLException &e){
         id = -1;
 		LOG(ERROR) << "DocumentDAO->addDocument(Document document):"<< e.getErrorCode()<<"--"<<e.what();
@@ -40,10 +39,9 @@ int DocumentDAO::deleteDocument(unsigned int id){
     std::string sql = "DELETE FROM"+ TABLE +"WHERE id = ?";
     int rows = -1;
     try{
-        //Mysql mysql;
-        std::shared_ptr<sql::PreparedStatement> pstm = this->prepare(sql);
+        std::shared_ptr<sql::PreparedStatement> pstm = this->mysql->prepare(sql);
         pstm->setInt(1,id);
-        rows = this->del(pstm);
+        rows = this->mysql->del(pstm);
     }catch(sql::SQLException &e){
 		LOG(ERROR) << "DocumentDAO->deleteDocument(int id):" << e.getErrorCode()<<"--"<<e.what() << e.getSQLState();
         rows = -1;
@@ -72,8 +70,8 @@ std::vector< Document > DocumentDAO::searchDocument(std::vector<unsigned int > d
 	}
 	sql = sql + where;
 	try{
-		std::shared_ptr<sql::PreparedStatement> pstm = this->prepare(sql);
-		std::shared_ptr<sql::ResultSet> res = this->query(pstm);
+		std::shared_ptr<sql::PreparedStatement> pstm = this->mysql->prepare(sql);
+		std::shared_ptr<sql::ResultSet> res = this->mysql->query(pstm);
 		while(res->next()){
 			Document document;
 			document.id = res->getUInt("id");
