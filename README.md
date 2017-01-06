@@ -18,7 +18,7 @@
 注意事项:
 需要aclocal和automake，有可能存在版本不一致的问题，通过修改Makefile中的版本号即可解决
 test-driver的软连接可能指向位置不正确，重新创建软连接即可
-
+aclocal的安装可以参考这里:https://askubuntu.com/questions/45480/how-do-i-install-aclocal/47952
 安装指令:
  > git clone https://github.com/google/glog.git
  
