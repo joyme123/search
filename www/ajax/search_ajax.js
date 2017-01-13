@@ -1,4 +1,4 @@
-var server = "http://localhost/cgi-bin/";
+var server = "http://localhost:8080/cgi-bin/";
 
 function search() {
     var Request = new Object();

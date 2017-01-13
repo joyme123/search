@@ -28,6 +28,23 @@ aclocal的安装可以参考这里:https://askubuntu.com/questions/45480/how-do-
  
  > sudo make install
 
+ glog默认的日志位置在/tmp/下，若要指定日志输出位置可以通过设置环境变量的方式,但是要给指定目录写的权限。如果想看全部的，可以在源码的logging.cc文件下看到）：
+> GLOG_logtostderr bool，默认为FALSE，将日志打印到标准错误，而不是日志文件
+GLOG_alsologtostderr bool，默认为FALSE，将日志打印到日志文件，同时也打印到标准错误
+GLOG_stderrthreshold int，默认为2（ERROR），大于等于这个级别的日志才打印到标准错误，当指定这个参数时，GLOG_alsologtostderr参数将会失效
+GLOG_minloglevel int，默认为0（INFO）， 小于这个日志级别的将不会打印
+GLOG_log_dir string类型，指定日志输出目录，目录必须存在 
+GLOG_max_log_size int，指定日志文件最大size，超过会被切割，单位为MB
+GLOG_stop_logging_if_full_disk bool，默认为FALSE，当磁盘满了之后不再打印日志
+GLOG_v int，默认为0，指定GLOG_v=n时，对vlog(m)，当m<=n时才会打印日志
+
+```
+export GLOG_log_dir=log
+export GLOG_minloglevel=1
+export GLOG_stderrthreshold=1
+export GLOG_v=3
+export GLOG_max_log_size=1
+```
 ### **cgicc是支持cgi的c++库**
 
  > wget ftp://ftp.gnu.org/gnu/cgicc/cgicc-3.2.9.tar.gz

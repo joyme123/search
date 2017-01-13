@@ -8,7 +8,7 @@ ConnectionPool* ConnectionPool::createConnectionPool(int maxConnCount){
 
 //构造函数
 ConnectionPool::ConnectionPool(){
-    std::cout << "单例创建线程池" << std::endl;
+    
 }
 
 //从线程池中获取一个连接实例

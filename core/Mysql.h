@@ -16,6 +16,7 @@
 
 #include <mysql_driver.h>
 #include<mysql_connection.h>
+#include<glog/logging.h>
 
 
 class Mysql{
@@ -25,7 +26,7 @@ class Mysql{
         std::string database;
         std::string url;
         sql::Driver* driver;
-        std::shared_ptr<sql::Connection> conn;
+        sql::Connection* conn;
         void connect();
     public:
         

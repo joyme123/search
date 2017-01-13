@@ -42,6 +42,11 @@ public:
      */
     int documentEntry(std::vector<Package> packs);
 	
+    /**
+     * 搜索文档
+     * @param documentId 文档id的向量数组
+     * @return vector 搜索到的文档数组
+     */
 	std::vector< Document > searchDocument(std::vector<unsigned int > documentId);
     
 };

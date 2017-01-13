@@ -20,7 +20,7 @@
 using namespace std;
 
 int main(int argc,const char **argv){
-    const string url = "tcp://127.0.0.1:3306";
+    const string url = "tcp://115.29.114.202:3306";
     const string user = "5019";
     const string password = "5019";
     const string database = "empdb";
@@ -38,7 +38,7 @@ int main(int argc,const char **argv){
 
         stmt->execute("USE "+database);
         stmt->execute("DROP TABLE IF EXISTS test");
-        stmt->execute("CREATE TABLE test(id INI,label CHAR(1))");
+        stmt->execute("CREATE TABLE test(id INT,label VARCHAR(100))");
         
         cout << "\t Test表创建成功" << endl;
         

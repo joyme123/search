@@ -3,17 +3,21 @@
 void Mysql:: connect(){
 	if(conn == NULL){
 		std::shared_ptr<sql::Connection> temp(this->driver->connect(this->url,this->user,this->pass));
-		this->conn = temp;
+		this->conn = temp.get();
 		std::shared_ptr<sql::Statement> stm(this->conn->createStatement()); 
-		stm->execute("use "+database);
+		if(stm->execute("use "+database)){
+			std::cout << "数据库连接成功";
+		}else{
+			std::cout << "数据库连接成功";
+		}
 	}
 }
 Mysql::Mysql(){
 	//get the instance of driver int construct function
-	user = "5019";
-	pass = "5019";
-	database = "empdb";
-	url = "tcp://115.29.114.202:3306";
+	this->user = "5019";
+	this->pass = "5019";
+	this->database = "empdb";
+	this->url = "tcp://115.29.114.202:3306";
 	this->driver = sql::mysql::get_driver_instance();
 }
 
@@ -86,6 +90,7 @@ int Mysql:: insert(std::shared_ptr<sql::PreparedStatement> pstm){
 	int id = -1;
 	if(res->next())
 			id = res->getInt(1);
+	delete res;		//删除res指针指向的内存
 	return id;
 }
         

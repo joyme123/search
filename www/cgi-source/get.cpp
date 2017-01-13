@@ -1,3 +1,6 @@
+/**
+ * cgi方式的请求平均是200ms耗时
+ */
 #include <iostream>
 #include <vector>  
 #include <string>  
@@ -59,7 +62,7 @@ json formatDocumentToJson(std::vector<Document> documents){
 }
 
 void printHtml(){
-		std::cout <<"<html><head><title>标题</title><meta charset='utf-8'></head><body>";
+		std::cout <<"<html><head><title>GSearch搜索引擎</title><meta charset='utf-8'></head><body>";
 }
 
 void printHtmlEnd(){
@@ -67,6 +70,7 @@ void printHtmlEnd(){
 }
 
 int main(int argc, char **argv) {
+	FLAGS_log_dir = "/home/jiang/log";
 	google::InitGoogleLogging("1");
 	
 	std::cout << cgicc::HTTPHTMLHeader()<< std::endl;
