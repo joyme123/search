@@ -12,6 +12,9 @@ set(TESTFASTHTMLANALYSIS_SRC fastHtmlAnalysisTest.cpp)
 set(TESTIMPROVEDHTML_SRC improvedHtmlAnalysisTest.cpp)
 set(TESTHTMLFORMAT_SRC htmlFormatTest.cpp)
 set(TESTSIMHASH_SRC simHashTest.cpp)
+set(TESTDOCUMENTENTRY_SRC documentEntryTest.cpp)
+set(TestFormatedDocumentEntry_SRC formatedDocumentEntryTest.cpp)
+
 
 #place executable file into test directory
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/test/bin)
@@ -29,6 +32,9 @@ add_executable(fastHtmlAnalysisTest ${TESTFASTHTMLANALYSIS_SRC})
 add_executable(improvedHtmlAnalysisTest ${TESTIMPROVEDHTML_SRC})
 add_executable(htmlFormatTest ${TESTHTMLFORMAT_SRC})
 add_executable(simHashTest ${TESTSIMHASH_SRC})
+add_executable(documentEntryTest ${TESTDOCUMENTENTRY_SRC})
+add_executable(formatedDocumentEntryTest ${TestFormatedDocumentEntry_SRC})
+
 
 #set shared library for connectTest and mysqlTest and ngramTest
 link_directories(${PROJECT_SOURCE_DIR}/lib)
@@ -45,3 +51,5 @@ target_link_libraries(fastHtmlAnalysisTest searchEngine)
 target_link_libraries(improvedHtmlAnalysisTest searchEngine)
 target_link_libraries(htmlFormatTest searchEngine)
 target_link_libraries(simHashTest searchEngine)
+target_link_libraries(formatedDocumentEntryTest searchEngine socket)
+target_link_libraries(documentEntryTest searchEngine socket)

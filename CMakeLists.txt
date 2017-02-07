@@ -18,11 +18,8 @@ SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 set(FORMATEDDOCENTRY_SRC formatedDocumentEntry.cpp)
 set(DOCENTRY_SRC documentEntry.cpp)
 #placePROJECT_SOURCE_DIR executable file 
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
-add_executable(formatedEntry ${FORMATEDDOCENTRY_SRC})
-add_executable(entry ${DOCENTRY_SRC})
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+
 
 #set shared library
 link_directories(${PROJECT_SOURCE_DIR}/lib)
-target_link_libraries(formatedEntry searchEngine socket)
-target_link_libraries(entry searchEngine socket)
