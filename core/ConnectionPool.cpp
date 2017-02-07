@@ -34,10 +34,9 @@ Mysql ConnectionPool::getConnection(){
     Mysql* mysqlPtr;
     try{
         //没超过则继续创建
-        Mysql mysql;
+        mysqlPtr = new Mysql;
         this->createCount++;        //新创建的则在createCount自增1
-        mysqlPtr = &mysql;
-
+        
     }catch(sql::SQLException &e){
         LOG(ERROR) << "SimHashDAO->addSimHash(SimHash simHash):"<< e.getErrorCode()<<"--"<<e.what();
         m.unlock();

@@ -1,15 +1,10 @@
 #include"Mysql.h"
 
-void Mysql:: connect(){
-	if(conn == NULL){
-		std::shared_ptr<sql::Connection> temp(this->driver->connect(this->url,this->user,this->pass));
-		this->conn = temp.get();
+void Mysql::connect(){
+	if(this->conn == NULL){
+		this->conn = this->driver->connect(this->url,this->user,this->pass);
 		std::shared_ptr<sql::Statement> stm(this->conn->createStatement()); 
-		if(stm->execute("use "+database)){
-			std::cout << "数据库连接成功";
-		}else{
-			std::cout << "数据库连接成功";
-		}
+		stm->execute("use "+this->database);
 	}
 }
 Mysql::Mysql(){
@@ -19,42 +14,41 @@ Mysql::Mysql(){
 	this->database = "empdb";
 	this->url = "tcp://115.29.114.202:3306";
 	this->driver = sql::mysql::get_driver_instance();
+	this->conn = NULL;		//初始化为空
+}
+
+        
+sql::Connection* Mysql:: getConnection(){
+	this->connect();
+	return this->conn;
+}
+
+void Mysql::close(){
+	this->conn->close();	//关闭连接
+	delete this->conn;		//销毁变量
 }
 
 void Mysql::beginTransaction(){
-    if(conn == NULL){
+	if(this->conn == NULL){
 		this->connect();
 	}
 	this->conn->setAutoCommit(false);      //open transaction
 }
 
 void Mysql::commit(){
-    if(conn == NULL){
-		this->connect();
-	}
 	this->conn->commit();
     this->conn->setAutoCommit(true);
 }
 
 
 void Mysql::rollback(){
-    if(conn == NULL){
-		this->connect();
-	}
 	this->conn->rollback();
     this->conn->setAutoCommit(true);      //end transaction
 }
         
-std::shared_ptr<sql::Connection> Mysql:: getConnection(){
-	if(conn == NULL){
-		this->connect();
-	}
-	return this->conn;
-}
-        
 
 std::shared_ptr<sql::PreparedStatement> Mysql:: prepare(std::string str){
-	if(conn == NULL){
+	if(this->conn == NULL){
 		this->connect();
 	}
 	sql::SQLString sqlString(str); 
@@ -68,7 +62,7 @@ std::shared_ptr<sql::ResultSet> Mysql:: query(std::string sql){
         
 
 std::shared_ptr<sql::ResultSet> Mysql:: query(std::shared_ptr<sql::PreparedStatement> pstm){
-	if(conn == NULL){
+	if(this->conn == NULL){
 		this->connect();
 	}
 	std::shared_ptr<sql::ResultSet> res(pstm->executeQuery());
@@ -81,7 +75,7 @@ int Mysql:: insert(std::string sql){
         
 
 int Mysql:: insert(std::shared_ptr<sql::PreparedStatement> pstm){
-	if(conn == NULL){
+	if(this->conn == NULL){
 		this->connect();
 	}
 	pstm->executeQuery();
@@ -100,8 +94,9 @@ int Mysql::update(std::string sql){
 }
 
 int Mysql::update(std::shared_ptr<sql::PreparedStatement> pstm){
-	if(conn == NULL)
+	if(this->conn == NULL){
 		this->connect();
+	}
 	int affectCols = pstm->executeUpdate();
 	return affectCols;
 }
@@ -111,8 +106,9 @@ int Mysql::del(std::string sql){
 }
 
 int Mysql::del(std::shared_ptr<sql::PreparedStatement> pstm){
-	if(conn == NULL)
+	if(this->conn == NULL){
 		this->connect();
+	}
 	int affectCols = pstm->executeUpdate();
 	return affectCols;
 }

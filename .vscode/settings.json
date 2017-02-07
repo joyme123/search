@@ -1,5 +1,38 @@
 // 将设置放入此文件中以覆盖默认值和用户设置。
 {
     "editor.fontSize": 16,
-    "editor.wrappingColumn": 0
+    "editor.wrappingColumn": 0,
+    "files.associations": {
+        "*hpp*hpp*hpputility": "cpp",
+        "utility": "cpp",
+        "array": "cpp",
+        "functional": "cpp",
+        "*histream": "cpp",
+        "istream": "cpp",
+        "tuple": "cpp",
+        "*htuple": "cpp",
+        "*hppcctype": "cpp",
+        "cctype": "cpp",
+        "cstdio": "cpp",
+        "exception": "cpp",
+        "cstdint": "cpp",
+        "type_traits": "cpp",
+        "initializer_list": "cpp",
+        "clocale": "cpp",
+        "cstddef": "cpp",
+        "cstdlib": "cpp",
+        "ctime": "cpp",
+        "typeinfo": "cpp",
+        "new": "cpp",
+        "*h*h*h*h*h*h*h*h*hcwctype": "cpp",
+        "cwchar": "cpp",
+        "*h*hcstddef": "cpp",
+        "*hpp*hpp*hpp*hpp*hpp*hpp*hppcwchar": "cpp",
+        "cstring": "cpp",
+        "cwctype": "cpp",
+        "*hpp*hpp*hpp*hppctime": "cpp",
+        "*hpp*hpp*hpp*hpp*hppcstdio": "cpp",
+        "cstdarg": "cpp",
+        "*hpp*hpp*hppcmath": "cpp"
+    }
 }

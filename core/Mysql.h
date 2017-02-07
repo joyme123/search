@@ -4,17 +4,17 @@
 #include<stdlib.h>
 #include<memory>
 
-#include <cppconn/driver.h>
-#include <cppconn/exception.h>
-#include <cppconn/warning.h>
-#include <cppconn/metadata.h>
+#include<cppconn/driver.h>
+#include<cppconn/exception.h>
+#include<cppconn/warning.h>
+#include<cppconn/metadata.h>
 #include<cppconn/prepared_statement.h>
-#include <cppconn/statement.h>   
+#include<cppconn/statement.h>   
 #include<cppconn/sqlstring.h>
-#include <cppconn/resultset.h>
+#include<cppconn/resultset.h>
 #include<cppconn/resultset_metadata.h>
 
-#include <mysql_driver.h>
+#include<mysql_driver.h>
 #include<mysql_connection.h>
 #include<glog/logging.h>
 
@@ -31,15 +31,18 @@ class Mysql{
     public:
         
         Mysql();
+                
+        sql::Connection* getConnection();
         
+        void close();       //关闭数据库连接
+
         void beginTransaction();
         
         void commit();
         
         void rollback();
-        
-        std::shared_ptr<sql::Connection> getConnection();
-        
+
+
         /**
          * prepare a str
          * @param str the sql string

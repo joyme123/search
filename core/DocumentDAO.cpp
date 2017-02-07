@@ -64,6 +64,12 @@ std::vector< Document > DocumentDAO::searchDocument(std::vector<unsigned int > d
 {
 	std::vector<Document> documents;
 	std::string sql = "SELECT id,title,type,abstract,url,author,text,wordNum,createTime,updateTime FROM " + this->TABLE;
+
+	//如果没有搜索到相关的文章
+	if(documentId.size() == 0){
+		return documents;	//直接返回
+	}
+
 	std::string where = " WHERE id = " + std::to_string(documentId[0]);
 	for(unsigned int i =1; i < documentId.size(); i++){
 		where = where + " OR id = " + std::to_string(documentId[i]);
@@ -87,7 +93,7 @@ std::vector< Document > DocumentDAO::searchDocument(std::vector<unsigned int > d
 			documents.push_back(document);
 		}
 	}catch(sql::SQLException &e){
-		LOG(ERROR) << "DocumentDAO->searchDocument(int id):" << e.getErrorCode()<<"--"<<e.what() << e.getSQLState();
+		LOG(ERROR) << "DocumentDAO->searchDocument(int id):" << e.getErrorCode()<<"--"<<e.what();
 	}
 	return documents;
 }
