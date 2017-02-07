@@ -1,3 +1,9 @@
+/**
+ * filename:PostingList.cpp
+ * 倒排列表的头文件
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #include"PostingList.h"
 
 PostingList::PostingList(){

@@ -1,3 +1,9 @@
+/**
+ * filename:Document.h
+ * 文档类的头文件
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #ifndef  DOCUMENT_H
 #define DOCUMENT_H
 

@@ -1,3 +1,9 @@
+/**
+ * filename:Package.h
+ * Socket数据包的头文件
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #ifndef PACKAGE_H
 #define PACKAGE_H
 

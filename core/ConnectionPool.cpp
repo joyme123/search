@@ -1,3 +1,9 @@
+/**
+ * filename:ConnectionPool.cpp
+ * 数据库连接池实现类
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #include "ConnectionPool.h"
 
 ConnectionPool* ConnectionPool::createConnectionPool(int maxConnCount){
@@ -36,7 +42,7 @@ Mysql ConnectionPool::getConnection(){
         //没超过则继续创建
         mysqlPtr = new Mysql;
         this->createCount++;        //新创建的则在createCount自增1
-        
+
     }catch(sql::SQLException &e){
         LOG(ERROR) << "SimHashDAO->addSimHash(SimHash simHash):"<< e.getErrorCode()<<"--"<<e.what();
         m.unlock();

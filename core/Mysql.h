@@ -1,3 +1,9 @@
+/**
+ * filename:Mysql.h
+ * Mysql数据库类的头文件，封装了基本的增删改查以及事务管理
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #ifndef MYSQL_H
 #define MYSQL_H
 #include<iostream>

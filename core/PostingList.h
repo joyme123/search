@@ -1,3 +1,9 @@
+/**
+ * filename:PostingList.h
+ * 倒排列表的头文件
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #ifndef POSTINGLIST_H
 #define POSTINGLIST_H
 #include<iostream>

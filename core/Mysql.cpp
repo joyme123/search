@@ -1,3 +1,9 @@
+/**
+ * filename:Mysql.cpp
+ * Mysql数据库类，封装了基本的增删改查以及事务管理
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #include"Mysql.h"
 
 void Mysql::connect(){

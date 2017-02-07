@@ -1,3 +1,9 @@
+/**
+ * filename:DocumentDAO.cpp
+ * 文档查询类
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #include"DocumentDAO.h"
 
 DocumentDAO::DocumentDAO(Mysql* mysql){

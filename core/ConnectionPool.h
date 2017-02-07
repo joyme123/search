@@ -1,3 +1,9 @@
+/**
+ * filename:ConnectionPool.h
+ * 数据库连接池类头文件
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #ifndef CONNECTIONPOOL_H
 #define CONNECTIONPOOL_H
 

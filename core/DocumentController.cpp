@@ -1,3 +1,11 @@
+/**
+ * filename:DocumentController.cpp
+ * document controller
+ * insert document by this class,it will spilt document into words,
+ * and then store them
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #include"DocumentController.h"
 
 int DocumentController::formatedDocumentEntry(std::string formatedDocument)

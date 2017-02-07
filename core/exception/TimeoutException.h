@@ -1,3 +1,9 @@
+/**
+ * filename:TimeoutException.h
+ * socket超时异常类
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #include <iostream>
 #include <exception>
 

@@ -1,3 +1,9 @@
+/**
+ * filename:WordDAO.h
+ * 单词查询类
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #ifndef WORDDAO_H
 #define WORDDAO_H
 

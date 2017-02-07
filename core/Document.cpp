@@ -1,3 +1,9 @@
+/**
+ * filename:Document.cpp
+ * 文档类的实现
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #include"Document.h"
 Document::Document()
 {

@@ -1,3 +1,9 @@
+/**
+ * filename:WordDAO.cpp
+ * 单词查询类
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #include"WordDAO.h"
 
 /**

@@ -1,3 +1,9 @@
+/**
+ * filename:Word.h
+ * 单词类的头文件
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #ifndef WORD_H
 #define WORD_H
 #include<iostream>

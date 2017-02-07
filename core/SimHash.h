@@ -1,3 +1,9 @@
+/**
+ * filename:SimHash.h
+ * SimHash的头文件
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #ifndef SIMHASH_H
 #define SIMHASH_H
 

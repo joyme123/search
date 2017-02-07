@@ -1,3 +1,9 @@
+/**
+ * filename:DocumentDAO.h
+ * 文档查询类的头文件
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #ifndef _DOCUMENTDAO_H
 #define _DOCUMENTDAO_H
 

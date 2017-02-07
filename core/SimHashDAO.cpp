@@ -1,3 +1,9 @@
+/**
+ * filename:SimHashDAO.cpp
+ * SimHash数据库查询类
+ * author:jiangpengfei12@gmail.com
+ * date:2017-02-07
+ */
 #include"SimHashDAO.h"
 
 int SimHashDAO::addSimHash(SimHash simHash){
