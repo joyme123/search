@@ -36,6 +36,13 @@ std::map< std::string, std::vector< int > > DocumentParser::ngram(std::string& t
 	return map;
 }
 
+
+/**
+ * 基于friso的分词函数
+ * @param text 文本内容
+ * @param mode friso支持的分词模式
+ * @return map key为单词，value保存单词出现的位置
+ */
 std::map< std::string, std::vector< int > > DocumentParser::splitWord(std::string& text,friso_mode_t mode){
     friso_t friso;
     friso_config_t config;

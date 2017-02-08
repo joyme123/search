@@ -1,3 +1,8 @@
+/**
+ * Document Parser,封装了关于Document的解析函数
+ * author jiangpengfei12@gmail.com
+ * 2016-11-14
+ */
 #ifndef DOCUMENTPARSER_H
 #define DOCUMENTPARSER_H
 #include<iostream>
@@ -13,13 +18,6 @@
 #include"../../include/friso/friso_API.h"
 #include"../../include/friso/friso.h"
 
-
-
-/**
- * Document Parser,封装了关于Document的解析函数
- * author jiangpengfei12@gmail.com
- * 2016-11-14
- */
 class DocumentParser{
 private:
 	/**
@@ -61,17 +59,18 @@ public:
 	static std::vector<InvertedIndexHash> parser(std::string& text);
 	
 	/**
-	 * use n-gram to split word with into map<word,positions>
-	 * @param text content
-	 * @param step n
-	 * @return map
+	 * 使用ngram算法进行文本的分词
+	 * @param text 文本内容
+	 * @param step 分词步长
+	 * @return map key为单词，value保存单词出现的位置
 	 */
 	static std::map<std::string,std::vector<int> > ngram(std::string& text,int step);
 	
 	/**
-	 * use "word split" to split word with into map<word,positions>
-	 * @param text content
-	 * @return map
+	 * 基于friso的分词函数
+	 * @param text 文本内容
+	 * @param mode friso支持的分词模式
+	 * @return map key为单词，value保存单词出现的位置
 	 */
     static std::map<std::string,std::vector<int> > splitWord(std::string& text,friso_mode_t mode);
     

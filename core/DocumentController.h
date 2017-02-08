@@ -39,8 +39,8 @@ public:
     int formatedDocumentEntry(std::string formatedDocument);
 
     /**
-     * 原生文档的入口，比如通过爬虫刚下载下来的未处理的网页
-     * @param documentStr document string content
+     * 原生文档的入口，比如通过爬虫刚下载下来的未处理的网页，每个网页都被封装在package中
+     * @param packs 原生网页的pack
      * @return 插入到数据库的单词的数量
      */
     int documentEntry(std::vector<Package> packs);

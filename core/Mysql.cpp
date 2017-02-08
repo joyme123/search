@@ -14,7 +14,7 @@ void Mysql::connect(){
 	}
 }
 Mysql::Mysql(){
-	//get the instance of driver int construct function
+	//get the instance of driver in construct function
 	this->user = "5019";
 	this->pass = "5019";
 	this->database = "empdb";

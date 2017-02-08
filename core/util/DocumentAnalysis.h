@@ -1,3 +1,9 @@
+/**
+ * 文档分析类
+ * 1.正文提取，推荐使用improvedHtmlAnalysis()
+ * author:jiangpengfei12@gmail.com
+ * date:  2016-12-12
+ */
 #ifndef DOCUMENTANALYSIS_H
 #define DOCUMENTANALYSIS_H
 #include<iostream>
@@ -9,16 +15,11 @@
 #include<map>
 #include"util.h"
 
-/**
- * 文档分析类，包括正文提取
- * author:jiangpengfei12@gmail.com
- * date:  2016-12-12
- */
 class DocumentAnalysis{
     private:
-        int k;                     //行块的大小
+        int k;                              //行块的大小
         std::vector<char> blankChars;       //空白字符集合
-        int threshold;             //骤起点的阈值
+        int threshold;                      //骤起点的阈值
     public:
 
         DocumentAnalysis();

@@ -8,6 +8,11 @@
  */
 #include"DocumentController.h"
 
+/**
+ * input a format document string like title|type|author|url|text
+ * @param formatedDocument a format string
+ * @return the words　count insert into database
+ */
 int DocumentController::formatedDocumentEntry(std::string formatedDocument)
 {
     Mysql mysql = this->pool->getConnection();
@@ -63,12 +68,18 @@ int DocumentController::formatedDocumentEntry(std::string formatedDocument)
         
         mysql.commit();          //commit transaction
         this->pool->retConnection(mysql);
-    }catch(TimeoutException &e){
+    }catch(sql::SQLException &e){
+        mysql.rollback();       //数据库异常，进行事务回滚
         LOG(ERROR) << "DocumentController->formatedDocumentEntry(std::string formatedDocument):"<< e.getErrorCode()<<"--"<<e.what();
     }
 	return wordCount;
 }
 
+/**
+ * 原生文档的入口，比如通过爬虫刚下载下来的未处理的网页，每个网页都被封装在package中
+ * @param packs 原生网页的pack
+ * @return 插入到数据库的单词的数量
+ */
 int DocumentController::documentEntry(std::vector<Package> packs){
 
     Mysql mysql = this->pool->getConnection();
@@ -143,7 +154,8 @@ int DocumentController::documentEntry(std::vector<Package> packs){
             
             mysql.commit();          //commit transaction
             this->pool->retConnection(mysql);
-        }catch(TimeoutException &e){
+        }catch(sql::SQLException &e){
+            mysql.commit();
             LOG(ERROR) << "DocumentController->documentEntry(std::vector<Package> packs):"<< e.getErrorCode()<<"--"<<e.what();
         }
     }   //end for 
