@@ -140,6 +140,7 @@ Document DocumentParser::documentFormat(std::string& formatText){
 	document.url = url;
 	document.text = text;
 	document.createTime = getCurrentDateTimeStr();
+    std::cout << "DocumentParser.cpp 143行：当前文档设定的时间为" << document.createTime << std::endl;
 	document.updateTime = getCurrentDateTimeStr();
 	return document;
 }
@@ -148,6 +149,20 @@ Document DocumentParser::documentFormat(Package& package){
     Document document;
     document.url = package.url;
     document.type =package.type;
+    document.text = package.content;
+    /**************这中间的代码都需要分析******************/
+
+    document.title = "测试标题";
+    document.abstract = "测试文章摘要";
+    document.author = "测试文章作者";
+    document.wordNum = 10;
+
+    std::cout << "DocumentParser->documentFormat(Package& package) 这里需要重写" << std::endl;
+
+    /**************************************************/
+    document.createTime = getCurrentDateTimeStr();
+    std::cout << "DocumentParser.cpp 143行：当前文档设定的时间为" << document.createTime << std::endl;
+	document.updateTime = getCurrentDateTimeStr();
     return document;
 }
 

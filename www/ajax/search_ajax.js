@@ -1,11 +1,11 @@
-var server = "http://localhost:8080/cgi-bin/";
+// var server = "http://localhost/cgi-bin/";
 
 function search() {
     var Request = new Object();
     Request = GetRequest();
     var keyword = Request['keyword'];
     $.ajax({
-        url: server + "get.cgi",
+        url:  "cgi-bin/get.cgi",
         type: "GET",
         data: {
             'keyword': keyword

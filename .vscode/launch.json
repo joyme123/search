@@ -4,7 +4,7 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/www/cgi-bin/get.cgi",
+            "program": "${workspaceRoot}/bin/documentEntry",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",

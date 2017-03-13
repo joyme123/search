@@ -58,23 +58,27 @@ std::bitset<SimHash::BITSET_LENGTH> SimHash::calculate(std::map<std::string,std:
     std::vector<int> tmp;
 
     int weight = 1;                                 //单词权重
-    for(int i = 0; i < wordCount; i++){
-        std::cout << "SimHash.cpp中60行--关键字:" << vec[i].first << "--" << std::endl;
-        uint64 bit64 = CityHash64(vec[i].first.c_str(),(size_t)vec[i].first.length());
-        std::bitset<SimHash::BITSET_LENGTH> current(bit64);      //获取单词的64位bitset
-        
-        if(frequencyDict.find(vec[i].first) != frequencyDict.end()){        //如果当前单词在频率表中
-            weight = 1 / frequencyDict[vec[i].first];
-        }else{
-            weight = 1 / 0.0005;
-        }
+    if(vec.size() >= wordCount){
+        //如果分得的词汇过少，则不需要提取关键字
+        for(int i = 0; i < wordCount; i++){
+            std::cout << "SimHash.cpp中60行--关键字:" << vec[i].first << "--" << std::endl;
+            uint64 bit64 = CityHash64(vec[i].first.c_str(),(size_t)vec[i].first.length());
+            std::bitset<SimHash::BITSET_LENGTH> current(bit64);      //获取单词的64位bitset
+            
+            if(frequencyDict.find(vec[i].first) != frequencyDict.end()){        //如果当前单词在频率表中
+                weight = 1 / frequencyDict[vec[i].first];
+            }else{
+                weight = 1 / 0.0005;
+            }
 
-        for(int i = 0; i < SimHash::BITSET_LENGTH; i++){
-            tmp.push_back((current[i] == 1 ? current[i] : -1 )*weight);
+            for(int i = 0; i < SimHash::BITSET_LENGTH; i++){
+                tmp.push_back((current[i] == 1 ? current[i] : -1 )*weight);
+            }
+            res.push_back(tmp);
+            tmp.clear();
         }
-        res.push_back(tmp);
-        tmp.clear();
     }
+
 
     return SimHash::calVectorAdd(res);          //返回simHash计算处的特征码
 

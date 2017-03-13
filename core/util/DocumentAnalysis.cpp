@@ -21,7 +21,7 @@ std::string DocumentAnalysis::htmlPeel(std::string& html,std::regex regex) const
     //去除网页上的所有页面标签和css和script
     formatedContent = std::regex_replace(html,regex," ");
 
-    std::cout << formatedContent << std::endl;
+    std::cout << "去除标签后的文本为:"+formatedContent << std::endl;
 
     return formatedContent;
 }
@@ -94,19 +94,27 @@ std::string DocumentAnalysis::fastHtmlAnalysis(std::string& peeledHtml) const{
     }
 
     
+    if(blocks.size() >= 3){
 
-    //行块生成结束,因为记录了最大行块的位置，直接从最大行块向两边找即可
-    int left;
-    int right;
-    for(left = maxPos - 1; (int)blocks[left].size() >= threshold && left >= 0;left--);        //找出骤起点
-    left = left + 1;
+        //行块生成结束,因为记录了最大行块的位置，直接从最大行块向两边找即可
+        int left = maxPos;
+        
+        if(left >= 0){
+            for(;left >= 0 &&(int)blocks[left].size() >= threshold  ;left--);        //找出骤起点
+            left = left + 1;
+        }
 
-    for(right = maxPos + 1; blocks[right].size() != 0 && right < (int)blocks.size();right++); //找出结束点
-    right = right -1;
+        int right = maxPos;
+        for( ;right < (int)blocks.size()&&blocks[right].size() != 0;right++); //找出结束点
+        right = right -1;
 
 
-    for(i = left; i < right+k; i++){
-        content.append(lines[i]);
+        for(i = left; i < right+k; i++){
+            if((int)lines.size() > i)
+                content.append(lines[i]);
+        }
+    }else{
+        content = peeledHtml;
     }
 
     return content;

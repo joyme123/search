@@ -15,7 +15,7 @@ DocumentDAO::DocumentDAO(Mysql* mysql){
  * @return id of this document, -1 means some error occured
  */
 int DocumentDAO::addDocument(Document document){
-    std::string sql = "INSERT INTO "+TABLE+" (type,title,abstract,url,author,text,wordNum,updateTime,createTime)VALUES(?,?,?,?,?,?,?,?,?)";
+    std::string sql = "INSERT INTO "+TABLE+" (type,title,abstract,url,author,text,wordNum,updateTime,createTime)VALUES(?,?,?,?,?,?,?,now(),now())";
     int id = -1;
     try{
         std::shared_ptr<sql::PreparedStatement> pstm = this->mysql->prepare(sql);
@@ -26,8 +26,8 @@ int DocumentDAO::addDocument(Document document){
         pstm->setString(5,document.author);
 		pstm->setString(6,document.text);
         pstm->setUInt(7,document.wordNum);
-        pstm->setDateTime(8,sql::SQLString(document.updateTime));
-        pstm->setDateTime(9,sql::SQLString(document.createTime));
+        //pstm->setDateTime(8,sql::SQLString(document.updateTime));
+        //pstm->setDateTime(9,sql::SQLString(document.createTime));
         id = this->mysql->insert(pstm);
     }catch(sql::SQLException &e){
         id = -1;

@@ -19,5 +19,9 @@ public:
     unsigned long long docCount;               						    //出现过该单词的文档数
     unsigned long long totalCount;              					    //在所有文档中该单词出现的次数和
     InvertHashIndexType type;											//倒排序列的类型　０是通过ngram生成的word,1是通过分词算法生产的
+    InvertedIndexHash(){
+        docCount = 0;
+        totalCount = 0;
+    }
 };
 #endif

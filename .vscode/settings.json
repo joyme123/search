@@ -33,6 +33,8 @@
         "*hpp*hpp*hpp*hppctime": "cpp",
         "*hpp*hpp*hpp*hpp*hppcstdio": "cpp",
         "cstdarg": "cpp",
-        "*hpp*hpp*hppcmath": "cpp"
+        "*hpp*hpp*hppcmath": "cpp",
+        "regex": "cpp",
+        "cmath": "cpp"
     }
 }

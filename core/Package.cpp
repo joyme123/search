@@ -7,5 +7,25 @@
 #include "Package.h"
 
 void Package::setBody(std::string body){
-    this->content = body;
+    int times = 0;      //\n的次数
+    int len = 0;
+    std::string tmp;
+    auto it = body.begin();
+    for(; it != body.end(); ++it){
+        len++;
+        if(*it == '\n'){
+            if(times == 0)
+                this->url = tmp;
+            else if(times == 1){
+                this->type = DOCUMENT_TYPE::html;
+                break;
+            }
+            *it++;
+            times++;
+            tmp.clear();
+        }
+        tmp.push_back(*it);
+    }
+    this->content = body.substr(len - 1,body.length() - len);
+
 }

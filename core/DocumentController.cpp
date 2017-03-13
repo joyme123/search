@@ -101,7 +101,7 @@ int DocumentController::documentEntry(std::vector<Package> packs){
         std::map<std::string,std::vector<int> > removedResultMap = simHash.removeStopWord(resultMap,stopWordDictInstance->stopWordDict);//移除stopWord   
         std::bitset<SimHash::BITSET_LENGTH> bitset = simHash.calculate(removedResultMap,frequencyDictInstance->frequencyDict);     //计算特征码
 
-        std::cout << bitset << std::endl;
+        std::cout <<"DocumentController.cpp 104行:计算出simHash特征码为"<<bitset << std::endl;
 
         Document document = docParser.documentFormat(*it);
         DocumentDAO doc(&mysql);

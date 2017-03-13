@@ -9,6 +9,7 @@
 #include<iostream>
 #include<vector>
 #include "../Package.h"
+#include"config.h"
 
 class SocketStreamParser{
     public:
