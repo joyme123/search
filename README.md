@@ -70,6 +70,15 @@ export GLOG_max_log_size=1
 具体安装过程请看我的博客,里面介绍了2.x和1.x版本的安装
 [linux下编译安装mysql-connector-cpp](http://myway5.com/?post=56)
 
+### redis客户端
+[redis的客户端地址](https://github.com/cylix/cpp_redis)
+[安装说明](https://github.com/Cylix/cpp_redis/wiki/Mac-&-Linux-Install)
+- cpp_redis需要一个一个叫做tacopie的tcp库，以及pthread库,安装tacopie的库文档在这里[tacopie库](https://github.com/Cylix/tacopie)
+
+### mongodb客户端
+[mongodb客户端地址](http://mongoc.org/libmongoc/current/installing.html)
+[mongodb文档](http://mongoc.org/libmongoc/current/tutorial.html#making-a-connection)
+- 需要libbson的库，源代码在这里[libbson](https://github.com/mongodb/libbson)
 
 ### **文档添加协议**
 这个搜索引擎本身是没有文档的添加功能的，所以需要通过外部程序按照一定的规则将文档加入到索引代码中进行索引。

@@ -14,6 +14,7 @@
 class Package{
     public:
         DOCUMENT_TYPE type;
+        std::string title;
         std::string url;
         std::string content;
         void setBody(std::string body);

@@ -15,8 +15,10 @@ void Package::setBody(std::string body){
         len++;
         if(*it == '\n'){
             if(times == 0)
-                this->url = tmp;
+                this->title = tmp;
             else if(times == 1){
+                this->url = tmp;
+            }else if(times == 2){
                 this->type = DOCUMENT_TYPE::html;
                 break;
             }

@@ -71,17 +71,12 @@ std::vector<Package> SocketStreamParser::parse(char* data,unsigned int dataLen){
         return packs;
     }
 
-    
-
-
-
 
     //当剩下的字符串减去头部的长度大于body的长度，说明可以解析出一个数据包
     while(lastLen - 4 >= bodyLen){
         Package pack;
         std::string body;
         body = subCharArray(lastBuf,lastLen,4,bodyLen);      //截取一个body的长度
-        std::cout << "内容为" << body << std::endl;
 
         pack.setBody(body);
         packs.push_back(pack);

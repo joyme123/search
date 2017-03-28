@@ -147,12 +147,10 @@ Document DocumentParser::documentFormat(std::string& formatText){
 
 Document DocumentParser::documentFormat(Package& package){
     Document document;
+    document.title = package.title;
     document.url = package.url;
     document.type =package.type;
-    document.text = package.content;
     /**************这中间的代码都需要分析******************/
-
-    document.title = "测试标题";
     document.abstract = "测试文章摘要";
     document.author = "测试文章作者";
     document.wordNum = 10;

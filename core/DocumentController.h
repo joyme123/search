@@ -11,7 +11,9 @@
 #define DOCUMENTCONTROLLER_H
 
 #include<iostream>
+#include<fstream>
 #include<string>
+#include<cstring>
 #include<glog/logging.h>
 
 #include "ConnectionPool.h"

@@ -12,19 +12,22 @@ DocumentAnalysis::DocumentAnalysis(){
 }
 
 std::string DocumentAnalysis::htmlPeel(std::string& html) const{
-    std::regex reg("<\\s*script(\\s|\\S)*?<\\s*/script\\s*>|<\\s*style(\\s|\\S)*?<\\s*/style\\s*>|<!--(\\s|\\S)*?-->|<\\s*/{0,1}(\\s|\\S)*?>|\\s*&.*?;\\s*");                     //去除html标签的正则和&nbsp;
-    return this->htmlPeel(html,reg);
+    ////去除html标签<script><style><!-- -->< />的正则和&nbsp;
+    //std::regex reg("<\\s*script(\\s|\\S)*?<\\s*/script\\s*>|<\\s*style(\\s|\\S)*?<\\s*/style\\s*>|<!--(\\s|\\S)*?-->|<\\s*/{0,1}(\\s|\\S)*?>|\\s*&.*?;\\s*");                     
+    std::string peeledString = stripTags(html.c_str(),html.length(),"",0);
+
+    //std::cout << "去除标签后的文本为:"+formatedStr << std::endl;
+    return peeledString;
 }
 
-std::string DocumentAnalysis::htmlPeel(std::string& html,std::regex regex) const{
-    std::string formatedContent;
-    //去除网页上的所有页面标签和css和script
-    formatedContent = std::regex_replace(html,regex," ");
+// std::string DocumentAnalysis::htmlPeel(std::string& html,std::regex regex) const{
+//     std::string formatedContent;
+//     //去除网页上的所有页面标签和css和script   
+//     formatedContent = std::regex_replace(html,regex," ");
+//     std::cout << "去除标签后的文本为:"+formatedContent << std::endl;
 
-    std::cout << "去除标签后的文本为:"+formatedContent << std::endl;
-
-    return formatedContent;
-}
+//     return formatedContent;
+// }
 
 
 /**

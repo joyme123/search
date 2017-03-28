@@ -14,6 +14,10 @@
 #include<algorithm>
 #include<map>
 #include"util.h"
+#include <cstdio>
+#include <cstdlib>
+#include <fstream>
+#include <cstring>
 
 class DocumentAnalysis{
     private:
@@ -31,13 +35,13 @@ class DocumentAnalysis{
          */
          std::string htmlPeel(std::string& html) const;
 
-         /**
-          * 利用正则表达式去除网页标签
-          * @param html 引用传参,要处理的Html页面
-          * @param regex 自定义正则
-          * @return 引用返回值,处理好的html页面
-          */
-         std::string htmlPeel(std::string& html,std::regex regex) const;
+        //  /**
+        //   * 利用正则表达式去除网页标签
+        //   * @param html 引用传参,要处理的Html页面
+        //   * @param regex 自定义正则
+        //   * @return 引用返回值,处理好的html页面
+        //   */
+        //  std::string htmlPeel(std::string& html,std::regex regex) const;
 
         /**
          * 去除<p>、<img>、<hx>等单独占用的行,将单个空<div></div>块的权重占行权重降为1，时间复杂度O(n)

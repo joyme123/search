@@ -12,7 +12,7 @@
 
 const int MAXHOSTNAME = 200;
 const int MAXCONNECTIONS = 5;       //最大连接数
-const int MAXRECV = 2000;           //接收缓冲区
+const int MAXRECV = 10000;           //接收缓冲区
 
 class Socket{
     private:

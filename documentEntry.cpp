@@ -60,8 +60,10 @@ int main(int argc, char **argv) {
                     new_sock.recvBinary(data,dataLen);
                     packs = parser.parse(data,dataLen);
                     std::cout  <<"长度为:"<< dataLen << "-----解析数据包:" << packs.size() << std::endl;
-					int count = docContrl.documentEntry(packs);     //将解析出来的数据包放入documentEntry中进行处理
-					LOG(INFO) << "entry.cpp->main()"<<"add or update "<<count<< "word(s)";
+                    if(packs.size() > 0){
+    					int count = docContrl.documentEntry(packs);     //将解析出来的数据包放入documentEntry中进行处理
+	    				LOG(INFO) << "entry.cpp->main()"<<"add or update "<<count<< "word(s)";
+                    }
                 }
 	        }catch ( SocketException& e) {
                 std::cout << "连接丢失:" << e.description() << std::endl;

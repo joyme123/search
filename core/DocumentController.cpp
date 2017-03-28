@@ -91,7 +91,6 @@ int DocumentController::documentEntry(std::vector<Package> packs){
     int wordCount = 0;
 
     for(auto it = packs.begin(); it != packs.end(); it++){
-
         std::string content = (*it).content;
         std::string formatedContent = docAnalysis.htmlFormat(content);        //经过处理的文本，去除了噪声
         std::string peeledHtml = docAnalysis.htmlPeel(formatedContent);       //统一去除所有的标签
@@ -104,8 +103,13 @@ int DocumentController::documentEntry(std::vector<Package> packs){
         std::cout <<"DocumentController.cpp 104行:计算出simHash特征码为"<<bitset << std::endl;
 
         Document document = docParser.documentFormat(*it);
+        document.text = peeledHtml;
+        document.wordNum = resultMap.size();
+
+        std::cout << "返回文档前" << std::endl;
         DocumentDAO doc(&mysql);
         try{
+            std::cout << "开启事务" << std::endl;
             mysql.beginTransaction();                 //事务开启
             
             int id = doc.addDocument(document);     //将文档存入数据库

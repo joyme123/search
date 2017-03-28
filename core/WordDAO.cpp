@@ -69,6 +69,7 @@ int WordDAO::addWord(Word word, std::shared_ptr<PostingList> postingList){
         id = mysql->insert(pstm);
     }catch(sql::SQLException &e){
 		LOG(ERROR) << "WordDAO->addWord(Word word, InvertedIndexHash indexHash):"<< e.getErrorCode()<<"--"<<e.what();
+        std::cout <<"出错的单词长度是:-------------"+ word.text<< std::endl;        
         id = -1;
     }
     return id;

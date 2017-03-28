@@ -28,6 +28,7 @@ int DocumentDAO::addDocument(Document document){
         pstm->setUInt(7,document.wordNum);
         //pstm->setDateTime(8,sql::SQLString(document.updateTime));
         //pstm->setDateTime(9,sql::SQLString(document.createTime));
+		std::cout << "正在写入文档......" << std::endl;
         id = this->mysql->insert(pstm);
     }catch(sql::SQLException &e){
         id = -1;
