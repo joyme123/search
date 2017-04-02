@@ -25,18 +25,28 @@ int main(){
         //   do_something_with_integer(reply.as_integer())
     });
 
+    std::string result;
+
     // same as client.send({ "GET", "hello" }, ...)
-    client.get("hello", [](cpp_redis::reply& reply) {
+    client.get("hello", [&result](cpp_redis::reply& reply) {
         std::cout << "get hello: " << reply << std::endl;
-        // if (reply.is_string())
-        //   do_something_with_string(reply.as_string())
+        if (reply.is_string()){
+            std::cout << "是字符串" << std::endl;
+            result = reply.as_string();
+            std::cout << result << std::endl;
+        }else{
+            std::cout << "不是字符串" << std::endl;
+        }
     });
 
+
     // commands are pipelined and only sent when client.commit() is called
-    // client.commit();
+    //client.commit();
 
     // synchronous commit, no timeout
     client.sync_commit();
+
+    std::cout << "提交后获取的结果是:" + result << std::endl;
 
     // synchronous commit, timeout
     // client.sync_commit(std::chrono::milliseconds(100));

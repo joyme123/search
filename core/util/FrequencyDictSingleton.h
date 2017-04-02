@@ -17,6 +17,8 @@ class FrequencyDictSingleton{
     private:
         int test;
         FrequencyDictSingleton();
+        FrequencyDictSingleton(const FrequencyDictSingleton&);    //禁用
+        FrequencyDictSingleton& operator=(const FrequencyDictSingleton&);  //禁用复制
 };
 
 #endif

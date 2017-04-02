@@ -17,6 +17,13 @@ ConnectionPool::ConnectionPool(){
     
 }
 
+ConnectionPool::~ConnectionPool(){
+    while(!this->connectionQueue.empty()){
+        this->connectionQueue.front().close();  //关闭mysql连接
+        this->connectionQueue.pop();            //出栈
+    }
+}
+
 //从线程池中获取一个连接实例
 Mysql ConnectionPool::getConnection(){
     m.lock();
@@ -36,22 +43,21 @@ Mysql ConnectionPool::getConnection(){
             throw TimeoutException();   
         }
     }
-
-    Mysql* mysqlPtr;
+    Mysql* mysqlPtr = NULL;
     try{
         //没超过则继续创建
-        mysqlPtr = new Mysql;
+        Mysql mysql;
         this->createCount++;        //新创建的则在createCount自增1
-
+        mysqlPtr = &mysql;
     }catch(sql::SQLException &e){
         LOG(ERROR) << "SimHashDAO->addSimHash(SimHash simHash):"<< e.getErrorCode()<<"--"<<e.what();
         m.unlock();
     }         
-    m.unlock();
-    return *mysqlPtr;          
+    m.unlock(); 
+    return *mysqlPtr;
 }
 
-void ConnectionPool::retConnection(Mysql connection){
+void ConnectionPool::retConnection(Mysql& connection){
     m.lock();
     connectionQueue.push(connection);
     m.unlock();

@@ -15,19 +15,18 @@ DocumentDAO::DocumentDAO(Mysql* mysql){
  * @return id of this document, -1 means some error occured
  */
 int DocumentDAO::addDocument(Document document){
-    std::string sql = "INSERT INTO "+TABLE+" (type,title,abstract,url,author,text,wordNum,updateTime,createTime)VALUES(?,?,?,?,?,?,?,now(),now())";
+    std::string sql = "INSERT INTO "+TABLE+" (mongoId,type,title,abstract,url,author,text,wordNum,updateTime,createTime)VALUES(?,?,?,?,?,?,?,?,now(),now())";
     int id = -1;
     try{
         std::shared_ptr<sql::PreparedStatement> pstm = this->mysql->prepare(sql);
-        pstm->setUInt(1,document.type);
-        pstm->setString(2,document.title);
-        pstm->setString(3,document.abstract);
-        pstm->setString(4,document.url);
-        pstm->setString(5,document.author);
-		pstm->setString(6,document.text);
-        pstm->setUInt(7,document.wordNum);
-        //pstm->setDateTime(8,sql::SQLString(document.updateTime));
-        //pstm->setDateTime(9,sql::SQLString(document.createTime));
+		pstm->setString(1,document.mongoId);
+        pstm->setUInt(2,document.type);
+        pstm->setString(3,document.title);
+        pstm->setString(4,document.abstract);
+        pstm->setString(5,document.url);
+        pstm->setString(6,document.author);
+		pstm->setString(7,document.text);
+        pstm->setUInt(8,document.wordNum);
 		std::cout << "正在写入文档......" << std::endl;
         id = this->mysql->insert(pstm);
     }catch(sql::SQLException &e){
@@ -70,7 +69,7 @@ int DocumentDAO::parseDocumentAndUpdate(Document document){
 std::vector< Document > DocumentDAO::searchDocument(std::vector<unsigned int > documentId)
 {
 	std::vector<Document> documents;
-	std::string sql = "SELECT id,title,type,abstract,url,author,text,wordNum,createTime,updateTime FROM " + this->TABLE;
+	std::string sql = "SELECT id,mongoId,title,type,abstract,url,author,text,wordNum,createTime,updateTime FROM " + this->TABLE;
 
 	//如果没有搜索到相关的文章
 	if(documentId.size() == 0){
@@ -88,6 +87,7 @@ std::vector< Document > DocumentDAO::searchDocument(std::vector<unsigned int > d
 		while(res->next()){
 			Document document;
 			document.id = res->getUInt("id");
+			document.mongoId = res->getString("mongoId");
 			document.abstract = res->getString("abstract");
 			document.title = res->getString("title");
 			document.type = Document::getDocType(res->getInt("type"));

@@ -74,7 +74,7 @@ export GLOG_max_log_size=1
 [redis的客户端地址](https://github.com/cylix/cpp_redis)
 [安装说明](https://github.com/Cylix/cpp_redis/wiki/Mac-&-Linux-Install)
 - cpp_redis需要一个一个叫做tacopie的tcp库，以及pthread库,安装tacopie的库文档在这里[tacopie库](https://github.com/Cylix/tacopie)
-
+- cpp_redis和tacopie的CmakeList.txt生成的是静态库.a,应该更改STATIC为SHARED
 ### mongodb客户端
 [mongodb客户端地址](http://mongoc.org/libmongoc/current/installing.html)
 [mongodb文档](http://mongoc.org/libmongoc/current/tutorial.html#making-a-connection)

@@ -3,6 +3,9 @@
  * author:jiang
  * date:2017-03-27
  */
+#ifndef RESOURCEMANAGE_H
+#define RESOURCEMANAGE_H
+
 #include <iostream>
 #include <string>
 #include <cpp_redis/cpp_redis>
@@ -13,24 +16,25 @@
 
 
  class ResourceManage{
-    private:
+    private: 
+        mongocxx::client mongoClient;
+        cpp_redis::redis_client redisClient;
+        mongocxx::collection  mongoCollection;
         //私有的初始化，防止对象的重复创建
-        ResourceManage();
+        ResourceManage(std::string redisHost,unsigned int redisPort,
+        std::string mongoHost,unsigned int mongoPort);
     public:
         /**
          * 获取资源管理的单例
          */
-        ResourceManage getInstance(std::string redisHost,unsigned int redisPort,std::string mongoHost,unsigned int mongoPort);
-        /**
-         * 从redis中获取下一个文档的id
-         * @return string 文档id
-         */
-        std::string getNext();
+        static ResourceManage* getInstance(std::string redisHost,unsigned int redisPort,std::string mongoHost,unsigned int mongoPort);
 
         /**
          * 从mongodb中根据文档id获取文档
          * @param id 文档id
          * @return string 文档
          */
-        std::string getDocument(std::string id);
+        std::string getNextDocument();
  };
+
+ #endif

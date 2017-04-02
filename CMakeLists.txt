@@ -22,7 +22,9 @@ SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 #document entry,generate index for search engine
 #set(FORMATEDDOCENTRY_SRC formatedDocumentEntry.cpp)
 set(DOCENTRY_SRC documentEntry.cpp)
+set(DOCPROCESS_SRC process.cpp)
 add_executable(documentEntry ${DOCENTRY_SRC})
+add_executable(process ${DOCPROCESS_SRC})
 #placePROJECT_SOURCE_DIR executable file 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
@@ -30,3 +32,4 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 #set shared library
 link_directories(${PROJECT_SOURCE_DIR}/lib)
 target_link_libraries(documentEntry searchEngine socket)
+target_link_libraries(process searchEngine)

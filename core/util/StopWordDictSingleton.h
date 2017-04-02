@@ -15,6 +15,8 @@ class StopWordDictSingleton{
     private:
         int test;
         StopWordDictSingleton();
+        StopWordDictSingleton(const StopWordDictSingleton&);    //禁用
+        StopWordDictSingleton& operator=(const StopWordDictSingleton&);  //禁用复制
 };
 
 #endif

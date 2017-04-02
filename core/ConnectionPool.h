@@ -23,9 +23,10 @@ class ConnectionPool{
         std::queue<Mysql> connectionQueue;              //连接队列
         int createCount;                                //已创建的连接数
         int maxConnCount;                               //最大连接数
-        ConnectionPool();                               //私有的构造函数
+        ConnectionPool();                               //私有的构造函数                              
         std::mutex m;
     public:
+        ~ConnectionPool();                              //析构函数
 
         /**
          * 创建线程池,单例模式,这是线程安全的
@@ -43,7 +44,7 @@ class ConnectionPool{
          * @param connection
          */
 
-         void retConnection(Mysql connection);
+         void retConnection(Mysql& connection);
 
         /**
          * 获取最大连接数

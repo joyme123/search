@@ -13,7 +13,7 @@
 #include<bitset>
 #include"util.h"
 
-class SimHash{
+class SimHashCal{
     public:
         static const int BITSET_LENGTH = 64;       
     private:
@@ -22,7 +22,7 @@ class SimHash{
          * @param res bit码*weight后的结果
          * @return 二进制特征码
          */
-         std::bitset<SimHash::BITSET_LENGTH> calVectorAdd(std::vector<std::vector<int> > res);
+         std::bitset<SimHashCal::BITSET_LENGTH> calVectorAdd(std::vector<std::vector<int> > res);
     public:
          /**
          * 移除网页正文的stop word
@@ -39,7 +39,7 @@ class SimHash{
          * @param frequencyDict 频率字典
          * @return char* 特征码
          */
-        std::bitset<SimHash::BITSET_LENGTH> calculate(std::map<std::string,std::vector<int> > content,std::map<std::string,double> frequencyDict,int wordCount = 6);
+        std::bitset<SimHashCal::BITSET_LENGTH> calculate(std::map<std::string,std::vector<int> > content,std::map<std::string,double> frequencyDict,int wordCount = 6);
 
 };
 

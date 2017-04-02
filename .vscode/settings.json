@@ -41,6 +41,16 @@
         "atomic": "cpp",
         "condition_variable": "cpp",
         "future": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "csignal": "cpp",
+        "codecvt": "cpp",
+        "optional": "cpp",
+        "string_view": "cpp",
+        "*.tcc": "cpp",
+        "slist": "cpp",
+        "algorithm": "cpp",
+        "iostream": "cpp",
+        "ostream": "cpp",
+        "bitset": "cpp"
     }
 }

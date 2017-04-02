@@ -67,10 +67,10 @@ int main(int argc,char** argv){
 
     map<string,vector<int> > resultMap =  DocumentParser::splitWord(content,__FRISO_COMPLEX_MODE__);         //得到正文的分词结果
 
-    SimHash simHash;
-    map<string,vector<int> > removedResultMap = simHash.removeStopWord(resultMap,stopWordDictInstance->stopWordDict);    //移除stopWord   
+    SimHashCal simHashCal;
+    map<string,vector<int> > removedResultMap = simHashCal.removeStopWord(resultMap,stopWordDictInstance->stopWordDict);    //移除stopWord   
 
-    std::bitset<SimHash::BITSET_LENGTH> bitset = simHash.calculate(removedResultMap,frequencyDictInstance->frequencyDict);                           //计算特征码
+    std::bitset<SimHashCal::BITSET_LENGTH> bitset = simHashCal.calculate(removedResultMap,frequencyDictInstance->frequencyDict);                           //计算特征码
 
     std::cout << bitset << std::endl;
 

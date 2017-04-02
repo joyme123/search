@@ -46,6 +46,12 @@ public:
      * @return 插入到数据库的单词的数量
      */
     int documentEntry(std::vector<Package> packs);
+
+    /**
+     *
+     *
+     */
+     int documentJsonEntry(std::string documentJson);
 	
     /**
      * 搜索文档

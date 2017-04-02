@@ -75,7 +75,8 @@ std::map< std::string, std::vector< int > > DocumentParser::splitWord(std::strin
     }
 
     friso_free_task( task );
-
+    friso_free_config(config);
+    friso_free(friso);
     return map;
 }
 
@@ -139,9 +140,6 @@ Document DocumentParser::documentFormat(std::string& formatText){
 	document.type = type;
 	document.url = url;
 	document.text = text;
-	document.createTime = getCurrentDateTimeStr();
-    std::cout << "DocumentParser.cpp 143行：当前文档设定的时间为" << document.createTime << std::endl;
-	document.updateTime = getCurrentDateTimeStr();
 	return document;
 }
 
@@ -157,10 +155,19 @@ Document DocumentParser::documentFormat(Package& package){
 
     std::cout << "DocumentParser->documentFormat(Package& package) 这里需要重写" << std::endl;
 
-    /**************************************************/
-    document.createTime = getCurrentDateTimeStr();
-    std::cout << "DocumentParser.cpp 143行：当前文档设定的时间为" << document.createTime << std::endl;
-	document.updateTime = getCurrentDateTimeStr();
+    return document;
+}
+
+Document DocumentParser:: documentJsonFormat(std::string& documentJson){
+    auto dj = nlohmann::json::parse(documentJson);
+    Document document;
+    document.mongoId = dj.at("_id").get<std::string>();
+    document.title = dj.at("title").get<std::string>();
+    document.url = dj.at("url").get<std::string>();
+    document.text = dj.at("content").get<std::string>();
+    document.author = "测试作者";
+    document.abstract = "测试摘要";
+    document.type = html;
     return document;
 }
 

@@ -17,6 +17,7 @@
 #include"../InvertedIndexHash.h"
 #include"../../include/friso/friso_API.h"
 #include"../../include/friso/friso.h"
+#include"../../include/json.hpp"
 
 class DocumentParser{
 private:
@@ -87,6 +88,13 @@ public:
 	 * @return document 
 	 */ 
 	static Document documentFormat(Package& package);
+
+	/**
+	 * parse json to Document
+	 * @param documentJson 需要解析的json
+	 * @return document 
+	 */ 
+	static Document documentJsonFormat(std::string& documentJson);
 
 
 };

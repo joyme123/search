@@ -14,6 +14,7 @@
 class Document{
     public:
         unsigned int id;                            //文档对应的数据库Id
+        std::string mongoId;                       //文档在mongodb中的存储id (_id)
         int srcFlg;                                 //是否是源文章的标识
         enum DOCUMENT_TYPE type;                    //文档类型
         std::string title;                          //文档的标题
