@@ -72,11 +72,20 @@ void printHtmlEnd(){
 int main(int argc, char **argv) {
 	FLAGS_log_dir = "/home/jiang/log";
 	google::InitGoogleLogging("1");
-	
+	int pageIndex = 1;
+
+
 	std::cout << cgicc::HTTPHTMLHeader()<< std::endl;
 	Cgicc formData;
 	
-	form_iterator fi = formData.getElement("keyWord");  
+	form_iterator fi = formData.getElement("keyword");  
+	form_iterator pageI = formData.getElement("page");
+	if(!pageI->isEmpty() && pageI != (*formData).end()){
+		pageIndex = stoi((**pageI));
+	}
+
+
+	int PAGESIZE = 10;
 	if( !fi->isEmpty() && fi != (*formData).end()) {
 		json j;
 		j["keyword"] = **fi; 
@@ -86,10 +95,16 @@ int main(int argc, char **argv) {
 		j["total"] = invertedIndexHash.totalCount;
 		j["docCount"] = invertedIndexHash.docCount;
 		std::vector<unsigned int> ids = formatPostingList(invertedIndexHash.postingList);
+		std::vector<unsigned int> readIds;
+		for(int i = (pageIndex - 1) * PAGESIZE; i < pageIndex * PAGESIZE && i < ids.size(); i++){
+			readIds.push_back(ids[i]);
+		}
 		DocumentController docCtrl;
-		std::vector<Document> docs =  docCtrl.searchDocument(ids);
+		std::vector<Document> docs =  docCtrl.searchDocument(readIds);
 		json docJson = formatDocumentToJson(docs);
 		j["docs"] = docJson;
+		j["pageIndex"] = pageIndex;
+		j["pageSize"] = PAGESIZE;
 		std::cout << j.dump(4) << std::endl;
 	}else{
 		std::cout << "search keyword is valid" << std::endl;  

@@ -144,6 +144,8 @@ header {
 .search_result_list>li {
     margin-top: 20px;
     margin-bottom: 20px;
+    max-height: 100px;
+    overflow: hidden;
 }
 
 .search_result_list>li>.item_title>a {
@@ -194,4 +196,29 @@ header {
     background-color: #3333FF;
     color: white;
     border: 0px;
+}
+
+/***********************分页*********************/
+
+.page{
+    width:600px;
+    padding: 10px;
+    margin:20px auto;
+    text-align: center;
+}
+
+.page span{
+    padding: 4px 6px;
+    font-size: 18px;
+}
+
+/*******************页面底部**************************/
+
+.footer{
+    min-height: 80px;
+    background-color: #757575;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    line-height: 60px;
 }

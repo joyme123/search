@@ -20,15 +20,6 @@ std::string DocumentAnalysis::htmlPeel(std::string& html) const{
     return peeledString;
 }
 
-// std::string DocumentAnalysis::htmlPeel(std::string& html,std::regex regex) const{
-//     std::string formatedContent;
-//     //去除网页上的所有页面标签和css和script   
-//     formatedContent = std::regex_replace(html,regex," ");
-//     std::cout << "去除标签后的文本为:"+formatedContent << std::endl;
-
-//     return formatedContent;
-// }
-
 
 /**
  * 去除<p>、<img>、<hx>、<td> 、<tr>、<th>或者等单独占用的行,将多行<br>或<br/>换成一行,将单个空<div></div>块的权重占行权重降为1,删除处理时间复杂度为O(n)

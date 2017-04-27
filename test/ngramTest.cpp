@@ -1,5 +1,5 @@
 #include<iostream>
-#include"../core/util//DocumentParser.h"
+#include"../core/util//WordSplitSingleton.h"
 #include<string>
 #include<locale>
 
@@ -19,14 +19,15 @@ void printMap(map<string,vector<int> > map){
 int main(){
 	locale loc("zh_CN.UTF-8");
     locale::global(loc);
+	WordSplitSingleton *wordSpilt = WordSplitSingleton::getInstance(__FRISO_COMPLEX_MODE__);
 
 	string text = "被引aaa入以告知编译器";
-	map<string,vector<int> > map1 =  DocumentParser::ngram(text,1);
+	map<string,vector<int> > map1 =  wordSpilt->ngram(text,1);
 	printMap(map1);
 	
-	map<string,vector<int> > map2 =  DocumentParser::ngram(text,2);
+	map<string,vector<int> > map2 =  wordSpilt->ngram(text,2);
 	printMap(map2);
 	
-	map<string,vector<int> > map3 =  DocumentParser::ngram(text,3);
+	map<string,vector<int> > map3 =  wordSpilt->ngram(text,3);
 	printMap(map3);
 }

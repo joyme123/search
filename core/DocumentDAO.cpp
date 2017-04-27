@@ -29,6 +29,7 @@ int DocumentDAO::addDocument(Document document){
         pstm->setUInt(8,document.wordNum);
 		std::cout << "正在写入文档......" << std::endl;
         id = this->mysql->insert(pstm);
+		std::cout << "写入文档" << id << std::endl;
     }catch(sql::SQLException &e){
         id = -1;
 		LOG(ERROR) << "DocumentDAO->addDocument(Document document):"<< e.getErrorCode()<<"--"<<e.what();

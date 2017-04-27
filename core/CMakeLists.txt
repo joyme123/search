@@ -19,6 +19,7 @@ set(LIB_SRC ConnectionPool.cpp
             util/SimHashCal.cpp 
             util/FrequencyDictSingleton.cpp 
             util/StopWordDictSingleton.cpp
+            util/WordSplitSingleton.cpp
             util/ResourceManage.cpp)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 SET(CMAKE_BUILD_TYPE "Debug")  

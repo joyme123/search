@@ -128,20 +128,16 @@ std::string stripTags(const char* buf,size_t bufLen,char* allow,size_t allowLen)
         return "";
     }
     char* bufTmp = (char*) malloc(sizeof(char) * (bufLen+1));
-    char* copyBuf = (char*) malloc(sizeof(char) * (bufLen+1));
-    memcpy(copyBuf,buf,bufLen);
-    copyBuf[bufLen] = '\0';
     int bufIndex = 0;
     int copyBufIndex = 0;
     int state = 0;      //状态,0是正常状态,1是html，2是<!doctype><!-- -->不确定的状态,3是注释状态,4是script状态,5是style状态
     int i = 0;
-    int br = 0;         //括号的计数
     int depth = 0;
     int inS = 0;
     char lc = '\0';     //上一个有意义的字符
     char c;
     while(i < bufLen){
-        c = copyBuf[i];
+        c = buf[i];
         switch(c){
             case '\0':
                 break;
@@ -170,11 +166,20 @@ std::string stripTags(const char* buf,size_t bufLen,char* allow,size_t allowLen)
                     case 3:
                         if(lc == '<')
                             state = 0;
+                        break;
                     case 4:
                         if(lc == 't'){
                             state = 0;
                             inS = 0;
                         }
+                    case 5:
+                        if(lc == 'e'){
+                            state = 0;
+                            inS = 0;
+                        }
+                        break;
+                    default:
+                        goto reg_char;
 
                 }
                 lc = '>';
@@ -186,15 +191,18 @@ std::string stripTags(const char* buf,size_t bufLen,char* allow,size_t allowLen)
 
             case 'T':
             case 't':
-                if(state == 1 && lc == '<' && i > 5 && toLower(copyBuf[i - 1]) == 'p' && toLower(copyBuf[i - 2]) == 'i'
-                    && toLower(copyBuf[i - 3]) == 'r' && toLower(copyBuf[i - 4]) == 'c' && toLower(copyBuf[i -5]) == 's'){
-                        state = 4;
-                        inS = 1;
-                    }
-                    else if(state == 4 && inS == 1 && lc != '\'' && i > 5 && toLower(copyBuf[i - 1]) == 'p' && toLower(copyBuf[i - 2]) == 'i'
-                    && toLower(copyBuf[i - 3]) == 'r' && toLower(copyBuf[i - 4]) == 'c' && toLower(copyBuf[i -5]) == 's'){
-                        lc = 't';
-                    }
+                if(state == 1 && lc == '<' && i > 5 && toLower(buf[i - 1]) == 'p' && toLower(buf[i - 2]) == 'i'
+                    && toLower(buf[i - 3]) == 'r' && toLower(buf[i - 4]) == 'c' && toLower(buf[i -5]) == 's'){
+                    state = 4;
+                    inS = 1;
+                }
+                else if(state == 4 && inS == 1 && lc != '\'' && i > 5 && toLower(buf[i - 1]) == 'p' && toLower(buf[i - 2]) == 'i'
+                && toLower(buf[i - 3]) == 'r' && toLower(buf[i - 4]) == 'c' && toLower(buf[i -5]) == 's'&& toLower(buf[i -6]) == '/'&& toLower(buf[i -7]) != '\\'){
+                    lc = 't';
+                }else{
+                    //不是特殊字符则跳到reg_char
+                    goto reg_char;
+                }
                 break;
 
             case '\"':
@@ -219,17 +227,30 @@ std::string stripTags(const char* buf,size_t bufLen,char* allow,size_t allowLen)
 
             case 'e':
             case 'E':
-                if(state == 2 && i - copyBufIndex > 6 && toLower(copyBuf[i - 1]) == 'p' && toLower(copyBuf[i - 2]) == 'y'
-                    && toLower(copyBuf[i - 3]) == 't' && toLower(copyBuf[i - 4]) == 'c' && toLower(copyBuf[i -5]) == 'o'
-                    && toLower(copyBuf[i - 6]) == 'd'){
+                if(state == 2 && i - copyBufIndex > 6 && toLower(buf[i - 1]) == 'p' && toLower(buf[i - 2]) == 'y'
+                    && toLower(buf[i - 3]) == 't' && toLower(buf[i - 4]) == 'c' && toLower(buf[i -5]) == 'o'
+                    && toLower(buf[i - 6]) == 'd'){
                         state = 1;
+                    }else if(state == 1 && lc == '<' && i > 5 && toLower(buf[i - 1]) == 'l' && toLower(buf[i - 2]) == 'y'
+                    && toLower(buf[i - 3]) == 't' && toLower(buf[i - 4]) == 's'){
+                        state = 5;
+                        inS = 1;
+                    }else if(state == 5 && inS == 1 && lc != '\'' && i > 5 && toLower(buf[i - 1]) == 'l' && toLower(buf[i - 2]) == 'y'
+                && toLower(buf[i - 3]) == 't' && toLower(buf[i - 4]) == 's' && toLower(buf[i -5]) == '/'&& toLower(buf[i -6]) != '\\'){
+                        lc = 'e';
+                    }else{
+                        //不是特殊字符则跳到reg_char
+                        goto reg_char;
                     }
                 break;
 
             case '-':
-                if(state == 2&&copyBuf[i - 1] == '-'){
+                if(state == 2&&buf[i - 1] == '-'){
                     //注释
                     state = 3;
+                }else{
+                    //不是特殊字符则跳到reg_char
+                    goto reg_char;
                 }
                 break;
 
@@ -240,7 +261,6 @@ reg_char:
         }
         i++;
     }
-    free(copyBuf);
     bufTmp[bufIndex] = '\0';
     std::string s = std::string(bufTmp);
     free(bufTmp);

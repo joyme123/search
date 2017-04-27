@@ -24,62 +24,6 @@ std::vector<InvertedIndexHash> DocumentParser::parser(std::string& text){
 	return v;
 }
 
-std::map< std::string, std::vector< int > > DocumentParser::ngram(std::string& text,int step){
-	std::map<std::string,std::vector<int> > map;
-	int position = 1;
-	std::string word = text.substr(0,1);
-	for(int i = 0; text[i] != '\0'; i++){
-		std::string word = text.substr(i,step);
-		map[word].push_back(position);
-		position++;
-	}
-	return map;
-}
-
-
-/**
- * 基于friso的分词函数
- * @param text 文本内容
- * @param mode friso支持的分词模式
- * @return map key为单词，value保存单词出现的位置
- */
-std::map< std::string, std::vector< int > > DocumentParser::splitWord(std::string& text,friso_mode_t mode){
-    friso_t friso;
-    friso_config_t config;
-    friso_task_t task;
-    std::map<std:: string, std::vector< int > > map;
-    int pos = 1;
-    //initialize
-    friso = friso_new();
-    config = friso_new_config();
-    friso_set_mode(config,mode);
-    if ( friso_init_from_ifile(friso, config, (fstring)FRISO_DICT_PATH) != 1 ) {
-        //if initialize fail,free friso 
-        std::printf("fail to initialize friso and config.");
-        friso_free_config(config);
-        friso_free(friso);
-		return map;
-    }
-
-    //set the task.
-    task = friso_new_task();
-    std::string str ;
-    str = text;
-    
-    friso_set_text( task, (char*)str.c_str() );
-    
-    while ( ( config->next_token( friso, config, task ) ) != NULL ) 
-    {
-        std::string word = (std::string)task->token->word;
-        map[word].push_back(pos++);
-    }
-
-    friso_free_task( task );
-    friso_free_config(config);
-    friso_free(friso);
-    return map;
-}
-
 /**
 * input formated text and return a document object
 * @param formatText formated text like this:title|type|author|url|text
@@ -168,6 +112,8 @@ Document DocumentParser:: documentJsonFormat(std::string& documentJson){
     document.author = "测试作者";
     document.abstract = "测试摘要";
     document.type = html;
+
+    std::cout << document.mongoId <<std::endl;
     return document;
 }
 

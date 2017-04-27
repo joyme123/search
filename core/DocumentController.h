@@ -17,6 +17,7 @@
 #include<glog/logging.h>
 
 #include "ConnectionPool.h"
+#include"util/WordSplitSingleton.h"
 #include"util/DocumentParser.h"
 #include"util/DocumentAnalysis.h"
 #include"util/SimHashCal.h"

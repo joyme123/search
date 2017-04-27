@@ -51,6 +51,11 @@
         "algorithm": "cpp",
         "iostream": "cpp",
         "ostream": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "*.ipp": "cpp",
+        "deque": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "sstream": "cpp"
     }
 }

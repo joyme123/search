@@ -20,10 +20,10 @@
 using namespace std;
 
 int main(int argc,const char **argv){
-    const string url = "tcp://115.29.114.202:3306";
-    const string user = "5019";
-    const string password = "5019";
-    const string database = "empdb";
+    const string url = "tcp://127.0.0.1:3306";
+    const string user = "root";
+    const string password = "1212";
+    const string database = "search";
     
     size_t row;
     stringstream sql;
@@ -42,11 +42,13 @@ int main(int argc,const char **argv){
         
         cout << "\t Test表创建成功" << endl;
         
+        boost::shared_ptr<sql::PreparedStatement> pstmt(
+            con->prepareStatement("INSERT INTO test(id,label)VALUES(?,?)"));
+
         for(i = 0; i < 200; i++){
-            sql.str("");
-            sql << "INSERT INTO test(id,label)VALUES(";
-            sql << i+1 <<", '" << i << "')";
-            stmt->execute(sql.str()); 
+            pstmt->setInt(1,i);
+            pstmt->setInt(2,i);
+            pstmt->execute(); 
         }    
 
         cout << "插入数据成功" << endl;

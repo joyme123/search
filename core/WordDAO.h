@@ -38,6 +38,14 @@ public:
     int addWord(Word word,std::shared_ptr<PostingList>  postingList);
     
     /**
+     * 添加或者更新一个单词，利用的是sql的ON DUPLICATE KEY UPDATE的语法
+     * @param 要添加的单词
+     * @param 要添加的单词对应的倒排索引
+     * @return int 添加的单词id或者更新的数据数
+     */
+    int addOrUpdateWord(Word word,std::shared_ptr<PostingList>  postingList);
+
+    /**
      * delete a record of the word by id
      * @param id word id
      * @return  affect rows num

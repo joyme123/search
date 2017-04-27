@@ -12,9 +12,9 @@
 
 class TimeoutException:public std::exception{
     public:
-        const char * what (){
-            return "timeout exception";
-        }
+        // const char * what (){
+        //     return "timeout exception";
+        // }
         const char* getErrorCode(){
             return "E100001";
         }

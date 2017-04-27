@@ -43,22 +43,17 @@ Mysql ConnectionPool::getConnection(){
             throw TimeoutException();   
         }
     }
-    Mysql* mysqlPtr = NULL;
-    try{
-        //没超过则继续创建
-        Mysql mysql;
-        this->createCount++;        //新创建的则在createCount自增1
-        mysqlPtr = &mysql;
-    }catch(sql::SQLException &e){
-        LOG(ERROR) << "SimHashDAO->addSimHash(SimHash simHash):"<< e.getErrorCode()<<"--"<<e.what();
-        m.unlock();
-    }         
+    //没超过则继续创建
+    Mysql mysql;
+    this->createCount++;        //新创建的则在createCount自增1
     m.unlock(); 
-    return *mysqlPtr;
+    return mysql;
+  
+ 
 }
 
 void ConnectionPool::retConnection(Mysql& connection){
     m.lock();
-    connectionQueue.push(connection);
+    this->connectionQueue.push(connection);
     m.unlock();
 }

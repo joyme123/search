@@ -8,6 +8,7 @@
 #include "../core/util/DocumentParser.h"
 #include "../core/util/FrequencyDictSingleton.h"
 #include "../core/util/StopWordDictSingleton.h"
+#include "../core/util/WordSplitSingleton.h"
 #include <iostream>
 #include <map>
 #include <string>
@@ -56,7 +57,7 @@ int main(int argc,char** argv){
     //测试单例模式的构造函数没有被重复执行
     FrequencyDictSingleton *frequencyDictInstance1 = FrequencyDictSingleton::getInstance();      //获取词频表的单例
     StopWordDictSingleton *stopWordDictInstance = StopWordDictSingleton::getInstance();         //获取停顿词的单例
-
+    WordSplitSingleton *wordSpilt = WordSplitSingleton::getInstance(__FRISO_COMPLEX_MODE__);
 
     DocumentAnalysis analysis;
     std::string content = analysis.improvedHtmlAnalysis(str);       //得到正文内容
@@ -65,7 +66,7 @@ int main(int argc,char** argv){
 
     delete[] buffer;
 
-    map<string,vector<int> > resultMap =  DocumentParser::splitWord(content,__FRISO_COMPLEX_MODE__);         //得到正文的分词结果
+    map<string,vector<int> > resultMap =  wordSpilt->splitWord(content);         //得到正文的分词结果
 
     SimHashCal simHashCal;
     map<string,vector<int> > removedResultMap = simHashCal.removeStopWord(resultMap,stopWordDictInstance->stopWordDict);    //移除stopWord   

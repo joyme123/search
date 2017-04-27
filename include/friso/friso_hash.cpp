@@ -219,7 +219,6 @@ FRISO_API void *hash_put_mapping(
     if ( _hash->size >= _hash->threshold ) {
         rebuild_hash( _hash );
     }
-
     return oval;
 }
 

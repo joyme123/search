@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>linux下c/c++的内存泄漏分析 - 一只安静的猫</title>
+        <meta charset="utf-8">
+        <meta name="keywords" content="php   c++,memory,leak" />
+        <meta name="description" content="使用valgrind进行内存分析" />
+        <meta name="generator" content="emlog" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+        <meta http-equiv="X-UA-Compatible" content="IE=9" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no">
+        <link href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+        <link type="text/css" href="http://myway5.com/content/templates/emlog_theme/main.css" rel="stylesheet" />
+	    <link type="text/css" href="http://myway5.com/content/templates/emlog_theme/markdown.css" rel="stylesheet" />
+        
+       <!-- <script type="text/javascript" src="http://myway5.com/content/templates/emlog_theme/js/blogtags.js"></script>  -->      
+        <!--[if lt IE 9]>
+        <script src="http://cdn.gbtags.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="http://cdn.gbtags.com/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
+        <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="http://myway5.com/content/templates/emlog_theme/layer/layer.js"></script>
+        <script type="text/javascript" src="http://myway5.com/content/templates/emlog_theme/js/function.js"></script> 
+       <link href='content/plugins/github/github.css' rel='stylesheet'>    </head>
+    <body>
+		<nav class="navbar nav-default navbar-fixed-top navColor">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <img src="http://myway5.com/content/templates/emlog_theme/images/button.png" width="30" height="30">
+              </button>
+              <a class="navbar-brand" href="http://myway5.com/">一只安静的猫</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+	        		  <li ><a href="http://myway5.com/" >首页</a></li>
+        	    		<li class="dropdown">
+            <a href="http://myway5.com/?sort=10" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">java 学习<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                
+                <li><a href="http://myway5.com/?sort=12">jvm</a></li><li><a href="http://myway5.com/?sort=13">JavaEE</a></li><li><a href="http://myway5.com/?sort=14">javaSE</a></li>            </ul>
+        </li>
+        	        		  <li ><a href="http://myway5.com/?sort=9" >安卓开发</a></li>
+        	        		  <li ><a href="http://myway5.com/?sort=4" >php+前台学习</a></li>
+        	        		  <li ><a href="http://myway5.com/?sort=7" >emlog相关</a></li>
+        	        		  <li ><a href="http://myway5.com/?post=3" >留言</a></li>
+        		</ul>
+              <form class="navbar-form navbar-right search_input" name="keyform" role="search" method="get" action="http://myway5.com/index.php">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="keyword"  placeholder="Search">
+                </div>
+                <input type="submit" class="btn btn-default" value="搜索">
+              </form>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+		<div class="clearfix"></div>
+        <div class="container-fluid main">
+<article class="article">
+    <h1>linux下c/c++的内存泄漏分析</h1>
+    <div class="content"><p>使用valgrind进行内存分析</p>
+<h2 id="h2-u7B80u4ECB"><a name="简介" class="reference-link"></a><span class="header-link octicon octicon-link"></span>简介</h2><p>官网地址:<a href="http://valgrind.org">http://valgrind.org</a><br></br>
+<blockquote>
+<p><strong>Memcheck</strong> 是一个内存错误的检测工具，帮助你的程序，尤其是c/c++程序出现更少内存的问题。<br><strong>Cachegrind</strong> 是一个缓存和分支预测探查工具，帮助你的程序运行的更快。<br><strong>Callgrind</strong> 也是一个和缓存相关的调用图工具，和Cachegrind有一部分重叠，但也生成一些Cachegrind不提供的信息。<br><strong>Helgrind</strong> 是一个线程错误的检测工具，在多线程场景下能派上用场。<br><strong>DRD</strong> 也是一个线程错误的检测工具，与Helgrind功能一样，但是使用了不同的分析技术，可能会发现不同的问题。<br><strong>Massif</strong> 是一个堆分析工具，帮助程序使用更少的内存。<br><strong>DHAT</strong> 是不同与Massif的堆分析工具，帮助你理解块的生命周期, 块的利用率, 以及layout的低效。<br><strong>SGcheck</strong> 是一个实验性的工具，帮助检测栈的超支和全局数组。是Memcheck的功能方面的补充：可以检测出Memcheck无法发现的问题，反之亦然。<br><strong>BBV</strong> 是一个实验SimPoint基本块向量生成器。对于进行计算机体系结构研究和开发的人来说，这是有用的。</p>
+</blockquote>
+<p>这里记录的只是Memcheck的使用，其他的使用可以参考上述的官网的网址。</p>
+<h2 id="h2-ubuntu-"><a name="ubuntu下的安装" class="reference-link"></a><span class="header-link octicon octicon-link"></span>ubuntu下的安装</h2><blockquote>
+<p>sudo apt-get install valgrind</p>
+</blockquote>
+<h2 id="h2-u4F7Fu7528u65B9u6CD5"><a name="使用方法" class="reference-link"></a><span class="header-link octicon octicon-link"></span>使用方法</h2><blockquote>
+<p>valgrind [valgrind-options] your-prog [your-prog-options]</p>
+</blockquote>
+<p>例如,对ls -l进行分析:</p>
+<blockquote>
+<p>valgrind —tool=memcheck ls -l</p>
+</blockquote>
+<p>valgrind的默认工具就是memcheck，所以使用memcheck工具时可以省略—tool参数</p>
+<h2 id="h2--"><a name="注意事项:" class="reference-link"></a><span class="header-link octicon octicon-link"></span>注意事项:</h2><pre><code> 1、valgrind工具会减慢程序的运行速度
+ 2、程序编译时需要开启-g，帮助valgrind可以更精准的定位到错误
+ 3、程序编译时最好关闭优化，否则可能产生不正确的未初始化错误信息，以及遗漏未初始化错误。
+ 4、程序编译时最好使用-Wall，帮助valgrind在高优化等级的程序中精准识别一些甚至是全部的问题
+</code></pre><h2 id="h2-u5177u4F53u4F7Fu7528u8BF4u660E"><a name="具体使用说明" class="reference-link"></a><span class="header-link octicon octicon-link"></span>具体使用说明</h2><p>Valgrind会记录下一些注释，文本流，具体的错误报告以及其他的重要的事件。类似与以下的格式:</p>
+<pre><code> ==12345== some-message-from-Valgrind
+</code></pre><p><strong>12345</strong>代表进程Id,这个格式方便区分程序输出和Valgrind的注释输出，以及区分多个进程的输出。Valgrind只会输出最重要的信息，如果需要一些次要的信息，可以使用-v参数。</p>
+<p>你可以使用三种方式去导出这些错误</p>
+<pre><code> 1、默认情况:会直接在控制台打印出来
+ 2、使用文件记录，这个时候需要使用参数--log-file=filename,filename代表存储的文件名
+ 3、通过socket发送:使用参数--log-socket=192.168.0.1:12345，不加端口号会使用默认的1500端口，Valgrind提供了一个叫Valgrind-listener的工具去监听这个网络流。
+</code></pre><h2 id="h2--memcheck-"><a name="读懂memcheck工具产生的错误信息" class="reference-link"></a><span class="header-link octicon octicon-link"></span>读懂memcheck工具产生的错误信息</h2><h3 id="h3-1-illegal-read-illegal-write-errors-"><a name="1.非法读/非法写的错误(Illegal read/Illegal write errors)" class="reference-link"></a><span class="header-link octicon octicon-link"></span>1.非法读/非法写的错误(Illegal read/Illegal write errors)</h3><p>例如:</p>
+<pre><code>Invalid read of size 4
+    at 0x40F6BBCC: (within /usr/lib/libpng.so.2.1.0.9)
+    by 0x40F6B804: (within /usr/lib/libpng.so.2.1.0.9)
+    by 0x40B07FF4: read_png_image(QImageIO *) (kernel/qpngio.cpp:326)
+    by 0x40AC751B: QImageIO::read() (kernel/qimage.cpp:3621)
+Address 0xBFFFF0E0 is not stack'd, malloc'd or free'd
+</code></pre><p>出现这个错误是因为程序读或写了Valgrind认为不应该读写的内存区域</p>
+<h3 id="h3-2-"><a name="2.使用了为初始化的值" class="reference-link"></a><span class="header-link octicon octicon-link"></span>2.使用了为初始化的值</h3><p>例如:</p>
+<pre><code>Conditional jump or move depends on uninitialised value(s)
+    at 0x402DFA94: _IO_vfprintf (_itoa.h:49)
+    by 0x402E8476: _IO_printf (printf.c:36)
+    by 0x8048472: main (tests/manuel1.c:8)
+</code></pre><p>这样一段错误可能就是由以下的代码产生</p>
+<pre><code class="lang-c">int main()
+{
+  int x;
+  printf ("x = %d\n", x);
+}
+</code></pre>
+<p>Valgrind会跟踪变量x,直到x被使用时才会报错。在这里x被传入了printf,进而进入_IO_printf，但是这些都不会报错，只有当x被传递到_IO_vfprintf,_IO_vfprintf开始检查x是否可以被转换为ASCII码时才报错。</p>
+<p>未初始化值一般有两种情况:</p>
+<ul>
+<li>1、局部变量没有被初始化，就像上面一样。</li><li>2、The contents of heap blocks (allocated with malloc, new, or a similar function) before you (or a constructor) write something there.</li></ul>
+<p>为了找到未初始化变量一开始的位置，可以使用—track-origins=yes参数。当然这会减慢Valgrind的使用速度。</p>
+<h3 id="h3-3-"><a name="3.在系统调用中使用了未初始化或者不可寻址的值" class="reference-link"></a><span class="header-link octicon octicon-link"></span>3.在系统调用中使用了未初始化或者不可寻址的值</h3><p>Valgrind会检查所有系统调用的参数，一般有以下3类:</p>
+<ul>
+<li>1、检查所有直接调用的参数，即使已经初始化了。</li><li>2、如果系统调用需要你的程序申请的缓冲区，Valgrind会检查所有的缓冲区内容，看它是否可寻址，内容是否初始化了。</li><li>3、如果系统调用需要写入用户提供的缓冲，Valgrind会检查是否可寻址。</li></ul>
+<p>下面是两个使用了无效参数的系统调用的例子:</p>
+<pre><code class="lang-c"> #include &lt;stdlib.h&gt;
+ #include &lt;unistd.h&gt;
+ int main( void )
+ {
+    char* arr  = malloc(10);
+    int*  arr2 = malloc(sizeof(int));
+    write( 1 /* stdout */, arr, 10 );
+    exit(arr2[0]);
+  }
+</code></pre>
+<p> 得到这样的错误信息:</p>
+<pre><code>Syscall param write(buf) points to uninitialised byte(s)
+    at 0x25A48723: __write_nocancel (in /lib/tls/libc-2.3.3.so)
+    by 0x259AFAD3: __libc_start_main (in /lib/tls/libc-2.3.3.so)
+    by 0x8048348: (within /auto/homes/njn25/grind/head4/a.out)
+Address 0x25AB8028 is 0 bytes inside a block of size 10 alloc'd
+    at 0x259852B0: malloc (vg_replace_malloc.c:130)
+    by 0x80483F1: main (a.c:5)
+
+Syscall param exit(error_code) contains uninitialised byte(s)
+    at 0x25A21B44: __GI__exit (in /lib/tls/libc-2.3.3.so)
+    by 0x8048426: main (a.c:8)
+</code></pre><p>write（a）和exit（b）都是错误的，a从堆中向标准输出中写入了未初始化的arr。b向exit传递了为初始化的值。注意a的错误在于arr指向的内存区域，而b的错误直接是arr2[0]。</p>
+<h3 id="h3-4-illegal-frees-"><a name="4.非法的释放(Illegal frees)" class="reference-link"></a><span class="header-link octicon octicon-link"></span>4.非法的释放(Illegal frees)</h3><p>例如:</p>
+<pre><code>Invalid free()
+    at 0x4004FFDF: free (vg_clientmalloc.c:577)
+    by 0x80484C7: main (tests/doublefree.c:10)
+Address 0x3807F7B4 is 0 bytes inside a block of size 177 free'd
+    at 0x4004FFDF: free (vg_clientmalloc.c:577)
+    by 0x80484C7: main (tests/doublefree.c:10)
+</code></pre><p>这个例子中，一块区域被free了两次，所以出现Illegal frees的错误。</p>
+<h3 id="h3-5-"><a name="5.使用不合适的释放函数去释放堆区域的内存" class="reference-link"></a><span class="header-link octicon octicon-link"></span>5.使用不合适的释放函数去释放堆区域的内存</h3><p>例如:</p>
+<pre><code>Mismatched free() / delete / delete []
+    at 0x40043249: free (vg_clientfuncs.c:171)
+    by 0x4102BB4E: QGArray::~QGArray(void) (tools/qgarray.cpp:149)
+    by 0x4C261C41: PptDoc::~PptDoc(void) (include/qmemarray.h:60)
+    by 0x4C261F0E: PptXml::~PptXml(void) (pptxml.cc:44)
+Address 0x4BB292A8 is 0 bytes inside a block of size 64 alloc'd
+    at 0x4004318C: operator new[](unsigned int) (vg_clientfuncs.c:152)
+    by 0x4C21BC15: KLaola::readSBStream(int) const (klaola.cc:314)
+    by 0x4C21C155: KLaola::stream(KLaola::OLENode const *) (klaola.cc:416)
+    by 0x4C21788F: OLEFilter::convert(QCString const &amp;) (olefilter.cc:272)
+</code></pre><p>这个错误是因为使用new[]开辟内存空间，却使用了free去释放内存。<br>使用malloc, calloc, realloc, valloc or memalign,必须使用free释放内存。<br>使用new, 必须使用delete释放内存。<br></br>
+<h3 id="h3-6-"><a name="6.源内存区域和目标内存区域重叠" class="reference-link"></a><span class="header-link octicon octicon-link"></span>6.源内存区域和目标内存区域重叠</h3><p>memcpy, strcpy, strncpy, strcat, strncat这些函数可以从源内存区域复制内容到目标内存区域。这两块区域是不可以重叠的。POSIX标准规定这种行为是未定义的。<br></br>
+<pre><code>==27492== Source and destination overlap in memcpy(0xbffff294, 0xbffff280, 21)
+==27492==    at 0x40026CDC: memcpy (mc_replace_strmem.c:71)
+==27492==    by 0x804865A: main (overlap.c:40)
+</code></pre><h3 id="h3-7-fishy-argument-values"><a name="7.Fishy argument values" class="reference-link"></a><span class="header-link octicon octicon-link"></span>7.Fishy argument values</h3><p>所以的内存分配函数都指定了分配的内存大小，这个大小必定为正数，或者一般情况下不会极度的大。例如在64位的机器上，不会申请分配2^63大小的内存。这种为负数的或者过于大的参数被成为Fishy argument。<br></br>
+<pre><code>==32233== Argument 'size' of function malloc has a fishy (possibly negative) value: -3
+==32233==    at 0x4C2CFA7: malloc (vg_replace_malloc.c:298)
+==32233==    by 0x400555: foo (fishy.c:15)
+==32233==    by 0x400583: main (fishy.c:23)
+</code></pre><h3 id="h3-8-"><a name="8.内存泄漏检测" class="reference-link"></a><span class="header-link octicon octicon-link"></span>8.内存泄漏检测</h3><p>Valgrind会跟踪所有由malloc或new申请的内存，所以当程序退出时,Valgrind知道哪些内存没有被主动释放。<br></br>
+<ul>
+<li><p>指针一开始是“start-pointer”，被程序有意或无意的移动到中间。</p>
+</li><li><p>可能只是巧合。</p>
+</li><li><p>std::string中的char的指针。</p>
+</li><li><p>有些代码分配块内存，使用前8个去存储作为64位的数。例如sqlite3MemMalloc就是这样做的。</p>
+</li><li><p>可能是一个c++对象（具有析构函数）数组的指针，由new[]来分配内存。这种情况下，有些编译器存储一个“magic cookie”，包含数组长度存储在分配的块开头。</p>
+</li><li><p>可能是一个多重继承产生的c++对象的内部部分的指针。</p>
+</li></ul>
+<p>在使用了启发式（heuristics）的情况下，stdstring, length64, newarray and multipleinheritance情况下的“interior-pointer”会被当成“start-pointer”对待。</p>
+<p>考虑下面这九种情况：</p>
+<pre><code>     Pointer chain            AAA Leak Case   BBB Leak Case
+     -------------            -------------   -------------
+(1)  RRR ------------&gt; BBB                    DR
+(2)  RRR ---&gt; AAA ---&gt; BBB    DR              IR
+(3)  RRR               BBB                    DL
+(4)  RRR      AAA ---&gt; BBB    DL              IL
+(5)  RRR ------?-----&gt; BBB                    (y)DR, (n)DL
+(6)  RRR ---&gt; AAA -?-&gt; BBB    DR              (y)IR, (n)DL
+(7)  RRR -?-&gt; AAA ---&gt; BBB    (y)DR, (n)DL    (y)IR, (n)IL
+(8)  RRR -?-&gt; AAA -?-&gt; BBB    (y)DR, (n)DL    (y,y)IR, (n,y)IL, (_,n)DL
+(9)  RRR      AAA -?-&gt; BBB    DL              (y)IL, (n)DL
+
+Pointer chain legend:
+- RRR: a root set node or DR block(一个root set或者直接可达的块）
+- AAA, BBB: heap blocks（堆块）
+- ---&gt;: a start-pointer （头指针）
+- -?-&gt;: an interior-pointer （内部指针）
+
+Leak Case legend:
+- DR: Directly reachable （直接可达）
+- IR: Indirectly reachable （不直接可达）
+- DL: Directly lost （直接丢失）
+- IL: Indirectly lost （不直接丢失）
+- (y)XY: it's XY if the interior-pointer is a real pointer （内部指针是一个真实的指针）
+- (n)XY: it's XY if the interior-pointer is not a real pointer （内部指针不是一个真实的指针）
+- (_)XY: it's XY in either case （任意一个情况）
+</code></pre><p>任意一种情况都可以被归为上述9种情况之一，Valgrind合并其中一些情况，得出4种可能</p>
+<ul>
+<li><p>“Still reachable（依然可达）”。 这包含情况 1 和 2 (for the BBB blocks) 。 一个内存块的头指针的或者头指针的链被发现，程序员至少在原理上释放了这块内存在程序退出之前。这是一个非常普遍并且不算是一个问题，Valgrind默认不报告这个问题。</p>
+</li><li><p>“Definitely lost（绝对丢失）”。 这包含情况3 (for the BBB blocks) 。这意味着这个数据块没有指针可达。数据块被归为丢失，因为程序员在程序结束时不能主动释放它，原因是没有指针指向这块内存。 这可能是在较早之前丢失了指向内存区域的指针。</p>
+</li><li><p>“Indirectly lost（非直接丢失）”。这包含情况4和9 (for the BBB blocks)。这意味着数据块丢失不是因为没有指针指向它，而是因为所有的指向数据块的指针自己丢失了。 举例来说，如果你有一个二叉树，根节点丢失，所有的他的子节点都变成非直接丢失。因为根节点的直接丢失问题被解决，子节点的非直接丢失问就会消失。Valgrind默认不报告这个问题。</p>
+</li><li><p>“Possibly lost（可能丢失）”。 这包含情况5、6、7、8 (for the BBB blocks) 。 这意味着一个或多个数据块指针被发现，但是至少一个指针是内部指针。这可能只是一个内存中的随机值，刚好指向一个数据块，所以你不需要考虑这个情况除非你知道你的代码中出现了内部指针。</p>
+</li></ul>
+<p>下面是一个内存泄漏的总结的例子</p>
+<pre><code>LEAK SUMMARY:
+    definitely lost: 48 bytes in 3 blocks.
+    indirectly lost: 32 bytes in 2 blocks.
+        possibly lost: 96 bytes in 6 blocks.
+    still reachable: 64 bytes in 4 blocks.
+            suppressed: 0 bytes in 0 blocks.
+</code></pre><p>如果开启的启发式的选项，类似于以下输出</p>
+<pre><code>LEAK SUMMARY:
+   definitely lost: 4 bytes in 1 blocks
+   indirectly lost: 0 bytes in 0 blocks
+     possibly lost: 0 bytes in 0 blocks
+   still reachable: 95 bytes in 6 blocks
+                      of which reachable via heuristic:
+                        stdstring          : 56 bytes in 2 blocks
+                        length64           : 16 bytes in 1 blocks
+                        newarray           : 7 bytes in 1 blocks
+                        multipleinheritance: 8 bytes in 1 blocks
+        suppressed: 0 bytes in 0 blocks
+</code></pre><p>如果 —leak-check=full 被指定, Memcheck 会给出每一个绝对丢失或可能丢失块的详细情况，包括他们在哪里被分配。它不能告诉你何时、如何、为何指向一个泄露内存块的指针丢失了;这个需要自己解决。通常，你需要保证在程序退出时，你的程序没有任何的绝对丢失或者可能丢失的内存块。</p>
+<p>例如</p>
+<pre><code>8 bytes in 1 blocks are definitely lost in loss record 1 of 14
+   at 0x........: malloc (vg_replace_malloc.c:...)
+   by 0x........: mk (leak-tree.c:11)
+   by 0x........: main (leak-tree.c:39)
+
+88 (8 direct, 80 indirect) bytes in 1 blocks are definitely lost in loss record 13 of 14
+   at 0x........: malloc (vg_replace_malloc.c:...)
+   by 0x........: mk (leak-tree.c:11)
+   by 0x........: main (leak-tree.c:25)
+</code></pre><p>第一条信息描述了一种简单的情况，一个8byte的内存块绝对丢失了。第二种情况描述了另外一个8byte内存块绝对丢失;不同在于第二种情况会引起在另外内存块中的更多的80bytes内存非直接丢失了。loss  number没有任何特殊的含义。这个loss number可以在Valgrind gdbserver中用来列出泄漏内存块的地址，或者给出更多的信息关于为何一个内存块仍然可达。</p>
+<p>当 —leak-check=full 被指定时，选项—show-leak-kinds=<set> 控制显示的泄漏类型。</set>
+<p><set> 有下面几种类型：</set>
+<ul>
+<li>单独指定一或多个： definite indirect possible reachable。</li><li>all代表所有。</li><li>none 代表空集合。</li></ul>
+<p>例如使用  —show-leak-kinds=definite,possible 来只显示绝对或者可能的内存丢失。</p></div>
+</article>
+<div class="property">
+        </div>
+<div class="neighbor_log">
+                <div class="left_log">上一篇:这是最新的文章</div>
+                    <div class="right_log">下一篇:<a href="http://myway5.com/?post=62" title="下一篇c++和Java的对象内存异同">c++和Java的对象内存异同...</a></div>
+            <div class="clearfix"></div>
+</div>
+<div class="panel panel-default comments">
+    <ul class="list-group commentslist">
+        <li class="list-group-item">
+                    <form method="post" name="commentform" action="http://myway5.com/index.php?action=addcom" id="commentform">
+            <div class="comment_input">
+            <input type="hidden" name="gid" value="63" />
+                                            <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">评论</span>
+                    <textarea name="comment" id="comment_textarea" class="form-control" tabindex="4"  placeholder=""></textarea>
+                </div>
+                                <input name="submit" type="submit" class="btn btn-default right" tabindex="5" value="评论" />
+                <input type="hidden" name="pid" id="comment_pid" value="0" size="22" tabindex="1"/>
+                <div class="clearfix"></div>    
+            </div>
+        </form>
+        </li>
+                                                    <div class="navigation"><div class="pagination">  </div></div>
+    </ul>    
+</div>
+        <div class="clearfix"></div>
+    <div class="footer">
+        Copyright &copy;  2015 <a href="http://myway5.com/">一只安静的猫</a>. Powered by <a href="http://www.emlog.net/" rel="external">emlog</a>.
+        Theme by <a href="http://myway5.com/" rel="external">what</a>.
+        <a href="http://www.miibeian.gov.cn" target="_blank"  rel="nofollow">皖ICP备15026565号-1</a>
+          
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254807243'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1254807243%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>    </div>
+</div>
+</body>
+</html>

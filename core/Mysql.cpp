@@ -88,12 +88,17 @@ int Mysql:: insert(std::shared_ptr<sql::PreparedStatement> pstm){
 	if(this->conn == NULL){
 		this->connect();
 	}
-	pstm->executeQuery();
+	pstm->execute();
+
+	sql::Statement *stmt;
+	stmt = this->conn->createStatement();
 	//last_insert_id(在多个数据库连接下安全)
-	sql::ResultSet*  res = this->prepare("select last_insert_id()")->executeQuery();
+	sql::ResultSet*  res = stmt->executeQuery("select last_insert_id()");
 	int id = -1;
 	if(res->next())
-			id = res->getInt(1);
+		id = res->getInt(1);
+	
+	delete stmt;
 	delete res;		//删除res指针指向的内存
 	return id;
 }

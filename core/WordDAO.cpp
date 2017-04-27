@@ -75,6 +75,61 @@ int WordDAO::addWord(Word word, std::shared_ptr<PostingList> postingList){
     return id;
 }
 
+
+int WordDAO::addOrUpdateWord(Word word,std::shared_ptr<PostingList>  postingList){
+    std::string TABLE = "word";
+	
+    // insert into search.word(word,postingList,docCount,totalCount)value("zenthink","(2747,2)<2,11>",1,1)
+    // ON DUPLICATE KEY UPDATE postingList = CONCAT(postingList,"(2747,2)<2,11>"),docCount = docCount + 1,
+    // totalCount = totalCount + 1;
+    std::string sql = "INSERT INTO " + TABLE + "(word,postingList,docCount,totalCount)VALUES(?,?,'1',?) ON DUPLICATE KEY UPDATE postingList = CONCAT(postingList,?),docCount = docCount + 1,totalCount = totalCount + ?";
+    std::string list;
+    bool first = true;      //it's first time to construct list
+    unsigned long long count = 0;
+    while(postingList != NULL){
+        std::vector<int> positions = postingList->positions;
+        
+        if(first){
+            list = "("+std::to_string(postingList->documentId)+","+std::to_string(positions.size())+")";
+            first = false;
+        }else{
+            list = list + "|("+std::to_string(postingList->documentId)+","+std::to_string(positions.size())+")";
+        }
+        std::string position = "<";
+        bool firstC = true; //it is first time to construct position info
+        for(std::vector<int>::iterator it = positions.begin();it != positions.end();it++){
+            if(firstC){
+                position = position + std::to_string(*it);
+                firstC = false;
+            }else{
+                position = position + "," +std::to_string(*it);
+            }
+        }
+        position = position +  ">";
+        list = list + position;     //(documentId,frequency)<pos1,pos2,pos3>
+        
+        count = count + postingList->positions.size();
+        postingList = postingList->next;
+		
+    }
+    int id = -1;
+    try{
+        std::shared_ptr<sql::PreparedStatement> pstm = this->mysql->prepare(sql);
+        pstm->setString(1,word.text);
+        pstm->setString(2,list);
+        pstm->setInt(3,count);
+        pstm->setString(4,list);
+        pstm->setInt(5,count);
+        id = mysql->insert(pstm);
+    }catch(sql::SQLException &e){
+		LOG(ERROR) << "WordDAO->addOrUpdateWord(Word word, InvertedIndexHash indexHash):"<< e.getErrorCode()<<"--"<<e.what();
+        std::cout <<"出错的单词长度是:-------------"+ word.text<< std::endl;        
+        id = -1;
+    }
+    return id;
+}
+
+
     /**
      * delete a record of the word by id
      * @param id word id

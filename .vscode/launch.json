@@ -1,11 +1,12 @@
 {
     "version": "0.2.0",
     "configurations": [{
+        
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/www/cgi-bin/get.cgi",
-            "args": [],
+            "program": "${workspaceRoot}/test/bin/documentEntryFromFileTest",
+            "args": ["test/problem.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [{"name":"QUERY_STRING","value":"keyword=java"}],
