@@ -7,7 +7,7 @@
 #ifndef WORDCONTROLLER_H
 #define WORDCONTROLLER_H
 
-#include"WordDAO.h"
+#include"core/dao/WordDAO.h"
 #include "ConnectionPool.h"
 
 class WordController{
