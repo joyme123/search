@@ -68,41 +68,75 @@ export GLOG_max_log_size=1
 ### **c++连接mysql组件mysql-connnect-cpp(c++)**
 这个要安装1.x版本,2.x版本是提供文档存储的接口的
 具体安装过程请看我的博客,里面介绍了2.x和1.x版本的安装
-[linux下编译安装mysql-connector-cpp](http://myway5.com/?post=56)
+[linux下编译安装mysql-connector-cpp](http://www.myway5.com/index.php/2017/04/19/linux-complier-mysql-connector-cpp/)
 
 ### redis客户端
 [redis的客户端地址](https://github.com/cylix/cpp_redis)
 [安装说明](https://github.com/Cylix/cpp_redis/wiki/Mac-&-Linux-Install)
 - cpp_redis需要一个一个叫做tacopie的tcp库，以及pthread库,安装tacopie的库文档在这里[tacopie库](https://github.com/Cylix/tacopie)
-- cpp_redis和tacopie的CmakeList.txt生成的是静态库.a,应该更改STATIC为SHARED
+```
+#redis和tacopie的安装命令
+#注意事项:cpp_redis和tacopie的CmakeList.txt生成的是静态库.a,应该更改STATIC为SHARED,同时在CMakeList中的编译选项上使用-fPIC选项:
+# 克隆工程
+git clone https://github.com/Cylix/cpp_redis.git
+# 进入到工程目录
+cd cpp_redis
+# 获取tacopie的子模块
+git submodule init && git submodule update
+# 创建build目录并进入
+mkdir build && cd build
+# 使用cmake生成makefile
+cmake .. -DCMAKE_BUILD_TYPE=Release
+# 编译库
+make
+# 安装库
+make install
+```
 ### mongodb客户端
-[mongodb客户端地址](http://mongoc.org/libmongoc/current/installing.html)
+mongodb客户端使用的是mongocxx，mongocxx是基于[mongoc](http://mongoc.org/libmongoc/current/installing.html)包装的c++的客户端，
+所以这里需要安装mongoc之后，再安装[mongocxx_3.0.x](https://github.com/mongodb/mongo-cxx-driver),
 [mongodb文档](http://mongoc.org/libmongoc/current/tutorial.html#making-a-connection)
-- 需要libbson的库，源代码在这里[libbson](https://github.com/mongodb/libbson)
+- 需要libbson的库，源代码在这里[libbson](https://github.com/mongodb/libbson),因为mongocxx对libbson的库的版本要求是>1.5.0的，所以我们需要从源代码安装1.6.2的版本。
+```
+libbson的安装命令（这一步可以不进行，因为在mongo-c的安装过程中会自动检测libbson并安装）
+git clone https://github.com/mongodb/libbson.git
+cd libbson
+git checkout r1.6
+./autogen.sh
+cd build
+cmake ..
+make
+sudo make install
 
-### **文档添加协议**
-这个搜索引擎本身是没有文档的添加功能的，所以需要通过外部程序按照一定的规则将文档加入到索引代码中进行索引。
+```
 
-为了支持爬虫和索引服务器的分离，使用socket通信，满足进程间或者网络间的数据传输。根据TCP协议的特点，传输的数据之间可能出现"粘包",为了解决粘包问题，制定了以下的传输协议。
+```
+#mongo-c的安装命令
+git clone https://github.com/mongodb/mongo-c-driver.git
+cd mongo-c-driver
+git checkout r1.6
+./autogen.sh --with-libbson=bundled
+make 
+sudo make install
 
-数据包使用二进制流传输,一个数据包分为头部(head)和内容(body)两部分，其中body部分是文档的全部信息，头部主要是为了给分包算法提供支持
+```
 
-**head**
+```
+#mongo-cxx-driver的安装命令
+git clone https://github.com/mongodb/mongo-cxx-driver.git \
+    --branch releases/stable --depth 1
+cd mongo-cxx-driver/build
+cmake -DCMAKE_BUILD_TYPE=Release -DBSONCXX_POLY_USE_BOOST=1 \
+    -DCMAKE_INSTALL_PREFIX=/usr/local ..
+make
+sudo make install
+```
 
-head共有4个字节组成(固定4个字节)，两个部分
- - 第一部分：version,1个字节，代表当前协议的版本号，1~127
- - 第二部分：length，3个字节，代表body部分的<font color="red">长度(请看下方的解释)</font>,0~16777216,这部分需要注意的是，3个字节必须填满，比如body部分的值是20，则传过来的length二进制为00000000 00000000 00010100。
+###libconfig的安装
 
- > 这里的长度指的是body部分以byte为单位的长度
-
-**body**
-
-body部分是一段有指定格式的文本:url\ntype\ncontent
-即读到的第一个\n之前的body部分的数据为文档的地址
-读到的第一个\n和第二个\n之间的数据为文档的类型，
-type = 1 为html网页文档
-type = 2 为pdf文档
-type = 3 为word文档
-之后的内容为网页的全部内容
-
-**java实现的客户端代码示例**:https://github.com/joyme123/search/blob/master/doc/java_socket_client_implement.md
+```
+git clone https://github.com/hyperrealm/libconfig.git
+cd libconfig
+#使用make编译,如果提示
+make
+```

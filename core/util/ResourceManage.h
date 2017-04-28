@@ -10,9 +10,9 @@
 #include <string>
 #include <cpp_redis/cpp_redis>
 #include <bsoncxx/builder/stream/document.hpp>
-#include <bsoncxx/json.hpp>
+#include <bsoncxx/v_noabi/bsoncxx/json.hpp>
 #include <mongocxx/client.hpp>
-#include <mongocxx/instance.hpp>
+#include <mongocxx/v_noabi/mongocxx/instance.hpp>
 
 
  class ResourceManage{
