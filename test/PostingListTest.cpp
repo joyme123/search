@@ -1,6 +1,5 @@
-#include"../core/PostingList.h"
 #include<iostream>
-
+#include"src/core/model/PostingList.h"
 using namespace std;
 
 void printPostingList(std::shared_ptr<PostingList> p){

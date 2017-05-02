@@ -1,6 +1,6 @@
 /**
- * filename: formatedDocumentEntry.cpp
- * 接受已经格式化好的文档，文档的格式类似 title|type|abstract|author|text|
+ * filename: documentEntry.cpp
+ * 接受原生文档，比如通过爬虫下载的未处理的网页
  * author:jiangpengfei
  * date: 2016-12-07
  */
@@ -12,6 +12,7 @@
 #include "src/core/model/Package.h"
 #include "src/core/analysis/SocketStreamParser.h"
 #include "src/core/util/util.h"
+
 
 
 void printMap(std::map<std::string,std::vector<int> > map){
@@ -46,9 +47,9 @@ int main(int argc, char **argv) {
         ServerSocket server (9999);
         std::vector<Package> packs;
         SocketStreamParser parser;      
+        std::cout << "文档接收socket已经打开...端口9999" << std::endl;
         while (true){
             parser.reset(); //每一次连接都要重置解析器
-
             ServerSocket new_sock;
             server.accept (new_sock);
             try{
@@ -59,8 +60,10 @@ int main(int argc, char **argv) {
                     new_sock.recvBinary(data,dataLen);
                     packs = parser.parse(data,dataLen);
                     std::cout  <<"长度为:"<< dataLen << "-----解析数据包:" << packs.size() << std::endl;
-					int count = docContrl.formatedDocumentEntry(packs[0].content);
-					LOG(INFO) << "entry.cpp->main()"<<"add or update "<<count<< "word(s)";
+                    if(packs.size() > 0){
+    					int count = docContrl.documentEntry(packs);     //将解析出来的数据包放入documentEntry中进行处理
+	    				LOG(INFO) << "entry.cpp->main()"<<"add or update "<<count<< "word(s)";
+                    }
                 }
 	        }catch ( SocketException& e) {
                 std::cout << "连接丢失:" << e.description() << std::endl;
@@ -69,9 +72,6 @@ int main(int argc, char **argv) {
     }catch ( SocketException& e ){
         std::cout << "Exception was caught:" << e.description() << "\nExiting.\n";
     }
-	
-	//title|type|author|url|text
-	//std::string documentFormat = "Java虚拟机学习记录(九)——类文件结构(上)|1|joyme|http://myway5.com/?post=54|Friso是使用c语言开发的一款开源的高性能中文分词器，使用流行的mmseg算法实现。完全基于模块化设计和实现，可以很方便的植入其他程序中，例如：MySQL，PHP，源码无需修改就能在各种平台下编译使用，加载完20万的词条，内存占用稳定为14.5M.";
 	
     return 0;
 }

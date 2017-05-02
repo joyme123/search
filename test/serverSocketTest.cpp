@@ -1,8 +1,7 @@
-#include "../include/socket/ServerSocket.h"
-#include "../include/socket/SocketException.h"
 #include <string>
 #include <iostream>
-
+#include "src/include/socket/ServerSocket.h"
+#include "src/include/socket/SocketException.h"
 int main ( int argc, char* argv[] ){
     std::cout << "running....\n";
 

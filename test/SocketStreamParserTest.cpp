@@ -1,11 +1,10 @@
-#include "../include/socket/ServerSocket.h"
-#include "../include/socket/SocketException.h"
-#include "../core/util/SocketStreamParser.h"
-#include "../core/Package.h"
-#include "../core/util/util.h"
 #include <string>
 #include <iostream>
-
+#include "src/include/socket/ServerSocket.h"
+#include "src/include/socket/SocketException.h"
+#include "src/core/analysis/SocketStreamParser.h"
+#include "src/core/model/Package.h"
+#include "src/core/util/util.h"
 
 
 int main ( int argc, char* argv[] ){

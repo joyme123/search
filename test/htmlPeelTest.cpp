@@ -1,8 +1,7 @@
-#include "../core/util/DocumentAnalysis.h"
 #include<iostream>
 #include<string>
 #include<fstream>
-
+#include "src/core/analysis/DocumentAnalysis.h"
 using namespace std;
 
 int main(int argc,char** argv){

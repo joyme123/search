@@ -5,7 +5,7 @@
  */
 
  #include <iostream>
- #include "../core/util/ResourceManage.h"
+ #include "src/core/db/ResourceManage.h"
  using namespace std;
 
  int main(){

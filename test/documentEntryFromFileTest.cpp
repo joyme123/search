@@ -7,10 +7,10 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include"../core/DocumentController.h"
-#include"../core/WordController.h"
-#include "../core/util/ResourceManage.h"
-#include "../core/util/util.h"
+#include "src/core/controller/DocumentController.h"
+#include "src/core/controller/WordController.h"
+#include "src/core/db/ResourceManage.h"
+#include "src/core/util/util.h"
 
 using namespace std;
 

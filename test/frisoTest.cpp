@@ -1,8 +1,7 @@
-#include<iostream>
-#include"../core/util/WordSplitSingleton.h"
-#include<string>
-#include<locale>
-
+#include <iostream>
+#include <string>
+#include <locale>
+#include "src/core/util/WordSplitSingleton.h"
 using namespace std;
 
 void printMap(map<string,vector<int> > map){

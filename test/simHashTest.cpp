@@ -2,20 +2,18 @@
  * simHash函数的单元测试
  */
 
-#include "../core/util/config.h"
-#include "../core/util/SimHashCal.h"
-#include "../core/util/DocumentAnalysis.h"
-#include "../core/util/DocumentParser.h"
-#include "../core/util/FrequencyDictSingleton.h"
-#include "../core/util/StopWordDictSingleton.h"
-#include "../core/util/WordSplitSingleton.h"
 #include <iostream>
 #include <map>
 #include <string>
-#include<vector>
-#include<string>
-
-
+#include <vector>
+#include <string>
+#include "src/core/util/config.h"
+#include "src/core/util/FrequencyDictSingleton.h"
+#include "src/core/util/StopWordDictSingleton.h"
+#include "src/core/util/WordSplitSingleton.h"
+#include "src/core/analysis/SimHashCal.h"
+#include "src/core/analysis/DocumentAnalysis.h"
+#include "src/core/analysis/DocumentParser.h"
 using namespace std;
 
 //全局初始化的变量
