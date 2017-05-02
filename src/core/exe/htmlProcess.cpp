@@ -17,7 +17,7 @@ int main(){
     HtmlDocumentController controller;
     ResourceManage* manage = ResourceManage::getInstance(REDIS_HOST,REDIS_PORT,MONGO_HOST,MONGO_PORT);
     std::string documentJson;
-    while((documentJson = manage->getNextDocument()) != "nil"){
+    while((documentJson = manage->getNextDocument()) != ""){
         // std::ofstream outfile( "out_file.txt" );
         // outfile << documentJson;
         controller.documentEntry(documentJson);

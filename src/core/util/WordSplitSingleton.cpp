@@ -56,7 +56,11 @@ WordSplitSingleton::WordSplitSingleton(friso_mode_t mode){
     this->friso = friso_new();
     this->config = friso_new_config();
     friso_set_mode(config,mode);
-    if ( friso_init_from_ifile(friso, config, (fstring)FRISO_DICT_PATH) != 1 ) {
+    ConfigReader* reader =  ConfigReader::getInstance();
+    std::string pathStr = reader->get("friso_dict_path");
+    const char* filepath = pathStr.c_str();
+
+    if ( friso_init_from_ifile(friso, config, (fstring)filepath) != 1 ) {
         //if initialize fail,free friso 
         std::printf("fail to initialize friso and config.");
     }

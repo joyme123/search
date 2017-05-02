@@ -57,6 +57,8 @@
         "unordered_map": "cpp",
         "vector": "cpp",
         "sstream": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "system_error": "cpp",
+        "fstream": "cpp"
     }
 }

@@ -11,10 +11,8 @@ set(LIB_SRC db/ConnectionPool.cpp
             model/PostingList.cpp 
             model/Word.cpp 
             model/Document.cpp 
-            model/Package.cpp 
             model/SimHash.cpp
             analysis/DocumentParser.cpp 
-            analysis/SocketStreamParser.cpp 
             analysis/DocumentAnalysis.cpp 
             analysis/SimHashCal.cpp 
             util/util.cpp 
@@ -22,6 +20,7 @@ set(LIB_SRC db/ConnectionPool.cpp
             util/FrequencyDictSingleton.cpp 
             util/StopWordDictSingleton.cpp 
             util/WordSplitSingleton.cpp 
+            util/ConfigReader.cpp
             )
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 SET(CMAKE_BUILD_TYPE "Debug")  
@@ -44,10 +43,15 @@ set_target_properties(searchEngine_static PROPERTIES OUTPUT_NAME "searchEngine")
 set_target_properties(searchEngine_static PROPERTIES CLEAN_DIRECT_OUT 1)
 
 # 生成需要执行的文件
-set(DOCPROCESS_SRC exe/process.cpp)
+set(DOCHTMLPROCESS_SRC exe/htmlProcess.cpp)
+set(DOCFULLTEXTPROCESS_SRC exe/fullTextProcess.cpp)
 set(INITSQL_SRC exe/initSql.cpp)
-add_executable(process ${DOCPROCESS_SRC})
+
+add_executable(htmlProcess ${DOCHTMLPROCESS_SRC})
+add_executable(fullTextProcess ${DOCFULLTEXTPROCESS_SRC})
 add_executable(initSql ${INITSQL_SRC})
-target_link_libraries(process searchEngine)
+
+target_link_libraries(htmlProcess searchEngine)
+target_link_libraries(fullTextProcess searchEngine)
 target_link_libraries(initSql searchEngine)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)

@@ -2,7 +2,7 @@
 #include <map>
 #include <vector>
 #include <string>
-#include "src/core/util/config.h"
+#include "src/core/util/ConfigReader.h"
 #include "src/include/friso/friso_API.h"
 #include "src/include/friso/friso.h"
 

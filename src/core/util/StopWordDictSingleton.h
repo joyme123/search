@@ -3,17 +3,13 @@
 
 #include <map>
 #include <vector>
-#include "src/core/util/config.h"
+#include "src/core/util/ConfigReader.h"
 
 class StopWordDictSingleton{
     public:
         std::map<std::string,int> stopWordDict;
         static StopWordDictSingleton* getInstance();
-        int getTest(){
-            return test;
-        }
     private:
-        int test;
         StopWordDictSingleton();
         StopWordDictSingleton(const StopWordDictSingleton&);    //禁用
         StopWordDictSingleton& operator=(const StopWordDictSingleton&);  //禁用复制

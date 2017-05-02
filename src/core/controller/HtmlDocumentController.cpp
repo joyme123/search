@@ -4,7 +4,7 @@ int HtmlDocumentController::documentEntry(std::string documentStr){
     Mysql mysql = this->pool->getConnection();
     FrequencyDictSingleton *frequencyDictInstance = FrequencyDictSingleton::getInstance();      //获取词频表的单例
     StopWordDictSingleton *stopWordDictInstance = StopWordDictSingleton::getInstance();         //获取停顿词的单例
-    WordSplitSingleton *wordSpilt = WordSplitSingleton::getInstance(__FRISO_COMPLEX_MODE__);
+    WordSplitSingleton *wordSplit = WordSplitSingleton::getInstance(__FRISO_COMPLEX_MODE__);
     DocumentParser docParser;
     DocumentAnalysis docAnalysis;
     SimHashCal simHashCal;
@@ -16,7 +16,7 @@ int HtmlDocumentController::documentEntry(std::string documentStr){
     std::string peeledHtml = docAnalysis.htmlPeel(formatedContent);         //统一去除所有的标签
     std::string mainContent = docAnalysis.fastHtmlAnalysis(peeledHtml);     //提取出网页正文
 
-    std::map<std::string,std::vector<int> > resultMap =  wordSpilt->splitWord(mainContent);    //得到正文的分词结果
+    std::map<std::string,std::vector<int> > resultMap =  wordSplit->splitWord(mainContent);    //得到正文的分词结果
     std::map<std::string,std::vector<int> > removedResultMap = simHashCal.removeStopWord(resultMap,stopWordDictInstance->stopWordDict);//移除stopWord   
     std::bitset<SimHashCal::BITSET_LENGTH> bitset = simHashCal.calculate(removedResultMap,frequencyDictInstance->frequencyDict);     //计算特征码
 
@@ -33,7 +33,7 @@ int HtmlDocumentController::documentEntry(std::string documentStr){
         int id = doc.addDocument(document);     //将文档存入数据库
         if(id == -1){
         //文档存储失败
-            LOG(ERROR) << "DocumentController->doucmentEntry(std::string formatedDocument):add document failed";
+            LOG(ERROR) << "HTMLDocumentController->doucmentEntry(std::string formatedDocument):add document failed";
             mysql.rollback();
             this->pool->retConnection(mysql);
             return -1;
@@ -41,7 +41,7 @@ int HtmlDocumentController::documentEntry(std::string documentStr){
         document.id = id;
         
         //对去掉标签的网页全文分词
-        std::map<std::string,std::vector<int> > map = wordSpilt->splitWord(peeledHtml);  
+        std::map<std::string,std::vector<int> > map = wordSplit->splitWord(peeledHtml);  
         
         WordDAO wordDao(&mysql);
         //循环写入单词
@@ -69,7 +69,7 @@ int HtmlDocumentController::documentEntry(std::string documentStr){
         this->pool->retConnection(mysql);
     }catch(sql::SQLException &e){
         mysql.rollback();
-        LOG(ERROR) << "DocumentController->documentEntry(std::vector<Package> packs):"<< e.getErrorCode()<<"--"<<e.what();
+        LOG(ERROR) << "HTMLDocumentController->documentEntry(std::vector<Package> packs):"<< e.getErrorCode()<<"--"<<e.what();
     }
 
 	return wordCount;

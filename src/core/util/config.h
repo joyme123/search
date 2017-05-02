@@ -30,7 +30,7 @@ const std::string REDIS_DB = "documentId";
 const std::string MONGO_HOST = "127.0.0.1";
 const int MONGO_PORT = 27017;
 const std::string MONGO_DB = "search";
-const stdL::string MONGO_CONTAINER = "document";
+const std::string MONGO_CONTAINER = "document";
 
 enum InvertHashIndexType{
 	ngramWord = 0,

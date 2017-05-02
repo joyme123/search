@@ -6,11 +6,10 @@ StopWordDictSingleton* StopWordDictSingleton::getInstance(){
 }
 
 StopWordDictSingleton::StopWordDictSingleton(){
-    this->test = 10;
     //初始化stopword map
-    char* filepath = (char*)STOPWORD_DICT_PATH;
-
-
+    ConfigReader* reader =  ConfigReader::getInstance();
+    std::string pathStr = reader->get("stopword_dict_path");
+    const char* filepath = pathStr.c_str();
 
     std::ifstream ifs (filepath, std::ifstream::in);
     if(!ifs){

@@ -6,10 +6,11 @@ FrequencyDictSingleton* FrequencyDictSingleton::getInstance(){
 }
 
 FrequencyDictSingleton::FrequencyDictSingleton(){
-    this->test = 10;
     std::cout << "执行单例模式的构造函数" << std::endl;
     //初始化频率map
-    char* filepath = (char*)FREQUENCY_DICT_PATH;
+    ConfigReader* reader =  ConfigReader::getInstance();
+    std::string pathStr = reader->get("freq_dict_path");
+    const char* filepath = pathStr.c_str();
 
     std::ifstream ifs (filepath, std::ifstream::in);
     if(!ifs){

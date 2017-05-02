@@ -5,7 +5,7 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/bin/process",
+            "program": "${workspaceRoot}/test/bin/frisoTest",
             "args": ["test/problem.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",

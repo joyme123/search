@@ -18,16 +18,7 @@
 
 #include "src/core/db/ConnectionPool.h"
 #include "src/core/dao/DocumentDAO.h"
-#include "src/core/dao/WordDAO.h"
-#include "src/core/util/WordSplitSingleton.h"
-#include "src/core/util/FrequencyDictSingleton.h"
-#include "src/core/util/StopWordDictSingleton.h"
-#include "src/core/analysis/DocumentParser.h"
-#include "src/core/analysis/DocumentAnalysis.h"
-#include "src/core/analysis/SimHashCal.h"
 #include "src/core/model/Document.h"
-#include "src/core/model/Word.h"
-#include "src/core/model/PostingList.h"
 
 class AbstractDocumentController{
     private:

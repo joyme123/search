@@ -23,14 +23,17 @@ std::string ResourceManage::getNextDocument(){
             documentId = reply.as_string();
         }else{
             std::cout << "redis中已经不存在待处理的文档id" << std::endl;
+            documentId = "";
         }
     });
     this->redisClient.sync_commit();
-
-    auto maybe_result = this->mongoCollection.find_one(bsoncxx::builder::stream::document{} << "_id" << documentId << bsoncxx::builder::stream::finalize);
-    if(maybe_result) {
-        documentJson = bsoncxx::to_json(*maybe_result);
-    }    
-
+    if(documentId != ""){
+        auto maybe_result = this->mongoCollection.find_one(bsoncxx::builder::stream::document{} << "_id" << documentId << bsoncxx::builder::stream::finalize);
+        if(maybe_result) {
+            documentJson = bsoncxx::to_json(*maybe_result);
+        }    
+    }else{
+        documentJson = "";
+    }
     return documentJson;
 }

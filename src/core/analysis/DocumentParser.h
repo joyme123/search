@@ -13,7 +13,6 @@
 
 #include "src/core/util/config.h"
 #include "src/core/util/util.h"
-#include "src/core/model/Package.h"
 #include "src/core/model/InvertedIndexHash.h"
 #include "src/include/json.hpp"
 
@@ -43,34 +42,6 @@ private:
 	 */
 	static bool wordFileAnalysis(Document &document,std::string& content);
 public:
-	/**
-	 * peel html page to document
-	 * @param html string
-	 * @return main content of html page
-	 */
-	static std::string peel(std::string& html);	
-	
-	/**
-	 * parser text and get invertedHashIndex array
-	 * @param text parser text 
-	 * @return invertedHashIndex array
-	 */
-	static std::vector<InvertedIndexHash> parser(std::string& text);
-    
-    /**
-     * input formated text and return a document object
-     * @param formatText formated text like this:title|type|abstract|author|text|
-     * @return document
-     */
-    static Document documentFormat(std::string& formatText);
-
-	/**
-	 * parse Package to Document
-	 * @param package the package need to parse
-	 * @return document 
-	 */ 
-	static Document documentFormat(Package& package);
-
 	/**
 	 * parse json to Document
 	 * @param documentJson 需要解析的json
