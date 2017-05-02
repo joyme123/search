@@ -1,16 +1,16 @@
 #place searchEngine library into lib folder
-set(LIB_SRC ConnectionPool.cpp
-            DocumentDAO.cpp
-            WordDAO.cpp 
-            DocumentController.cpp 
-            WordController.cpp 
-            Mysql.cpp
-            InvertedIndexHash.cpp 
-            PostingList.cpp 
-            Word.cpp 
-            Document.cpp 
-            Package.cpp 
-            SimHash.cpp
+set(LIB_SRC db/ConnectionPool.cpp
+            db/Mysql.cpp
+            dao/DocumentDAO.cpp
+            dao/WordDAO.cpp 
+            controller/DocumentController.cpp 
+            controller/WordController.cpp 
+            model/InvertedIndexHash.cpp 
+            model/PostingList.cpp 
+            model/Word.cpp 
+            model/Document.cpp 
+            model/Package.cpp 
+            model/SimHash.cpp
             util/DocumentParser.cpp 
             util/util.cpp 
             util/config.cpp 

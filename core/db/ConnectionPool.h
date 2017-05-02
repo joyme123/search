@@ -12,7 +12,7 @@
 #include <mutex>
 #include <glog/logging.h>
 #include "Mysql.h"
-#include "exception/TimeoutException.h"
+#include "core/exception/TimeoutException.h"
 /**
  * 线程池类
  * author:jiangpengfei12@gmail.com
