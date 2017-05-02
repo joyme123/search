@@ -4,7 +4,7 @@ SET(CMAKE_BUILD_TYPE "Debug")
 SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")  
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")  
 
-#place executable file into cgi-bin directory
+#将可执行文件存放到www/cgi-bin下
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/www/cgi-bin)
 add_executable(get.cgi ${GET_SRC})
 

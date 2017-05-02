@@ -7,10 +7,10 @@ ResourceManage::ResourceManage(std::string redisHost,unsigned int redisPort,
         std::cout << "client disconnected (disconnection handler)" << std::endl;
     });
 
-    this->mongoCollection = this->mongoClient["search"]["document"];
+    this->mongoCollection = this->mongoClient[MONGO_DB][MONGO_CONTAINER];
 }
 
-ResourceManage* ResourceManage::getInstance(std::string redisHost,unsigned int redisPort,std::string mongoHost,unsigned int mongoPort){
+ResourceManage* ResourceManage::getInstance(const std::string& redisHost,const unsigned int redisPort,const std::string& mongoHost,const unsigned int& mongoPort){
     static ResourceManage instance(redisHost,redisPort,mongoHost,mongoPort);
     return &instance;
 }
@@ -18,9 +18,11 @@ ResourceManage* ResourceManage::getInstance(std::string redisHost,unsigned int r
 std::string ResourceManage::getNextDocument(){
     std::string documentId;
     std::string documentJson;       //保存最后的结果
-    this->redisClient.lpop("documentId",[&documentId](cpp_redis::reply& reply) {
+    this->redisClient.lpop(REDIS_DB,[&documentId](cpp_redis::reply& reply) {
         if (reply.is_string()){
             documentId = reply.as_string();
+        }else{
+            std::cout << "redis中已经不存在待处理的文档id" << std::endl;
         }
     });
     this->redisClient.sync_commit();

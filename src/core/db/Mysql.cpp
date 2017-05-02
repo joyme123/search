@@ -4,7 +4,7 @@
  * author:jiangpengfei12@gmail.com
  * date:2017-02-07
  */
-#include"Mysql.h"
+#include "src/core/db/Mysql.h"
 
 void Mysql::connect(){
 	if(this->conn == NULL){
@@ -19,10 +19,10 @@ Mysql::Mysql(){
 	// this->pass = "5019";
 	// this->database = "empdb";
 	// this->url = "tcp://115.29.114.202:3306";
-	this->user = "root";
-	this->pass = "1212";
-	this->database = "search";
-	this->url = "tcp://127.0.0.1:3306";
+	this->user = SQL_USER;
+	this->pass = SQL_PWD;
+	this->database = SQL_DB;
+	this->url = SQL_URL;
 	this->driver = sql::mysql::get_driver_instance();
 	this->conn = NULL;		//初始化为空
 }
@@ -127,5 +127,3 @@ int Mysql::del(std::shared_ptr<sql::PreparedStatement> pstm){
 	int affectCols = pstm->executeUpdate();
 	return affectCols;
 }
-
-        

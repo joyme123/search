@@ -13,7 +13,7 @@
 #include <cgicc/HTMLClasses.h>  
 #include "src/include/json.hpp"
 
-#include "src/core/controller/DocumentController.h"
+#include "src/core/controller/HtmlDocumentController.h"
 #include "src/core/controller/WordController.h"
 
 using namespace cgicc;
@@ -99,7 +99,7 @@ int main(int argc, char **argv) {
 		for(int i = (pageIndex - 1) * PAGESIZE; i < pageIndex * PAGESIZE && i < ids.size(); i++){
 			readIds.push_back(ids[i]);
 		}
-		DocumentController docCtrl;
+		HtmlDocumentController docCtrl;
 		std::vector<Document> docs =  docCtrl.searchDocument(readIds);
 		json docJson = formatDocumentToJson(docs);
 		j["docs"] = docJson;

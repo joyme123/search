@@ -10,20 +10,20 @@
 #include<stdlib.h>
 #include<memory>
 
-#include<cppconn/driver.h>
-#include<cppconn/exception.h>
-#include<cppconn/warning.h>
-#include<cppconn/metadata.h>
-#include<cppconn/prepared_statement.h>
-#include<cppconn/statement.h>   
-#include<cppconn/sqlstring.h>
-#include<cppconn/resultset.h>
-#include<cppconn/resultset_metadata.h>
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/warning.h>
+#include <cppconn/metadata.h>
+#include <cppconn/prepared_statement.h>
+#include <cppconn/statement.h>   
+#include <cppconn/sqlstring.h>
+#include <cppconn/resultset.h>
+#include <cppconn/resultset_metadata.h>
 
-#include<mysql_driver.h>
-#include<mysql_connection.h>
-#include<glog/logging.h>
-
+#include <mysql_driver.h>
+#include <mysql_connection.h>
+#include <glog/logging.h>
+#include "src/core/util/config.h"
 
 class Mysql{
     private:
@@ -47,7 +47,6 @@ class Mysql{
         void commit();
         
         void rollback();
-
 
         /**
          * prepare a str

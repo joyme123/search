@@ -36,7 +36,7 @@ CREATE TABLE `document` (
   `updateTime` datetime NOT NULL,
   `createTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4419 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4419 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,20 +54,7 @@ CREATE TABLE `simhash` (
   `updateTime` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `simhash` (`simhash`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `test`
---
-
-DROP TABLE IF EXISTS `test`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `test` (
-  `id` int(11) DEFAULT NULL,
-  `label` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,7 +72,7 @@ CREATE TABLE `word` (
   `totalCount` int(30) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `word_UNIQUE` (`word`)
-) ENGINE=InnoDB AUTO_INCREMENT=653833 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=653833 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

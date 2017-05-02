@@ -7,18 +7,21 @@
 #include <fstream>
 #include <string>
 #include "src/core/db/ResourceManage.h"
-#include "src/core/controller/DocumentController.h"
+#include "src/core/controller/HtmlDocumentController.h"
 #include "src/core/controller/WordController.h"
 #include "src/core/util/util.h"
+#include "src/core/util/config.h"
 
 int main(){
     google::InitGoogleLogging("1");
-    DocumentController controller;
-    ResourceManage* manage = ResourceManage::getInstance("127.0.0.1",6379,"127.0.0.1",27017);
+    HtmlDocumentController controller;
+    ResourceManage* manage = ResourceManage::getInstance(REDIS_HOST,REDIS_PORT,MONGO_HOST,MONGO_PORT);
     std::string documentJson;
     while((documentJson = manage->getNextDocument()) != "nil"){
         // std::ofstream outfile( "out_file.txt" );
         // outfile << documentJson;
-        controller.documentJsonEntry(documentJson);
+        controller.documentEntry(documentJson);
     }
+
+    std::cout << "所有文本已经索引完毕" << std::endl;
 }

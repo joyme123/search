@@ -4,8 +4,9 @@ set(LIB_SRC db/ConnectionPool.cpp
             db/ResourceManage.cpp
             dao/DocumentDAO.cpp
             dao/WordDAO.cpp 
-            controller/DocumentController.cpp 
-            controller/WordController.cpp 
+            controller/WordController.cpp
+            controller/FullTextDocumentController.cpp
+            controller/HtmlDocumentController.cpp 
             model/InvertedIndexHash.cpp 
             model/PostingList.cpp 
             model/Word.cpp 
@@ -19,8 +20,8 @@ set(LIB_SRC db/ConnectionPool.cpp
             util/util.cpp 
             util/config.cpp 
             util/FrequencyDictSingleton.cpp 
-            util/StopWordDictSingleton.cpp
-            util/WordSplitSingleton.cpp
+            util/StopWordDictSingleton.cpp 
+            util/WordSplitSingleton.cpp 
             )
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 SET(CMAKE_BUILD_TYPE "Debug")  
@@ -28,7 +29,7 @@ SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")  
 
 add_library (searchEngine SHARED ${LIB_SRC})
-add_library(searchEngine_static STATIC ${LIB_SRC})
+add_library (searchEngine_static STATIC ${LIB_SRC})
 
 
 #link library
@@ -42,12 +43,11 @@ set_target_properties(searchEngine PROPERTIES VERSION 1.0 SOVERSION 1)
 set_target_properties(searchEngine_static PROPERTIES OUTPUT_NAME "searchEngine")
 set_target_properties(searchEngine_static PROPERTIES CLEAN_DIRECT_OUT 1)
 
-set(DOCENTRY_SRC exe/documentEntry.cpp)
+# 生成需要执行的文件
 set(DOCPROCESS_SRC exe/process.cpp)
-add_executable(documentEntry ${DOCENTRY_SRC})
+set(INITSQL_SRC exe/initSql.cpp)
 add_executable(process ${DOCPROCESS_SRC})
-
-#设置可执行文件的存放动态库路径
-link_directories(${PROJECT_SOURCE_DIR}/lib)
-target_link_libraries(documentEntry searchEngine socket)
+add_executable(initSql ${INITSQL_SRC})
 target_link_libraries(process searchEngine)
+target_link_libraries(initSql searchEngine)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)

@@ -7,7 +7,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include "src/core/controller/DocumentController.h"
+#include "src/core/controller/HtmlDocumentController.h"
 #include "src/core/controller/WordController.h"
 #include "src/core/db/ResourceManage.h"
 #include "src/core/util/util.h"
@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
 
     cout << str << endl;
 
-    DocumentController controller;
-    controller.documentJsonEntry(str);
+    HtmlDocumentController controller;
+    controller.documentEntry(str);
     return 0;
 }

@@ -13,7 +13,7 @@
 #include <bsoncxx/v_noabi/bsoncxx/json.hpp>
 #include <mongocxx/client.hpp>
 #include <mongocxx/v_noabi/mongocxx/instance.hpp>
-
+#include "src/core/util/config.h"
 
  class ResourceManage{
     private: 
@@ -27,7 +27,7 @@
         /**
          * 获取资源管理的单例
          */
-        static ResourceManage* getInstance(std::string redisHost,unsigned int redisPort,std::string mongoHost,unsigned int mongoPort);
+        static ResourceManage* getInstance(const std::string& redisHost,const unsigned int redisPort,const std::string& mongoHost,const unsigned int& mongoPort);
 
         /**
          * 从mongodb中根据文档id获取文档
