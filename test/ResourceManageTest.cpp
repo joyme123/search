@@ -9,6 +9,6 @@
  using namespace std;
 
  int main(){
-     ResourceManage* manage = ResourceManage::getInstance("127.0.0.1",6379,"127.0.0.1",27017);
+     ResourceManage* manage = ResourceManage::getInstance();
      cout << manage->getNextDocument() << endl;
  }

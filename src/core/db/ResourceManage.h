@@ -13,21 +13,33 @@
 #include <bsoncxx/v_noabi/bsoncxx/json.hpp>
 #include <mongocxx/client.hpp>
 #include <mongocxx/v_noabi/mongocxx/instance.hpp>
-#include "src/core/util/config.h"
+#include <bsoncxx/v_noabi/bsoncxx/oid.hpp>
+#include "src/core/util/ConfigReader.h"
 
  class ResourceManage{
     private: 
+        std::string redisHost;
+        unsigned int redisPort;
+        std::string redisAuth;
+        std::string redisDb;        
+        std::string mongoHost;
+        std::string mongoPort;
+        std::string mongoDb;
+        std::string mongoContainer;
+        
         mongocxx::client mongoClient;
         cpp_redis::redis_client redisClient;
         mongocxx::collection  mongoCollection;
         //私有的初始化，防止对象的重复创建
         ResourceManage(std::string redisHost,unsigned int redisPort,
-        std::string mongoHost,unsigned int mongoPort);
+        std::string mongoHost,unsigned int mongoPort,const std::string& auth= "");
+
+        ResourceManage();
     public:
         /**
          * 获取资源管理的单例
          */
-        static ResourceManage* getInstance(const std::string& redisHost,const unsigned int redisPort,const std::string& mongoHost,const unsigned int& mongoPort);
+        static ResourceManage* getInstance();
 
         /**
          * 从mongodb中根据文档id获取文档

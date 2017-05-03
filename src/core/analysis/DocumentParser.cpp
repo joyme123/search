@@ -16,7 +16,7 @@ bool DocumentParser::wordFileAnalysis(Document& document,std::string& content){
 Document DocumentParser:: documentJsonFormat(std::string& documentJson){
     auto dj = nlohmann::json::parse(documentJson);
     Document document;
-    document.mongoId = dj.at("_id").get<std::string>();
+    document.mongoId = dj["_id"]["$oid"];
     document.title = dj.at("title").get<std::string>();
     document.url = dj.at("url").get<std::string>();
     document.text = dj.at("content").get<std::string>();

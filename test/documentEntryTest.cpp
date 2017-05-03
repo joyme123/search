@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
 	google::InitGoogleLogging("1");
 
     HtmlDocumentController controller;
-    ResourceManage* manage = ResourceManage::getInstance("127.0.0.1",6379,"127.0.0.1",27017);
+    ResourceManage* manage = ResourceManage::getInstance();
     std::string documentJson;
     documentJson = manage->getNextDocument();
     controller.documentEntry(documentJson);

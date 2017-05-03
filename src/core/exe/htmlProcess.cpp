@@ -10,12 +10,11 @@
 #include "src/core/controller/HtmlDocumentController.h"
 #include "src/core/controller/WordController.h"
 #include "src/core/util/util.h"
-#include "src/core/util/config.h"
 
 int main(){
     google::InitGoogleLogging("1");
     HtmlDocumentController controller;
-    ResourceManage* manage = ResourceManage::getInstance(REDIS_HOST,REDIS_PORT,MONGO_HOST,MONGO_PORT);
+    ResourceManage* manage = ResourceManage::getInstance();
     std::string documentJson;
     while((documentJson = manage->getNextDocument()) != ""){
         // std::ofstream outfile( "out_file.txt" );
