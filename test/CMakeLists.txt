@@ -18,6 +18,7 @@ set(TestRedis_SRC redisTest.cpp)
 set(TestMongo_SRC mongoTest.cpp)
 set(TestResourceManage_SRC ResourceManageTest.cpp)
 set(TestConfigReader_SRC ConfigReaderTest.cpp)
+set(TestFastCgi_SRC fastcgiTest.cpp)
 
 
 #place executable file into test directory
@@ -42,6 +43,9 @@ add_executable(redisTest ${TestRedis_SRC})
 add_executable(mongoTest ${TestMongo_SRC})
 add_executable(resourceManageTest ${TestResourceManage_SRC})
 add_executable(configReaderTest ${TestConfigReader_SRC})
+add_executable(fastCgiTest ${TestFastCgi_SRC})
+
+
 
 #set shared library for connectTest and mysqlTest and ngramTest
 link_directories(${PROJECT_SOURCE_DIR}/lib)
@@ -64,3 +68,4 @@ target_link_libraries(redisTest libcpp_redis.a libtacopie.a pthread)
 target_link_libraries(mongoTest libmongocxx.so libbsoncxx.so)
 target_link_libraries(resourceManageTest searchEngine)
 target_link_libraries(configReaderTest searchEngine)
+target_link_libraries(fastCgiTest fcgi++ fcgi)

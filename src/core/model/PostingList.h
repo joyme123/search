@@ -25,6 +25,9 @@ class PostingList{
         std::shared_ptr<PostingList> next;            							        //指向下一个PostingList的指针
         PostingList();                                  								//default construct
         void generate(std::string postingListStr);       				 	            //construct
+        
+        //转换成id数组
+        std::vector<unsigned int> toVector();            
 };
 
 #endif  

@@ -77,3 +77,15 @@ void PostingList::generate(std::string postingListStr){
         }
     }
 }
+
+
+std::vector<unsigned int> PostingList::toVector(){
+	std::vector<unsigned int> ids;
+    std::shared_ptr<PostingList> p = this->next;
+    ids.push_back(this->documentId);
+	while(p != NULL){
+		ids.push_back(p->documentId);
+        p = p->next;
+    }
+    return ids;
+}

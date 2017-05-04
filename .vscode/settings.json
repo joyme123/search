@@ -59,6 +59,7 @@
         "sstream": "cpp",
         "locale": "cpp",
         "system_error": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "map": "cpp"
     }
 }

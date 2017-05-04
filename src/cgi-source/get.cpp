@@ -88,20 +88,13 @@ int main(int argc, char **argv) {
 	int PAGESIZE = 10;
 	if( !fi->isEmpty() && fi != (*formData).end()) {
 		json j;
-		j["keyword"] = **fi; 
+		//j["keyword"] = **fi; 
+		std::string sentence = **fi;
 		WordController wordCtrl;
-		InvertedIndexHash invertedIndexHash = wordCtrl.searchWord(**fi);
-		j["wordId"] = invertedIndexHash.id;
-		j["total"] = invertedIndexHash.totalCount;
-		j["docCount"] = invertedIndexHash.docCount;
-		std::vector<unsigned int> ids = formatPostingList(invertedIndexHash.postingList);
-		std::vector<unsigned int> readIds;
-		for(int i = (pageIndex - 1) * PAGESIZE; i < pageIndex * PAGESIZE && i < ids.size(); i++){
-			readIds.push_back(ids[i]);
-		}
-		HtmlDocumentController docCtrl;
-		std::vector<Document> docs =  docCtrl.searchDocument(readIds);
+		int docCount = 0;
+		std::vector<Document> docs =  wordCtrl.searchWithSentence(sentence,docCount,pageIndex,PAGESIZE);
 		json docJson = formatDocumentToJson(docs);
+		j["docCount"] = docCount;
 		j["docs"] = docJson;
 		j["pageIndex"] = pageIndex;
 		j["pageSize"] = PAGESIZE;

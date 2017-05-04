@@ -5,11 +5,11 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/bin/fullTextProcess",
+            "program": "${workspaceRoot}/www/cgi-bin/get.cgi",
             "args": ["test/problem.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
-            "environment": [{"name":"QUERY_STRING","value":"keyword=java"}],
+            "environment": [{"name":"QUERY_STRING","value":"keyword=李克强山东"}],
             "externalConsole": true,
             "linux": {
                 "MIMode": "gdb"

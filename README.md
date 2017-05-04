@@ -27,3 +27,4 @@ TODOList:
  - mysql连接工具:mysql-connector-c++,项目地址:https://github.com/mysql/mysql-connector-cpp
  - redis客户端:cpp_redis,项目地址:https://github.com/cylix/cpp_redis
  - mongodb的连接库:mongocxx,项目地址:https://github.com/mongodb/mongo-cxx-driver.git
+ - spawn-fcgi:这是fastCgi的管理器

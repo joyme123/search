@@ -115,6 +115,10 @@ std::string substrWithChinese(std::string str,int start,int length){
      return l.second.size() > r.second.size();
  }
 
+bool cmpMapByValue(const std::pair<int,int>& l,const std::pair<int,int>& r){
+    return l.second > r.second;
+}
+
 
 char toLower(char c){
     if(c >= 65 && c <= 90){

@@ -1,3 +1,6 @@
+#ifndef WORDSPLITSINGLETON_H
+#define WORDSPLITSINGLETON_H
+
 #include <iostream>
 #include <map>
 #include <vector>
@@ -12,6 +15,7 @@ class WordSplitSingleton{
         friso_config_t config;
         WordSplitSingleton(friso_mode_t mode);
     public:
+
         static WordSplitSingleton* getInstance(friso_mode_t mode);
         ~WordSplitSingleton();  //析构
         /**
@@ -31,3 +35,5 @@ class WordSplitSingleton{
         std::map<std::string,std::vector<int> > splitWord(std::string& text);
 
 };
+
+#endif

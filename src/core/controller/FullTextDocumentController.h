@@ -1,3 +1,5 @@
+#ifndef FULLTEXTDOCUMENTCONTROLLER_H
+#define FULLTEXTDOCUMENTCONTROLLER_H
 #include <string>
 #include "src/core/controller/AbstractDocumentController.h"
 #include "src/core/dao/DocumentDAO.h"
@@ -21,3 +23,5 @@ class FullTextDocumentController:public AbstractDocumentController{
     public:
         int documentEntry(std::string documentStr);
 };
+
+#endif

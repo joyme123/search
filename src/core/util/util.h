@@ -63,8 +63,25 @@ std::string getCurrentDateTimeStr();
  */
  bool cmpByValue(const std::pair<std::string,std::vector<int> >& l, const std::pair<std::string,std::vector<int> >& r);
 
-char toLower(char c);
-std::string stripTags(const char* buf,size_t bufLen,char* allow,size_t allowLen);
+/**
+ * 
+ *
+ */
+
+ bool cmpMapByValue(const std::pair<int,int>& l,const std::pair<int,int>& r);
+
+ /**
+  * 变成小写
+  *
+  */
+ char toLower(char c);
+
+ /**
+  * 去除网页标签
+  *
+  *
+  */
+ std::string stripTags(const char* buf,size_t bufLen,char* allow,size_t allowLen);
 #endif
 
 
