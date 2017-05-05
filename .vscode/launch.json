@@ -5,7 +5,7 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/www/cgi-bin/get.cgi",
+            "program": "${workspaceRoot}/test/bin/trieTest",
             "args": ["test/problem.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",

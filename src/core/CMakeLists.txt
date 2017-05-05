@@ -12,6 +12,7 @@ set(LIB_SRC db/ConnectionPool.cpp
             model/Word.cpp 
             model/Document.cpp 
             model/SimHash.cpp
+            model/Keyword.cpp
             analysis/DocumentParser.cpp 
             analysis/DocumentAnalysis.cpp 
             analysis/SimHashCal.cpp 
@@ -20,7 +21,8 @@ set(LIB_SRC db/ConnectionPool.cpp
             util/FrequencyDictSingleton.cpp 
             util/StopWordDictSingleton.cpp 
             util/WordSplitSingleton.cpp 
-            util/ConfigReader.cpp
+            util/ConfigReader.cpp 
+            util/Trie.cpp
             )
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 SET(CMAKE_BUILD_TYPE "Debug")  

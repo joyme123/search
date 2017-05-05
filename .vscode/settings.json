@@ -60,6 +60,7 @@
         "locale": "cpp",
         "system_error": "cpp",
         "fstream": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "chrono": "cpp"
     }
 }

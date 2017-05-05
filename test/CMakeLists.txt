@@ -19,7 +19,7 @@ set(TestMongo_SRC mongoTest.cpp)
 set(TestResourceManage_SRC ResourceManageTest.cpp)
 set(TestConfigReader_SRC ConfigReaderTest.cpp)
 set(TestFastCgi_SRC fastcgiTest.cpp)
-
+set(TestTrie_SRC trieTest.cpp)
 
 #place executable file into test directory
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/test/bin)
@@ -44,7 +44,7 @@ add_executable(mongoTest ${TestMongo_SRC})
 add_executable(resourceManageTest ${TestResourceManage_SRC})
 add_executable(configReaderTest ${TestConfigReader_SRC})
 add_executable(fastCgiTest ${TestFastCgi_SRC})
-
+add_executable(trieTest ${TestTrie_SRC})
 
 
 #set shared library for connectTest and mysqlTest and ngramTest
@@ -69,3 +69,4 @@ target_link_libraries(mongoTest libmongocxx.so libbsoncxx.so)
 target_link_libraries(resourceManageTest searchEngine)
 target_link_libraries(configReaderTest searchEngine)
 target_link_libraries(fastCgiTest fcgi++ fcgi)
+target_link_libraries(trieTest searchEngine)
