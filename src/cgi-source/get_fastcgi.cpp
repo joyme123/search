@@ -7,13 +7,13 @@
 #include <stdio.h>  
 #include <stdlib.h> 
 
-#include <fcgio.h>
 #include <cgicc/CgiDefs.h> 
 #include <cgicc/Cgicc.h> 
 #include <cgicc/HTTPHTMLHeader.h> 
 #include <cgicc/HTMLClasses.h>  
-#include "src/include/json.hpp"
+#include "FCgiIO.h"
 
+#include "src/include/json.hpp"
 #include "src/core/controller/HtmlDocumentController.h"
 #include "src/core/controller/WordController.h"
 
@@ -74,64 +74,44 @@ int main(int argc, char **argv) {
 	FLAGS_log_dir = "/home/jiang/log";
 	google::InitGoogleLogging("1");
 	int pageIndex = 1;
-	// Backup the stdio streambufs
-    std::streambuf * cin_streambuf  = std::cin.rdbuf();
-    std::streambuf * cout_streambuf = std::cout.rdbuf();
-    std::streambuf * cerr_streambuf = std::cerr.rdbuf();
 
     FCGX_Request request;
 
     FCGX_Init();
     FCGX_InitRequest(&request, 0, 0);
-
+	WordController wordCtrl;
+	int docCount = 0;
     while (FCGX_Accept_r(&request) == 0) {
-        fcgi_streambuf cin_fcgi_streambuf(request.in);
-        fcgi_streambuf cout_fcgi_streambuf(request.out);
-        fcgi_streambuf cerr_fcgi_streambuf(request.err);
-
-        std::cin.rdbuf(&cin_fcgi_streambuf);
-        std::cout.rdbuf(&cout_fcgi_streambuf);
-        std::cerr.rdbuf(&cerr_fcgi_streambuf);
-
-		std::cout << cgicc::HTTPHTMLHeader()<< std::endl;
-		Cgicc formData;
-		
-		form_iterator fi = formData.getElement("keyword");  
-		form_iterator pageI = formData.getElement("page");
-		if(!pageI->isEmpty() && pageI != (*formData).end()){
-			pageIndex = stoi((**pageI));
-		}
-
-
-		int PAGESIZE = 10;
-		if( !fi->isEmpty() && fi != (*formData).end()) {
-			json j;
-			j["keyword"] = **fi; 
-			WordController wordCtrl;
-			InvertedIndexHash invertedIndexHash = wordCtrl.searchWord(**fi);
-			j["wordId"] = invertedIndexHash.id;
-			j["total"] = invertedIndexHash.totalCount;
-			j["docCount"] = invertedIndexHash.docCount;
-			std::vector<unsigned int> ids = formatPostingList(invertedIndexHash.postingList);
-			std::vector<unsigned int> readIds;
-			for(int i = (pageIndex - 1) * PAGESIZE; i < pageIndex * PAGESIZE && i < ids.size(); i++){
-				readIds.push_back(ids[i]);
+		FCgiIO IO(request);
+		try{
+			Cgicc formData(&IO);
+			IO << cgicc::HTTPHTMLHeader()<< std::endl;
+			
+			form_iterator fi = formData.getElement("keyword");  
+			form_iterator pageI = formData.getElement("page");
+			if(!pageI->isEmpty() && pageI != (*formData).end()){
+				pageIndex = stoi((**pageI));
 			}
-			HtmlDocumentController docCtrl;
-			std::vector<Document> docs =  docCtrl.searchDocument(readIds);
-			json docJson = formatDocumentToJson(docs);
-			j["docs"] = docJson;
-			j["pageIndex"] = pageIndex;
-			j["pageSize"] = PAGESIZE;
-			std::cout << j.dump(4) << std::endl;
-		}else{
-			std::cout << "search keyword is valid" << std::endl;  
-		}
-	}
-    // restore stdio streambufs
-    std::cin.rdbuf(cin_streambuf);
-    std::cout.rdbuf(cout_streambuf);
-    std::cerr.rdbuf(cerr_streambuf);
 
+			int PAGESIZE = 10;
+			if( !fi->isEmpty() && fi != (*formData).end()) {
+				json j;
+				std::string sentence = **fi; 
+				std::vector<Document> docs =  wordCtrl.searchWithSentence(sentence,docCount,pageIndex,PAGESIZE);
+				json docJson = formatDocumentToJson(docs);
+				j["docCount"] = docCount;
+				j["docs"] = docJson;
+				j["pageIndex"] = pageIndex;
+				j["pageSize"] = PAGESIZE;
+				IO << j.dump() << std::endl;
+			}else{
+				IO << "search keyword is invalid" << std::endl;  
+			}
+		}catch(const std::exception& e){
+			IO << "error happened!" << std::endl;
+		}
+
+		FCGX_Finish_r(&request);
+	}
     return 0;
 }

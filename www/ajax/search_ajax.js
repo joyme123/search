@@ -7,7 +7,7 @@ function search() {
     var page = Request['page'];
     $("#search_input").val(keyword);
     $.ajax({
-        url:  "cgi-bin/get.cgi",
+        url:  "cgi-bin/get.fcgi",
         type: "GET",
         data: {
             'keyword': keyword,

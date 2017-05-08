@@ -3,7 +3,9 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <algorithm>
 #include <string>
+#include <fstream>
 #include "src/core/model/Keyword.h"
 /**
  * Trie树的实现，使用wstring来兼容汉字
@@ -36,9 +38,24 @@ class Trie{
         /**
          * 搜索具有该前缀的所有词汇
          * @param prefix 前缀
+         * @param num    需要的前几个词汇,-1代表显示所有结果
          * @return std::vector<Keyword> 关键字数组
          */
-        std::vector<Keyword> searchPrefix(std::wstring prefix);
+        std::vector<Keyword> searchPrefix(std::wstring prefix,int num = -1);
+
+        /**
+         * 将搜索词 加入到Trie树中
+         * @param word 搜索词
+         * @return bool 加入成功或失败
+         */
+        bool addWordToTrie(std::wstring word);
+
+        // /**
+        //  * 持久化
+        //  * @param ofstream 输出流
+        //  */
+        // void persist(std::wstring word,trie_node* tmpNode,std::ofstream ofstream);
+        
         //析构Trie树
         ~Trie();
     protected:

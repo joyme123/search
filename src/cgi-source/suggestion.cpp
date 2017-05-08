@@ -2,16 +2,17 @@
 #include <vector>  
 #include <string>  
 
-#include <fcgio.h>
 #include <cgicc/CgiDefs.h> 
 #include <cgicc/Cgicc.h> 
 #include <cgicc/HTTPHTMLHeader.h> 
 #include <cgicc/HTMLClasses.h>  
+#include "FCgiIO.h"
+
 #include "src/include/json.hpp"
 #include "src/core/util/Trie.h"
 #include "src/core/model/Keyword.h"
 #include "src/core/util/util.h"
-
+#include <glog/logging.h>
 using namespace cgicc;
 using json = nlohmann::json;
 
@@ -20,7 +21,7 @@ json formatKeywordToJson(std::vector<Keyword> suggesstions){
 	for(unsigned int i = 0; i < suggesstions.size(); i++){
 		json tmp;
 		Keyword keyword = suggesstions[i];
-		tmp["suggestion"] = keyword.word;
+		tmp["suggestion"] = WstringToString(keyword.word);
 		tmp["count"] = keyword.count;
 		j.push_back(tmp);
 	}
@@ -31,47 +32,57 @@ json formatKeywordToJson(std::vector<Keyword> suggesstions){
 int main(int argc, char **argv) {
 	FLAGS_log_dir = "/home/jiang/log";
 	google::InitGoogleLogging("1");
-    // Backup the stdio streambufs
-    std::streambuf * cin_streambuf  = std::cin.rdbuf();
-    std::streambuf * cout_streambuf = std::cout.rdbuf();
-    std::streambuf * cerr_streambuf = std::cerr.rdbuf();
 
     FCGX_Request request;
-
     FCGX_Init();
     FCGX_InitRequest(&request, 0, 0);
-
+	//实例化Trie对象
+    Trie trie;  
     while (FCGX_Accept_r(&request) == 0) {
-        fcgi_streambuf cin_fcgi_streambuf(request.in);
-        fcgi_streambuf cout_fcgi_streambuf(request.out);
-        fcgi_streambuf cerr_fcgi_streambuf(request.err);
+		FCgiIO IO(request);
+		try{
+			
+			Cgicc formData(&IO);	//实例化Cgicc对象
+			IO << cgicc::HTTPHTMLHeader()<< std::endl;
+			std::string keyword;
+			form_iterator fi = formData.getElement("keyword");  	//关键字
+			form_iterator ai = formData.getElement("add");			//是否添加到索引中
+			form_iterator ni = formData.getElement("num");			//需要的提示数
+			bool add = false;
+			int  num = -1;
+			if(!ai->isEmpty() && ai != (*formData).end()){
+				if(**ai == "1"){
+					add = true;
+					
+				}
+			}
 
-        std::cin.rdbuf(&cin_fcgi_streambuf);
-        std::cout.rdbuf(&cout_fcgi_streambuf);
-        std::cerr.rdbuf(&cerr_fcgi_streambuf);
+			if(!ni->isEmpty() && ni != (*formData).end()){
+				num = std::stoi(**ni);
+			}
 
-		std::cout << cgicc::HTTPHTMLHeader()<< std::endl;
-		//实例化Cgicc对象
-        Cgicc formData;
-        //实例化Trie对象
-        Trie trie;  
-		std::string keyword;
-		form_iterator fi = formData.getElement("keyword");  
-		
-		if( !fi->isEmpty() && fi != (*formData).end()) {
-			json j;
-			keyword = **fi; 
-			std::vector<Keyword> suggestions = trie.searchPrefix(StringToWstring(keyword));
-            j['data'] = formatKeywordToJson(suggestions);
-			std::cout << j.dump(4) << std::endl;
-		}else{
-			std::cout << "search keyword is valid" << std::endl;  
+			if( !fi->isEmpty() && fi != (*formData).end()) {
+
+				json j;
+				keyword = **fi; 
+				if(add){
+					trie.addWordToTrie(StringToWstring(keyword));
+					j["add"] = "ok";
+					IO << j.dump() << std::endl;
+				}else{
+					std::vector<Keyword> suggestions = trie.searchPrefix(StringToWstring(keyword),num);
+					j["words"] = formatKeywordToJson(suggestions);
+					IO << j.dump() << std::endl;
+				}
+				
+			}else{
+				IO << "no input here" << std::endl;  
+			}
+		}catch(const std::exception& e){
+				IO << "error happened" << std::endl;
 		}
+		FCGX_Finish_r(&request);
 	}
-    // restore stdio streambufs
-    std::cin.rdbuf(cin_streambuf);
-    std::cout.rdbuf(cout_streambuf);
-    std::cerr.rdbuf(cerr_streambuf);
 
     return 0;
 }
