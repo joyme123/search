@@ -2,6 +2,8 @@
 #include <vector>  
 #include <string>  
 
+#include <glog/logging.h>
+
 #include <cgicc/CgiDefs.h> 
 #include <cgicc/Cgicc.h> 
 #include <cgicc/HTTPHTMLHeader.h> 
@@ -12,7 +14,8 @@
 #include "src/core/util/Trie.h"
 #include "src/core/model/Keyword.h"
 #include "src/core/util/util.h"
-#include <glog/logging.h>
+#include "src/core/util/ConfigReader.h"
+
 using namespace cgicc;
 using json = nlohmann::json;
 
@@ -38,6 +41,13 @@ int main(int argc, char **argv) {
     FCGX_InitRequest(&request, 0, 0);
 	//实例化Trie对象
     Trie trie;  
+	//获取ConfigReader对象
+	ConfigReader* config = ConfigReader::getInstance();
+	std::string sourcePath = config->get("suggestion_source_path");
+	//得到source的输入流
+	std::ifstream ifstream(sourcePath,std::ios::binary);
+	//trie实例从输入流中恢复
+	trie.read(ifstream);
     while (FCGX_Accept_r(&request) == 0) {
 		FCgiIO IO(request);
 		try{
@@ -84,5 +94,9 @@ int main(int argc, char **argv) {
 		FCGX_Finish_r(&request);
 	}
 
+	//获取输出流对象
+	std::string persistPath = config->get("suggestion_persist_path");
+	std::ofstream ofstream(persistPath,std::ios::binary);
+	trie.persist(ofstream);
     return 0;
 }

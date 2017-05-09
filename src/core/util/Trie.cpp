@@ -49,7 +49,7 @@ std::vector<Keyword> Trie::searchPrefix(std::wstring prefix,int num){
 }
 
 
-bool Trie::addWordToTrie(std::wstring word){
+bool Trie::addWordToTrie(std::wstring word,const unsigned int n){
 
     trie_node* tmp = &(this->node);
 
@@ -68,7 +68,7 @@ bool Trie::addWordToTrie(std::wstring word){
         }
     }
     tmp->isKey = true;
-    tmp->count++;      //计数器加一
+    tmp->count += n;      //计数器加n
     return true;
 }
 
@@ -85,20 +85,42 @@ void Trie::deleteAll(trie_node* node){
     }
 }
 
-// void Trie::persist(std::wstring word,trie_node* tmpNode,std::ofstream ofstream){
-//     if(tmpNode->isKey){
-//         //如果当前节点是关键字
-//         ofstream << word << std::endl;
-//     }
 
-//     if(tmpNode->children.size() > 0){
-//         //当还有下一层
-//         for(auto it = tmpNode->children.begin(); it != tmpNode->children.end(); it++){
-//             persist(word+(it->first),it->second,ofstream);    
-//         }
-//     }
-// }
+//持久化的dfs
+void Trie::persistDfs(std::wstring word,trie_node* tmpNode,std::ofstream& ofstream){
+    if(tmpNode->isKey){
+        //如果当前节点是关键字
+        ofstream << tmpNode->count << " " << WstringToString(word) << std::endl;
+    }
 
+    if(tmpNode->children.size() > 0){
+        //当还有下一层
+        for(auto it = tmpNode->children.begin(); it != tmpNode->children.end(); it++){
+            persistDfs(word+(it->first),it->second,ofstream);    
+        }
+    }
+}
+
+void Trie::persist(std::ofstream& ofstream){
+    persistDfs(L"",&(this->node),ofstream);
+}
+
+void Trie::read(std::ifstream& ifstream){
+    std::string line;
+    while( std::getline(ifstream,line) ){
+        std::string countStr = "";
+        std::string word = "";
+        std::string::iterator it;
+        for(it = line.begin(); it != line.end() && *it != ' '; it++){
+            countStr.push_back(*it);
+        }
+        int count = stoi(countStr);
+        while((++it) != line.end()){
+            word.push_back(*it);
+        }
+        this->addWordToTrie(StringToWstring(word),count);
+    }
+}
 
 Trie::~Trie(){
     //析构的时候先执行一次持久化

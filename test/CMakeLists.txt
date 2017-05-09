@@ -20,6 +20,7 @@ set(TestResourceManage_SRC ResourceManageTest.cpp)
 set(TestConfigReader_SRC ConfigReaderTest.cpp)
 set(TestFastCgi_SRC fastcgiTest.cpp)
 set(TestTrie_SRC trieTest.cpp)
+set(TestSortedHeap_SRC sortedHeapTest.cpp)
 
 #place executable file into test directory
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/test/bin)
@@ -45,7 +46,7 @@ add_executable(resourceManageTest ${TestResourceManage_SRC})
 add_executable(configReaderTest ${TestConfigReader_SRC})
 add_executable(fastCgiTest ${TestFastCgi_SRC})
 add_executable(trieTest ${TestTrie_SRC})
-
+add_executable(sortedHeapTest ${TestSortedHeap_SRC})
 
 #set shared library for connectTest and mysqlTest and ngramTest
 link_directories(${PROJECT_SOURCE_DIR}/lib)
@@ -70,3 +71,4 @@ target_link_libraries(resourceManageTest searchEngine)
 target_link_libraries(configReaderTest searchEngine)
 target_link_libraries(fastCgiTest fcgi++ fcgi)
 target_link_libraries(trieTest searchEngine)
+target_link_libraries(sortedHeapTest searchEngine)

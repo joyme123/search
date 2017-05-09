@@ -7,8 +7,11 @@
 #include <string>
 #include <fstream>
 #include "src/core/model/Keyword.h"
+#include "src/core/util/util.h"
 /**
  * Trie树的实现，使用wstring来兼容汉字
+ * 实现了持久化以及从持久化文件中恢复
+ * TODO:定时持久化和增量持久化策略
  * @author jiangpengfei
  * @date   2017-05-05
  */
@@ -31,6 +34,9 @@ class Trie{
          * @param words 存储结果词语
          */
         void dfs(std::wstring word,trie_node* tmpNode,std::vector<Keyword>& words);
+
+        void persistDfs(std::wstring word,trie_node* tmpNode,std::ofstream& ofstream);
+
         //递归删除所有结点
         void deleteAll(trie_node* node);
 
@@ -46,15 +52,23 @@ class Trie{
         /**
          * 将搜索词 加入到Trie树中
          * @param word 搜索词
+         * @param n    该搜索词添加的搜索数量
          * @return bool 加入成功或失败
          */
-        bool addWordToTrie(std::wstring word);
+        bool addWordToTrie(std::wstring word,const unsigned int n = 1);
 
-        // /**
-        //  * 持久化
-        //  * @param ofstream 输出流
-        //  */
-        // void persist(std::wstring word,trie_node* tmpNode,std::ofstream ofstream);
+        /**
+         * 持久化
+         * @param ofstream 输出流
+         */
+        void persist(std::ofstream& ofstream);
+
+        /**
+         * 从输入流中恢复Trie
+         * @param ifstream 输入流
+         *
+         */
+        void read(std::ifstream& ifstream);
         
         //析构Trie树
         ~Trie();

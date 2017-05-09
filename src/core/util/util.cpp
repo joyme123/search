@@ -270,3 +270,5 @@ reg_char:
     free(bufTmp);
     return s;
 }
+
+

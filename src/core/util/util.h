@@ -82,6 +82,8 @@ std::string getCurrentDateTimeStr();
   *
   */
  std::string stripTags(const char* buf,size_t bufLen,char* allow,size_t allowLen);
+
+
 #endif
 
 
