@@ -61,6 +61,9 @@
         "system_error": "cpp",
         "fstream": "cpp",
         "map": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "mutex": "cpp",
+        "streambuf": "cpp",
+        "random": "cpp"
     }
 }

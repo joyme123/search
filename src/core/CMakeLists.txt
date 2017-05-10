@@ -23,7 +23,7 @@ set(LIB_SRC db/ConnectionPool.cpp
             util/WordSplitSingleton.cpp 
             util/ConfigReader.cpp 
             util/Trie.cpp
-            util/SortedHeap.cpp
+            util/SortedHeap.hpp
             )
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 SET(CMAKE_BUILD_TYPE "Debug")  
