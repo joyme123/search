@@ -24,6 +24,7 @@ set(LIB_SRC db/ConnectionPool.cpp
             util/ConfigReader.cpp 
             util/Trie.cpp
             util/SortedHeap.hpp
+            util/Timer.cpp
             )
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 SET(CMAKE_BUILD_TYPE "Debug")  
