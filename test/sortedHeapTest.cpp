@@ -11,9 +11,9 @@ int main(){
 
     SortedHeap<double> heap(cmp);
     double i = 20;
-    double j = 20;
-    double k = 20;
-    double n = 20;
+    double j = 5;
+    double k = 5;
+    double n = 5;
     double l = 19;
     double m = 10;
     double o = 5;
@@ -21,22 +21,56 @@ int main(){
 
 
     heap.insertNode(i);
-    heap.insertNode(j);
+    int id = heap.insertNode(j);
     heap.insertNode(k);
     heap.insertNode(n);
-    int id = heap.insertNode(l);
+    heap.insertNode(l);
     heap.insertNode(m);
     heap.insertNode(o);
     heap.insertNode(p);        //应该删掉1
 
     heap.deleteNode(id);
 
-    cout << heap.popTopNode() << endl;
-    cout << heap.popTopNode() << endl;
-    cout << heap.popTopNode() << endl;
-    cout << heap.popTopNode() << endl;
-    cout << heap.popTopNode() << endl;
-    cout << heap.popTopNode() << endl;
-    cout << heap.popTopNode() << endl;
-    cout << heap.popTopNode() << endl;
+    std::unique_ptr<double> res = heap.popTopNode();
+
+    if(res != nullptr)
+        cout << *(res.get()) << endl;
+    
+    res = heap.popTopNode();
+    if(res != nullptr)
+        cout << *(res.get()) << endl;
+
+    res = heap.popTopNode();
+    if(res != nullptr)
+        cout << *(res.get()) << endl;
+
+    res = heap.popTopNode();
+    if(res != nullptr)
+        cout << *(res.get()) << endl;
+
+    res = heap.popTopNode();
+    if(res != nullptr)
+        cout << *(res.get()) << endl;
+
+    res = heap.popTopNode();
+    if(res != nullptr)
+        cout << *(res.get()) << endl;
+
+    res = heap.popTopNode();
+    if(res != nullptr)
+        cout << *(res.get()) << endl;
+
+    res = heap.popTopNode();
+    if(res != nullptr)
+        cout << *(res.get()) << endl;
+
+    res = heap.popTopNode();
+    if(res != nullptr)
+        cout << *(res.get()) << endl;
+
+    res = heap.popTopNode();
+    if(res != nullptr)
+        cout << *(res.get()) << endl;
+
+
 }

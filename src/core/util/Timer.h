@@ -12,14 +12,14 @@
 #include <chrono>
 #include <functional>
 #include <thread>
-
+#include <memory>
 #include "SortedHeap.hpp"
 
 class Timer{
     private:
         std::chrono::milliseconds tick;
         double timeline;     //当前时间线,long double的字节数为12
-
+        bool isStart;        //标志当前定时器的启动状态
         struct SchedulerEvent{
           unsigned int id;                  //定时事件的唯一标示id
           double deadline;    //定时事件的触发时间
@@ -37,7 +37,7 @@ class Timer{
          */
         void loopForExecute();
 
-    public:
+        //私有的构造函数
         Timer(std::chrono::milliseconds tick):eventQueue(
             [](SchedulerEvent& a,SchedulerEvent& b){
                 return a.deadline < b.deadline;
@@ -45,6 +45,15 @@ class Timer{
         ){
             this->timeline = 0;
             this->tick = tick;
+            this->isStart = false;
+        }
+
+    public:
+        
+        //单例模式
+        static Timer* getInstance(std::chrono::milliseconds tick){
+            static Timer timer(tick);
+            return &timer;
         }
 
         /**
@@ -53,7 +62,7 @@ class Timer{
          * @param action 定时执行的动作
          * @return unsigned int 定时器的id,可以根据这个id执行删除操作
          */
-        unsigned int addEvent(unsigned int interval,std::function<void()> action);
+        unsigned int addEvent(double interval,std::function<void()> action);
 
         /**
          * 删除定时器
@@ -63,10 +72,14 @@ class Timer{
         void deleteEvent(unsigned int timerId);
 
         /**
-         * 启动定时器
-         * @param tick 多少毫秒作为一个周期，这个周期越短，定时器精度越高，但是消耗也越多
+         * 同步执行启动定时器
          */
-         void start();
+         void syncStart();
+
+         /**
+         * 异步执行启动定时器
+         */
+         void asyncStart();
         
 };
 
