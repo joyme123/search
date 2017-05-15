@@ -59,16 +59,16 @@ class Trie{
 
         /**
          * 持久化
-         * @param ofstream 输出流
+         * @param path 输出路径
          */
-        void persist(std::ofstream& ofstream);
+        void persist(std::string& path);
 
         /**
          * 从输入流中恢复Trie
-         * @param ifstream 输入流
+         * @param ifstream 输入路径
          *
          */
-        void read(std::ifstream& ifstream);
+        void read(std::string& path);
         
         //析构Trie树
         ~Trie();

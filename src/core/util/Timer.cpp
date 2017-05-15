@@ -1,7 +1,7 @@
 #include "src/core/util/Timer.h"
 
-unsigned int Timer::addEvent(double interval,std::function<void()> action){
-    SchedulerEvent event(interval,this->timeline,action);
+unsigned int Timer::addEvent(double interval,std::function<void()> action,bool isRepeat){
+    SchedulerEvent event(interval,this->timeline,action,isRepeat);
     return this->eventQueue.insertNode(event);
 }
 
@@ -13,8 +13,14 @@ void Timer::loopForExecute(){
     std::unique_ptr<SchedulerEvent> top = this->eventQueue.getTopNode();
     while(top != nullptr && top->deadline <= this->timeline){
         //如果已经到了执行的时间,新开一个子线程执行任务
-        std::thread t(this->eventQueue.getTopNode()->action);
+        std::thread t(top->action);
         t.detach();    //子线程分离
+
+        if(top->isRepeat){
+            //如果是重复事件,则重新添加
+            this->addEvent(top->interval,top->action,top->isRepeat);
+        }
+
         //从堆中删除
         this->eventQueue.deleteTopNode();
         top = this->eventQueue.getTopNode();
@@ -26,7 +32,7 @@ void Timer::loopForExecute(){
 }
 
 void Timer::asyncStart(){
-    if(!this->isStart)
+    if(!this->isStart){
         std::thread daemon_thread(&Timer::syncStart,this);
         daemon_thread.detach();     //从当前主线程分离
     }

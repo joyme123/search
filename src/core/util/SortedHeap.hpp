@@ -147,6 +147,7 @@ void SortedHeap<T>::adjustAfterDelete(int pos){
             //交换
             this->swap(this->heap[pos],this->heap[topNum]);
         }
+        pos = topNum;
     }
 }
 

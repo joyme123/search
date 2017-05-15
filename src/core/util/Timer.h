@@ -21,12 +21,16 @@ class Timer{
         double timeline;     //当前时间线,long double的字节数为12
         bool isStart;        //标志当前定时器的启动状态
         struct SchedulerEvent{
-          unsigned int id;                  //定时事件的唯一标示id
-          double deadline;    //定时事件的触发时间
+          unsigned int id;                   //定时事件的唯一标示id
+          double interval;                   //事件的触发间隔，在重复事件中会用到这个属性
+          double deadline;                   //定时事件的触发时间
           std::function<void()> action;      //触发的事件
-          SchedulerEvent( double deadline, double timeline,std::function<void()> action){
-              this->deadline = deadline + timeline;
+          bool isRepeat;                     //是否是重复执行事件
+          SchedulerEvent( double interval, double timeline,std::function<void()> action,bool isRepeat){
+              this->interval = interval;
+              this->deadline = interval + timeline;
               this->action = action;
+              this->isRepeat = isRepeat;
           }
         };
 
@@ -60,9 +64,10 @@ class Timer{
          * 设置定时器
          * @param interval 定时间隔
          * @param action 定时执行的动作
+         * @param isRepeat 是否重复执行,默认不重复执行
          * @return unsigned int 定时器的id,可以根据这个id执行删除操作
          */
-        unsigned int addEvent(double interval,std::function<void()> action);
+        unsigned int addEvent(double interval,std::function<void()> action,bool isRepeat = false);
 
         /**
          * 删除定时器
