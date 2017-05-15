@@ -1,27 +1,46 @@
 #include "src/core/util/Timer.h"
 
-bool Timer:: cmp(SchedulerEvent& a,SchedulerEvent& b) const{
-    return a.deadline < b.deadline;
+unsigned int Timer::addEvent(double interval,std::function<void()> action,bool isRepeat){
+    SchedulerEvent event(interval,this->timeline,action,isRepeat);
+    return this->eventQueue.insertNode(event);
 }
 
-unsigned int Timer::setTimer(unsigned int interval,std::function<void()> action){
-    SchedulerEvent event(interval,action);
-    return this->eventQueue->insertNode(event);
+void Timer::deleteEvent(unsigned int timerId){
+    this->eventQueue.deleteNode(timerId);
 }
 
-void deleteTimer(unsigned int timerId){
-    this->eventQueue->deleteNode(timerId);
-}
+void Timer::loopForExecute(){
+    std::unique_ptr<SchedulerEvent> top = this->eventQueue.getTopNode();
+    while(top != nullptr && top->deadline <= this->timeline){
+        //如果已经到了执行的时间,新开一个子线程执行任务
+        std::thread t(top->action);
+        t.detach();    //子线程分离
 
-void loopForExecute(){
-    if(this->eventQueue->getTopNode().deadline <= this->timeline){
-        //如果已经到了执行的时间
-        event.action();
+        if(top->isRepeat){
+            //如果是重复事件,则重新添加
+            this->addEvent(top->interval,top->action,top->isRepeat);
+        }
+
         //从堆中删除
-        this->eventQueue->deleteTopNode();
+        this->eventQueue.deleteTopNode();
+        top = this->eventQueue.getTopNode();
+    }
+    //执行一次后等待一个周期
+    std::this_thread::sleep_for(this->tick);
+    //周期增1
+    this->timeline++;
+}
+
+void Timer::asyncStart(){
+    if(!this->isStart){
+        std::thread daemon_thread(&Timer::syncStart,this);
+        daemon_thread.detach();     //从当前主线程分离
     }
 }
 
-void start(std::chrono::milliseconds tick){
-    
+void Timer::syncStart(){
+    if(!this->isStart){
+        while(1)
+            this->loopForExecute();
+    }
 }

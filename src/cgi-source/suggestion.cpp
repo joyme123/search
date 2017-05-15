@@ -10,6 +10,15 @@
 #include <cgicc/HTMLClasses.h>  
 #include "FCgiIO.h"
 
+#include <chrono>
+#include <ctime>
+#include <iomanip>
+#include <functional>
+#include <thread>
+#include <memory>
+#include <fstream>
+#include "src/core/util/Timer.h"
+
 #include "src/include/json.hpp"
 #include "src/core/util/Trie.h"
 #include "src/core/model/Keyword.h"
@@ -23,7 +32,7 @@ json formatKeywordToJson(std::vector<Keyword> suggesstions){
 	json j;
 	for(unsigned int i = 0; i < suggesstions.size(); i++){
 		json tmp;
-		Keyword keyword = suggesstions[i];
+		Keyword keyword = suggesstions[i];persistPath
 		tmp["suggestion"] = WstringToString(keyword.word);
 		tmp["count"] = keyword.count;
 		j.push_back(tmp);
@@ -31,6 +40,12 @@ json formatKeywordToJson(std::vector<Keyword> suggesstions){
 	return j;
 }
 
+void myprint(std::string msg){
+    std::ofstream of("/home/jiang/projects/search/test/bin/timer_suggestion.txt", std::ios::app);
+    std::thread::id this_id = std::this_thread::get_id();
+    auto t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    of << "From Thread " << this_id << "at time " << std::put_time(std::localtime(&t), "%Y-%m-%d %H.%M.%S") << ":" << msg << std::endl;
+}
 
 int main(int argc, char **argv) {
 	FLAGS_log_dir = "/home/jiang/log";
@@ -44,10 +59,23 @@ int main(int argc, char **argv) {
 	//获取ConfigReader对象
 	ConfigReader* config = ConfigReader::getInstance();
 	std::string sourcePath = config->get("suggestion_source_path");
-	//得到source的输入流
-	std::ifstream ifstream(sourcePath,std::ios::binary);
 	//trie实例从输入流中恢复
-	trie.read(ifstream);
+	trie.read(sourcePath);
+
+	//设置trie的持久化定时任务
+
+	//获取输出流对象
+	std::string persistPath = config->get("suggestion_persist_path");
+	std::chrono::milliseconds tick(1000);       //10秒作为一个周期
+    Timer* timer = Timer::getInstance(tick);
+	std::function<void()> f1 = std::bind(&Trie::persist,&trie,std::ref(persistPath));
+	std::function<void()> f2 = std::bind(myprint,"第二个加入");
+	timer->addEvent(6,f1,true);		//60个周期，也就是10分钟保存一次
+	timer->addEvent(6,f2,true);	
+
+	timer->asyncStart();
+	std::this_thread::sleep_for(std::chrono::seconds(20));   
+
     while (FCGX_Accept_r(&request) == 0) {
 		FCgiIO IO(request);
 		try{
@@ -93,10 +121,5 @@ int main(int argc, char **argv) {
 		}
 		FCGX_Finish_r(&request);
 	}
-
-	//获取输出流对象
-	std::string persistPath = config->get("suggestion_persist_path");
-	std::ofstream ofstream(persistPath,std::ios::binary);
-	trie.persist(ofstream);
     return 0;
 }

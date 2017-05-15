@@ -1,6 +1,13 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
+#include <functional>
+#include <thread>
+#include <memory>
+#include "src/core/util/Timer.h"
 #include "src/core/util/Trie.h"
 #include "src/include/json.hpp"
 using namespace std;
@@ -19,14 +26,32 @@ json formatKeywordToJson(std::vector<Keyword> suggesstions){
 	return j;
 }
 
+void myprint(std::string msg){
+    std::ofstream of("timer.txt", std::ios::app);
+    std::thread::id this_id = std::this_thread::get_id();
+    auto t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    of << "From Thread " << this_id << "at time " << std::put_time(std::localtime(&t), "%Y-%m-%d %H.%M.%S") << ":" << msg << std::endl;
+}
 
 void fun(){
     
     locale loc("zh_CN.UTF-8");
     locale::global(loc);
     Trie trie;
-    std::ifstream ifstream("/home/jiang/projects/search/test/bin/trie_persistent_db.txt",std::ios::binary);
-    trie.read(ifstream);
+    std::string path = "/etc/search/resource/suggestion/source.txt";
+    trie.read(path);
+
+	
+	std::chrono::milliseconds tick(1000);       //10秒作为一个周期
+    Timer* timer = Timer::getInstance(tick);
+	std::function<void()> f1 = std::bind(&Trie::persist,&trie,std::ref(path));
+	std::function<void()> f2 = std::bind(myprint,"第二个加入");
+	timer->addEvent(6,f1);		//60个周期，也就是10分钟保存一次
+	timer->addEvent(6,f2);	
+
+	timer->asyncStart();  
+
+
     wstring word;
     cout << "输入exit退出程序" << endl;
     while(wcin >> word){
@@ -37,8 +62,6 @@ void fun(){
         trie.addWordToTrie(word);                                   //添加到树中
         formatKeywordToJson(keywords);
     }
-    std::ofstream stream("/home/jiang/projects/search/test/bin/trie_persistent.txt",std::ios::binary);
-    trie.persist(stream);
 
 }
 

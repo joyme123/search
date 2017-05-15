@@ -12,6 +12,7 @@
 #include <iostream>
 #include <vector>
 #include <functional>
+#include <memory>
 #include "src/core/util/util.h"
 
 
@@ -21,9 +22,8 @@ class SortedHeap{
         struct HeapNode{
             unsigned int id;
             T obj;
-            HeapNode(unsigned int id,T t){
+            HeapNode(unsigned int id,T t):obj(t){
                 this->id = id;
-                this->obj = t;
             }
         };
         std::vector<HeapNode> heap;
@@ -68,15 +68,15 @@ class SortedHeap{
         
         /**
          * pop最小的节点
-         * @return T 返回的最顶部的节点
+         * @return T* 返回的最顶部的节点指针
          */
-        T popTopNode();
+        std::unique_ptr<T> popTopNode();
 
         /**
          * 获取最顶部的节点
-         * @return T 最顶部的节点
+         * @return T 最顶部的节点指针
          */
-        T getTopNode();
+        std::unique_ptr<T> getTopNode();
 
         /**
          * 删除顶部的节点
@@ -147,6 +147,7 @@ void SortedHeap<T>::adjustAfterDelete(int pos){
             //交换
             this->swap(this->heap[pos],this->heap[topNum]);
         }
+        pos = topNum;
     }
 }
 
@@ -163,7 +164,7 @@ unsigned int SortedHeap<T>::insertNode(T& node){
 
 template<typename T>
 void SortedHeap<T>::deleteNodeByPos(const unsigned int pos){
-    int last = this->heap.size() - 1;
+    unsigned int last = this->heap.size() - 1;
     if(pos > last){
         return;
     }
@@ -177,37 +178,43 @@ void SortedHeap<T>::deleteNodeByPos(const unsigned int pos){
 
 template<typename T>
 void SortedHeap<T>::deleteNode(int id){
-    unsigned int pos;
-    for(int i = 0; i < this->heap.size(); i++){
+    for(unsigned int i = 0; i < this->heap.size(); i++){
         if(heap[i].id == id){
-            pos = i;
+            //找到了id
+            this->deleteNodeByPos(i);
             break;
         }
     }
-    this->deleteNodeByPos(pos);
+    
     
 }
 
 template<typename T>
-T SortedHeap<T>::popTopNode(){
+std::unique_ptr<T> SortedHeap<T>::popTopNode(){
     if(this->heap.size() != 0){
-        T top = this->heap[0].obj;
+        std::unique_ptr<T> top(new T(this->heap[0].obj));
         this->deleteNodeByPos(0);
         return top;
     }else{
-        return T();
+        std::unique_ptr<T> p = nullptr;
+        return p;
     }
 }
 
 template<typename T>
-T SortedHeap<T>::getTopNode(){
-    return this->heap[0].obj;
+std::unique_ptr<T> SortedHeap<T>::getTopNode(){
+    if(this->heap.size() != 0){
+        std::unique_ptr<T> top(new T(this->heap[0].obj));
+        return top;
+    }else{
+        std::unique_ptr<T> p = nullptr;
+        return p;
+    }
 }
 
 template<typename T>
 void SortedHeap<T>::deleteTopNode(){
    if(this->heap.size() != 0){
-        T top = this->heap[0].obj;
         this->deleteNodeByPos(0);
     }
 }

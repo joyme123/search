@@ -11,18 +11,26 @@
 #include <iostream>
 #include <chrono>
 #include <functional>
+#include <thread>
+#include <memory>
 #include "SortedHeap.hpp"
 
 class Timer{
     private:
+        std::chrono::milliseconds tick;
+        double timeline;     //当前时间线,long double的字节数为12
+        bool isStart;        //标志当前定时器的启动状态
         struct SchedulerEvent{
-          unsigned int id;          //定时事件的唯一标示id
-          unsigned int deadline;    //定时事件的触发时间
-          unsigned int timeline;    //当前时间线
-          std::function<void()> action  //触发的事件
-          SchedulerEvent(int deadline,std::function<void()> action){
-              this->deadline = deadline;
+          unsigned int id;                   //定时事件的唯一标示id
+          double interval;                   //事件的触发间隔，在重复事件中会用到这个属性
+          double deadline;                   //定时事件的触发时间
+          std::function<void()> action;      //触发的事件
+          bool isRepeat;                     //是否是重复执行事件
+          SchedulerEvent( double interval, double timeline,std::function<void()> action,bool isRepeat){
+              this->interval = interval;
+              this->deadline = interval + timeline;
               this->action = action;
+              this->isRepeat = isRepeat;
           }
         };
 
@@ -33,38 +41,50 @@ class Timer{
          */
         void loopForExecute();
 
-        /**
-         * 启动定时器
-         * @param tick 多少毫秒作为一个周期，这个周期越短，定时器精度越高，但是消耗也越多
-         */
-         void start(std::chrono::milliseconds tick);
-
-    public:
-        Timer():eventQueue(cmp){
-
+        //私有的构造函数
+        Timer(std::chrono::milliseconds tick):eventQueue(
+            [](SchedulerEvent& a,SchedulerEvent& b){
+                return a.deadline < b.deadline;
+            }
+        ){
+            this->timeline = 0;
+            this->tick = tick;
+            this->isStart = false;
         }
 
-        /**
-         * 定时事件的比较函数
-         *
-         */
-        bool cmp(SchedulerEvent& a,SchedulerEvent& b) const;
+    public:
+        
+        //单例模式
+        static Timer* getInstance(std::chrono::milliseconds tick){
+            static Timer timer(tick);
+            return &timer;
+        }
 
         /**
          * 设置定时器
          * @param interval 定时间隔
          * @param action 定时执行的动作
+         * @param isRepeat 是否重复执行,默认不重复执行
          * @return unsigned int 定时器的id,可以根据这个id执行删除操作
          */
-        unsigned int setTimer(unsigned int interval,std::function<void()> action);
+        unsigned int addEvent(double interval,std::function<void()> action,bool isRepeat = false);
 
         /**
          * 删除定时器
          * @param timerId 定时器id
          *
          */
-        void deleteTimer(unsigned int timerId);
+        void deleteEvent(unsigned int timerId);
 
+        /**
+         * 同步执行启动定时器
+         */
+         void syncStart();
+
+         /**
+         * 异步执行启动定时器
+         */
+         void asyncStart();
         
 };
 

@@ -101,11 +101,13 @@ void Trie::persistDfs(std::wstring word,trie_node* tmpNode,std::ofstream& ofstre
     }
 }
 
-void Trie::persist(std::ofstream& ofstream){
+void Trie::persist(std::string& path){
+    std::ofstream ofstream(path,std::ios::binary);
     persistDfs(L"",&(this->node),ofstream);
 }
 
-void Trie::read(std::ifstream& ifstream){
+void Trie::read(std::string& path){
+    std::ifstream ifstream(path,std::ios::binary);
     std::string line;
     while( std::getline(ifstream,line) ){
         std::string countStr = "";
