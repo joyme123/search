@@ -27,9 +27,12 @@
             <div class="logo"><a href="index.html"> <img src="logo.png"></a></div>
             <div>
                 <form id="search_form" action="search.html" method="get">
-                    <input id="search_input" class="search_keyword_input" type="text" name="keyword" onkeypress="if(event.keyCode==13){return checkKeyword()}">
+                    <input id="search_input" class="search_keyword_input" type="text" name="keyword" oninput="suggestion(event)" onkeypress="if(event.keyCode==13){return checkKeyword()}" autocomplete="off">
                     <input class=" search_keyword_button " type="button" value="搜索" onclick="checkKeyword() ">
                 </form>
+                    <ul class="suggestion" id="suggestion">
+                        
+                    </ul>
             </div>
         </div>
         <div class="clearfix "></div>

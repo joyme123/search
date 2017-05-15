@@ -1,13 +1,54 @@
 // var server = "http://localhost/cgi-bin/";
 
+function suggestion(event){
+    $.ajax({
+        url:  "cgi-bin/suggestion.fcgi",
+        type: "GET",
+        data: {
+            'keyword': event.target.value
+        },
+        success: function(response) {
+            var res = JSON.parse(response);
+            words = res.words;
+            if(words != null){
+                console.log(words);
+                $("#suggestion").html("");
+                for(i = 0; i < words.length;i++){
+                    $("#suggestion").append("<li>"+words[i].suggestion + "------" + words[i].count + "</li>");
+                }
+            }
+            
+        },
+        error: function(error) {
+            alert("无法连接服务器，请检查网络连接");
+        }
+    });
+}
+
 function search() {
     var Request = new Object();
     Request = GetRequest();
     var keyword = Request['keyword'];
     var page = Request['page'];
     $("#search_input").val(keyword);
+    //添加关键字
     $.ajax({
-        url:  "cgi-bin/get.fcgi",
+        url:  "suggestion.fcgi",
+        type: "GET",
+        data: {
+            'keyword': keyword,
+            'add':1
+        },
+        success:function(response) {
+
+        },
+        error:function(error){
+
+        }
+    });
+
+    $.ajax({
+        url:  "get.fcgi",
         type: "GET",
         data: {
             'keyword': keyword,
