@@ -25,7 +25,7 @@
             "name": "C++ Attach",
             "type": "cppdbg",
             "request": "attach",
-            "program": "${workspaceRoot}/www/cgi-bin/get.cgi",
+            "program": "${workspaceRoot}/www/cgi-bin/get.fcgi",
             "processId": "${command.pickProcess}",
             "linux": {
                 "MIMode": "gdb"

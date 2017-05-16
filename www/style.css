@@ -222,3 +222,12 @@ header {
     text-align: center;
     line-height: 60px;
 }
+
+
+.suggestion{
+    margin-left: 140px;
+    list-style: none;
+    background-color: white;
+    width: 430px;
+}
+
