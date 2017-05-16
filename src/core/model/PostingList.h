@@ -16,7 +16,7 @@
 #include "src/core/util/util.h"
 
 /**
- * (documentId;frequency;<pos1;pos2>)
+ * (documentId,frequency)<pos1,pos2>
  */
 class PostingList{
     public:
