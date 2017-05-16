@@ -102,7 +102,12 @@ void Trie::persistDfs(std::wstring word,trie_node* tmpNode,std::ofstream& ofstre
 }
 
 void Trie::persist(std::string& path){
-    std::ofstream ofstream(path,std::ios::binary);
+    //按照当前时间点保存下来
+    char buf[100] = {0};
+    auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    std::strftime(buf, sizeof(buf), "%Y-%m-%d %H.%M.%S", std::localtime(&now));
+    std::string fileName(buf,sizeof(buf));
+    std::ofstream ofstream(path+fileName,std::ios::binary);
     persistDfs(L"",&(this->node),ofstream);
 }
 

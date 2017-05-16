@@ -27,7 +27,7 @@ json formatKeywordToJson(std::vector<Keyword> suggesstions){
 }
 
 void myprint(std::string msg){
-    std::ofstream of("timer.txt", std::ios::app);
+    std::ofstream of("timer_a.txt", std::ios::app);
     std::thread::id this_id = std::this_thread::get_id();
     auto t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     of << "From Thread " << this_id << "at time " << std::put_time(std::localtime(&t), "%Y-%m-%d %H.%M.%S") << ":" << msg << std::endl;
@@ -38,16 +38,17 @@ void fun(){
     locale loc("zh_CN.UTF-8");
     locale::global(loc);
     Trie trie;
-    std::string path = "/etc/search/resource/suggestion/source.txt";
+    std::string path = "/home/jiang/search-data/suggestion/source.txt";
+    std::string save_path = "/home/jiang/search-data/suggestion/";
     trie.read(path);
 
 	
 	std::chrono::milliseconds tick(1000);       //10秒作为一个周期
     Timer* timer = Timer::getInstance(tick);
-	std::function<void()> f1 = std::bind(&Trie::persist,&trie,std::ref(path));
+	std::function<void()> f1 = std::bind(&Trie::persist,&trie,std::ref(save_path));
 	std::function<void()> f2 = std::bind(myprint,"第二个加入");
-	timer->addEvent(6,f1);		//60个周期，也就是10分钟保存一次
-	timer->addEvent(6,f2);	
+	timer->addEvent(6,f1,true);		//60个周期，也就是10分钟保存一次
+	timer->addEvent(6,f2,true);	
 
 	timer->asyncStart();  
 
