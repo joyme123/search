@@ -11,8 +11,9 @@
 #include <cgicc/Cgicc.h> 
 #include <cgicc/HTTPHTMLHeader.h> 
 #include <cgicc/HTMLClasses.h>  
-#include "src/include/json.hpp"
+#include "src/core/util/FCgiIO.h"
 
+#include "src/include/json.hpp"
 #include "src/core/controller/HtmlDocumentController.h"
 #include "src/core/controller/WordController.h"
 
@@ -74,33 +75,43 @@ int main(int argc, char **argv) {
 	google::InitGoogleLogging("1");
 	int pageIndex = 1;
 
+    FCGX_Request request;
 
-	std::cout << cgicc::HTTPHTMLHeader()<< std::endl;
-	Cgicc formData;
-	
-	form_iterator fi = formData.getElement("keyword");  
-	form_iterator pageI = formData.getElement("page");
-	if(!pageI->isEmpty() && pageI != (*formData).end()){
-		pageIndex = stoi((**pageI));
-	}
+    FCGX_Init();
+    FCGX_InitRequest(&request, 0, 0);
+	WordController wordCtrl;
+	int docCount = 0;
+    while (FCGX_Accept_r(&request) == 0) {
+		FCgiIO IO(request);
+		try{
+			Cgicc formData(&IO);
+			IO << cgicc::HTTPHTMLHeader()<< std::endl;
+			
+			form_iterator fi = formData.getElement("keyword");  
+			form_iterator pageI = formData.getElement("page");
+			if(!pageI->isEmpty() && pageI != (*formData).end()){
+				pageIndex = stoi((**pageI));
+			}
 
+			int PAGESIZE = 10;
+			if( !fi->isEmpty() && fi != (*formData).end()) {
+				json j;
+				std::string sentence = **fi; 
+				std::vector<Document> docs =  wordCtrl.searchWithSentence(sentence,docCount,pageIndex,PAGESIZE);
+				json docJson = formatDocumentToJson(docs);
+				j["docCount"] = docCount;
+				j["docs"] = docJson;
+				j["pageIndex"] = pageIndex;
+				j["pageSize"] = PAGESIZE;
+				IO << j.dump() << std::endl;
+			}else{
+				IO << "search keyword is invalid" << std::endl;  
+			}
+		}catch(const std::exception& e){
+			IO << "error happened!" << std::endl;
+		}
 
-	int PAGESIZE = 10;
-	if( !fi->isEmpty() && fi != (*formData).end()) {
-		json j;
-		//j["keyword"] = **fi; 
-		std::string sentence = **fi;
-		WordController wordCtrl;
-		int docCount = 0;
-		std::vector<Document> docs =  wordCtrl.searchWithSentence(sentence,docCount,pageIndex,PAGESIZE);
-		json docJson = formatDocumentToJson(docs);
-		j["docCount"] = docCount;
-		j["docs"] = docJson;
-		j["pageIndex"] = pageIndex;
-		j["pageSize"] = PAGESIZE;
-		std::cout << j.dump(4) << std::endl;
-	}else{
-		std::cout << "search keyword is valid" << std::endl;  
+		FCGX_Finish_r(&request);
 	}
     return 0;
 }

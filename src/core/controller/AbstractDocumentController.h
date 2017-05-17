@@ -7,8 +7,8 @@
  * date:2017-02-07
  */
 
-#ifndef DOCUMENTCONTROLLER_H
-#define DOCUMENTCONTROLLER_H
+#ifndef ABSTRACTDOCUMENTCONTROLLER_H
+#define ABSTRACTDOCUMENTCONTROLLER_H
 
 #include<iostream>
 #include<fstream>

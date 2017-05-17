@@ -23,7 +23,7 @@
 #include <mysql_driver.h>
 #include <mysql_connection.h>
 #include <glog/logging.h>
-#include "src/core/util/config.h"
+#include "src/core/util/ConfigReader.h"
 
 class Mysql{
     private:

@@ -54,7 +54,7 @@ std::vector<Document> WordController::searchWithSentence(std::string& sentence,i
 	int offset = (pageIndex - 1) * pageSize;
 	//保存最后要查询的文档id
 	std::vector<unsigned int> ids;
-	for(int i = offset; i < offset + pageSize && i < sorting.size(); i++){
+	for(unsigned int i = offset; i < offset + pageSize && i < sorting.size(); i++){
 		ids.push_back(sorting[i].first);
 	}
 	

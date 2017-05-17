@@ -1,6 +1,6 @@
 #ifndef HTMLDOCUMENTCONTROLLER_H
 #define HTMLDOCUMENTCONTROLLER_H
-#include "src/core/controller/AbstractDocumentController.cpp"
+#include "src/core/controller/AbstractDocumentController.h"
 #include "src/core/dao/DocumentDAO.h"
 #include "src/core/dao/WordDAO.h"
 #include "src/core/util/WordSplitSingleton.h"

@@ -14,7 +14,8 @@ DocumentAnalysis::DocumentAnalysis(){
 std::string DocumentAnalysis::htmlPeel(std::string& html) const{
     ////去除html标签<script><style><!-- -->< />的正则和&nbsp;
     //std::regex reg("<\\s*script(\\s|\\S)*?<\\s*/script\\s*>|<\\s*style(\\s|\\S)*?<\\s*/style\\s*>|<!--(\\s|\\S)*?-->|<\\s*/{0,1}(\\s|\\S)*?>|\\s*&.*?;\\s*");                     
-    std::string peeledString = stripTags(html.c_str(),html.length(),"",0);
+    char* cs = "";
+    std::string peeledString = stripTags(html.c_str(),html.length(),cs,0);
 
     //std::cout << "去除标签后的文本为:"+formatedStr << std::endl;
     return peeledString;
@@ -44,7 +45,7 @@ void DocumentAnalysis::setThreshold(const int threshold){
 
 std::string DocumentAnalysis::fastHtmlAnalysis(std::string& peeledHtml) const{
     int max = 0;           //存储最大的行块的值
-    int maxPos;        //存储最大的行块的位置
+    int maxPos = 0;        //存储最大的行块的位置
     std::string content;        //存储最终的结果
 
     if(peeledHtml.length() < 20){

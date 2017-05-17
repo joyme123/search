@@ -62,7 +62,7 @@ export GLOG_max_log_size=1
 - cpp_redis需要一个一个叫做tacopie的tcp库，以及pthread库,安装tacopie的库文档在这里[tacopie库](https://github.com/Cylix/tacopie)
 ```
 #redis和tacopie的安装命令
-#注意事项:cpp_redis和tacopie的CmakeList.txt生成的是静态库.a,应该更改STATIC为SHARED,同时在CMakeList中的编译选项上使用-fPIC选项:
+#注意事项:cpp_redis和tacopie的CmakeList.txt生成的是静态库.a,如果需要动态库，可以更改STATIC为SHARED,同时在CMakeList中的编译选项上使用-fPIC选项:
 # 克隆工程
 git clone https://github.com/Cylix/cpp_redis.git
 # 进入到工程目录
@@ -84,7 +84,7 @@ mongodb客户端使用的是mongocxx，mongocxx是基于[mongoc](http://mongoc.o
 [mongodb文档](http://mongoc.org/libmongoc/current/tutorial.html#making-a-connection)
 - 需要libbson的库，源代码在这里[libbson](https://github.com/mongodb/libbson),因为mongocxx对libbson的库的版本要求是>1.5.0的，所以我们需要从源代码安装1.6.2的版本。
 ```
-libbson的安装命令（这一步可以不进行，因为在mongo-c的安装过程中会自动检测libbson并安装）
+libbson的安装命令（这一步可以不进行，因为在mongo-c的安装过程中会自动检测libbson并安装),如果需要静态库，添加./configure --enable-static
 git clone https://github.com/mongodb/libbson.git
 cd libbson
 git checkout r1.6
@@ -97,7 +97,7 @@ sudo make install
 ```
 
 ```
-#mongo-c的安装命令
+#mongo-c的安装命令，如果需要静态库，使用./configure --enable-static（这时候不要用autogen.sh)
 git clone https://github.com/mongodb/mongo-c-driver.git
 cd mongo-c-driver
 git checkout r1.6

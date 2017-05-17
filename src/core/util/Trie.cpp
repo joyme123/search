@@ -21,7 +21,7 @@ std::vector<Keyword> Trie::searchPrefix(std::wstring prefix,int num){
 
     trie_node* tmp = &(this->node);
 
-    for(int i = 0; i < prefix.length(); i++){
+    for(unsigned int i = 0; i < prefix.length(); i++){
         if(tmp->children.find(prefix[i]) != tmp->children.end()){
             //当前节点有指向到prefix的字符记录
 
@@ -40,7 +40,7 @@ std::vector<Keyword> Trie::searchPrefix(std::wstring prefix,int num){
     });
 
     if(num != -1){
-        if(words.size() > num){
+        if((int)words.size() > num){
             Keyword tmpK(L"",0);
             words.resize(num,tmpK);      //只保留需要的前几个数据
         }
@@ -53,7 +53,7 @@ bool Trie::addWordToTrie(std::wstring word,const unsigned int n){
 
     trie_node* tmp = &(this->node);
 
-    for(int i = 0; i < word.length(); i++){
+    for(unsigned int i = 0; i < word.length(); i++){
         if(tmp->children.find(word[i]) == tmp->children.end()){
             //当前节点没有指向到word的当前字符的记录
             //创建一个新的trie_node

@@ -14,15 +14,11 @@ void Mysql::connect(){
 	}
 }
 Mysql::Mysql(){
-	//get the instance of driver in construct function
-	// this->user = "5019";
-	// this->pass = "5019";
-	// this->database = "empdb";
-	// this->url = "tcp://115.29.114.202:3306";
-	this->user = SQL_USER;
-	this->pass = SQL_PWD;
-	this->database = SQL_DB;
-	this->url = SQL_URL;
+	ConfigReader* config = ConfigReader::getInstance();
+	this->user = config->get("sql_user");
+	this->pass = config->get("sql_pwd");
+	this->database = config->get("sql_db");
+	this->url = config->get("sql_url");
 	this->driver = sql::mysql::get_driver_instance();
 	this->conn = NULL;		//初始化为空
 }

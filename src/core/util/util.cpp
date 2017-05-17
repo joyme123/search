@@ -135,7 +135,7 @@ std::string stripTags(const char* buf,size_t bufLen,char* allow,size_t allowLen)
     int bufIndex = 0;
     int copyBufIndex = 0;
     int state = 0;      //状态,0是正常状态,1是html，2是<!doctype><!-- -->不确定的状态,3是注释状态,4是script状态,5是style状态
-    int i = 0;
+    unsigned int i = 0;
     int depth = 0;
     int inS = 0;
     char lc = '\0';     //上一个有意义的字符

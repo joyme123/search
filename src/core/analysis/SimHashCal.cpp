@@ -48,7 +48,7 @@ std::map<std::string,std::vector<int> > SimHashCal::removeStopWord(std::map<std:
  * @param wordCount 要作为特征的单词数
  * @return char* 特征码
  */
-std::bitset<SimHashCal::BITSET_LENGTH> SimHashCal::calculate(std::map<std::string,std::vector<int> > content,std::map<std::string,double> frequencyDict,int wordCount){
+std::bitset<SimHashCal::BITSET_LENGTH> SimHashCal::calculate(std::map<std::string,std::vector<int> > content,std::map<std::string,double> frequencyDict,unsigned int wordCount){
     std::vector<std::pair<std::string,std::vector<int> > > vec(content.begin(),content.end());
     std::sort(vec.begin(),vec.end(),cmpByValue);                                //对词汇按照频次进行排序
 

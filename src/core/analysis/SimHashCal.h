@@ -39,7 +39,7 @@ class SimHashCal{
          * @param frequencyDict 频率字典
          * @return char* 特征码
          */
-        std::bitset<SimHashCal::BITSET_LENGTH> calculate(std::map<std::string,std::vector<int> > content,std::map<std::string,double> frequencyDict,int wordCount = 6);
+        std::bitset<SimHashCal::BITSET_LENGTH> calculate(std::map<std::string,std::vector<int> > content,std::map<std::string,double> frequencyDict,unsigned int wordCount = 6);
 
 };
 

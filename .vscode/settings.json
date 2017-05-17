@@ -64,6 +64,7 @@
         "chrono": "cpp",
         "mutex": "cpp",
         "streambuf": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "ratio": "cpp"
     }
 }

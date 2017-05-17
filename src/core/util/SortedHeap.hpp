@@ -64,7 +64,7 @@ class SortedHeap{
          * 删除节点，时间复杂度为O(n)
          * @param id  要删除的节点id
          */
-        void deleteNode(int id);
+        void deleteNode(unsigned int id);
         
         /**
          * pop最小的节点
@@ -177,7 +177,7 @@ void SortedHeap<T>::deleteNodeByPos(const unsigned int pos){
 }
 
 template<typename T>
-void SortedHeap<T>::deleteNode(int id){
+void SortedHeap<T>::deleteNode(unsigned int id){
     for(unsigned int i = 0; i < this->heap.size(); i++){
         if(heap[i].id == id){
             //找到了id
