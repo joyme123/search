@@ -6,6 +6,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <thread>
+#include <chrono>
 #include "src/core/db/ResourceManage.h"
 #include "src/core/controller/FullTextDocumentController.h"
 #include "src/core/controller/WordController.h"
@@ -16,12 +18,15 @@ int main(){
     FullTextDocumentController controller;
     ResourceManage* manage = ResourceManage::getInstance();
     std::string documentJson;
+    std::chrono::seconds time(5);       //5秒检查一次
     while(true){
         // std::ofstream outfile( "out_file.txt" );
         // outfile << documentJson;
-        documentJson = manage->getNextDocument();
-        if(documentJson != "")
+        while((documentJson = manage->getNextDocument()) != ""){
             controller.documentEntry(documentJson);
+        }
+
+        std::this_thread::sleep_for(time);
     }
 
     std::cout << "所有文本已经索引完毕" << std::endl;

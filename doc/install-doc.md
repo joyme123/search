@@ -51,6 +51,11 @@ export GLOG_max_log_size=1
 
  apache需要开启对cgi的支持,并将网站根目录指向www,将cgi执行目录指向cgi-bin
 
+
+### fastcgi++库，用来支持fastcgi
+相关文档的地址:http://www.nongnu.org/fastcgipp/doc/2.1/
+
+
 ### **c++连接mysql组件mysql-connnect-cpp(c++)**
 这个要安装1.x版本,2.x版本是提供文档存储的接口的
 具体安装过程请看我的博客,里面介绍了2.x和1.x版本的安装

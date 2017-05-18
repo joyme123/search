@@ -43,11 +43,11 @@ void fun(){
     trie.read(path);
 
 	
-	std::chrono::milliseconds tick(1000);       //10秒作为一个周期
+	std::chrono::milliseconds tick(1000);       //1秒作为一个周期
     Timer* timer = Timer::getInstance(tick);
 	std::function<void()> f1 = std::bind(&Trie::persist,&trie,std::ref(save_path));
 	std::function<void()> f2 = std::bind(myprint,"第二个加入");
-	timer->addEvent(6,f1,true);		//60个周期，也就是10分钟保存一次
+	timer->addEvent(6,f1,true);		//6个周期，也就是6秒钟保存一次
 	timer->addEvent(6,f2,true);	
 
 	timer->asyncStart();  

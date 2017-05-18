@@ -13,6 +13,8 @@
 #include <vector>
 #include <functional>
 #include <memory>
+#include <mutex>
+#include <condition_variable>
 #include "src/core/util/util.h"
 
 
@@ -28,8 +30,10 @@ class SortedHeap{
         };
         std::vector<HeapNode> heap;
         unsigned int autoIncrementId;
-        std::function<bool(T& ,T&)> cmp;
-        
+        std::function<bool(T& ,T&)> cmp;    //比较函数，实现选择构造最大堆还是最小堆
+        std::mutex mu1;                
+        std::mutex mu2;                
+
         /**
          * 插入节点后调整堆中不符合的节点
          */
@@ -151,9 +155,32 @@ void SortedHeap<T>::adjustAfterDelete(int pos){
     }
 }
 
+
+template<typename T>
+void SortedHeap<T>::deleteNodeByPos(const unsigned int pos){
+    unsigned int last = this->heap.size() - 1;
+    if(pos > last){
+        return;
+    }
+    std::lock(mu1,mu2);             //上锁
+    std::lock_guard<std::mutex> locker1(mu1,std::adopt_lock);
+    std::lock_guard<std::mutex> locker2(mu2,std::adopt_lock);
+    //与最后一个交换
+    swap(this->heap[pos],this->heap[last]);
+    //删除最后一个
+    this->heap.pop_back();      
+
+    this->adjustAfterDelete(pos);
+}
+
+
+
 template<typename T>
 unsigned int SortedHeap<T>::insertNode(T& node){
     HeapNode hNode(this->autoIncrementId++,node);
+    std::lock(mu1,mu2);             //上锁
+    std::lock_guard<std::mutex> locker1(mu1,std::adopt_lock);
+    std::lock_guard<std::mutex> locker2(mu2,std::adopt_lock);
     this->heap.push_back(hNode);     //先将node放在最后一位
     if(this->heap.size() != 1){
         //如果大小不等于1，则在新增节点后调整
@@ -162,19 +189,6 @@ unsigned int SortedHeap<T>::insertNode(T& node){
     return this->autoIncrementId - 1;
 }
 
-template<typename T>
-void SortedHeap<T>::deleteNodeByPos(const unsigned int pos){
-    unsigned int last = this->heap.size() - 1;
-    if(pos > last){
-        return;
-    }
-    //与最后一个交换
-    swap(this->heap[pos],this->heap[last]);
-    //删除最后一个
-    this->heap.pop_back();      
-
-    this->adjustAfterDelete(pos);
-}
 
 template<typename T>
 void SortedHeap<T>::deleteNode(unsigned int id){

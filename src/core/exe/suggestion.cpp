@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
 	std::chrono::milliseconds tick(10000);       //10秒作为一个周期
     Timer* timer = Timer::getInstance(tick);
 	std::function<void()> f1 = std::bind(&Trie::persist,&trie,std::ref(persistPath));
-	timer->addEvent(360,f1,true);		//60个周期，也就是一个小时保存一次
+	timer->addEvent(360,f1,true);		//360个周期，也就是一个小时保存一次
 	timer->asyncStart();
     while (FCGX_Accept_r(&request) == 0) {
 		FCgiIO IO(request);
